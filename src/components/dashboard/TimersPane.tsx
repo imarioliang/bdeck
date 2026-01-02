@@ -66,10 +66,10 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime, w
             <GripVertical size={12} />
           </div>
           <div className="flex items-center gap-2">
-            <span className={`w-1.5 h-1.5 rounded-full ${project.isActive ? (isOverLimit ? 'bg-terminal-red animate-ping shadow-[0_0_8px_rgba(248,113,113,0.8)]' : 'bg-terminal-amber animate-pulse shadow-[0_0_5px_rgba(255,157,0,0.5)]') : 'bg-white/5'}`}></span>
+            <span className={`w-1.5 h-1.5 rounded-full ${project.isActive ? (isOverLimit ? 'bg-terminal-red animate-ping shadow-[0_0_8px_rgba(248,113,113,0.8)]' : 'bg-terminal-main animate-pulse shadow-[0_0_5px_rgba(255,157,0,0.5)]') : 'bg-white/5'}`}></span>
             <div className="flex flex-col">
               <span className={`text-[9px] font-black uppercase tracking-wider truncate ${isOverLimit ? 'text-terminal-red' : 'text-white/70'}`}>{project.name}</span>
-              <span className={`text-[11px] font-black font-mono tracking-tighter ${project.isActive ? (isOverLimit ? 'text-terminal-red' : 'text-terminal-amber') : 'text-white/20'}`}>
+              <span className={`text-[11px] font-black font-mono tracking-tighter ${project.isActive ? (isOverLimit ? 'text-terminal-red' : 'text-terminal-main') : 'text-white/20'}`}>
                 {formatTime(project.time)}
               </span>
             </div>
@@ -79,7 +79,7 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime, w
         <div className="flex items-center gap-1 opacity-20 group-hover:opacity-100 transition-opacity">
           <button 
             onClick={onToggle}
-            className={`p-1.5 hover:bg-white/5 transition-colors ${project.isActive ? 'text-terminal-amber' : 'text-white'}`}
+            className={`p-1.5 hover:bg-white/5 transition-colors ${project.isActive ? 'text-terminal-main' : 'text-white'}`}
             title={project.isActive ? "Pause" : "Start"}
           >
             {project.isActive ? <Pause size={12} fill="currentColor" /> : <Play size={12} fill="currentColor" />}
@@ -274,34 +274,34 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
         {/* SUBTLE DURATIONS BELOW BUTTON */}
         <div className="flex justify-center items-center gap-10 px-4 opacity-40 hover:opacity-100 transition-opacity">
           <div className="flex flex-col items-center group/input cursor-pointer">
-            <span className="text-[5px] font-black text-white/10 uppercase tracking-[0.3em] group-hover/input:text-terminal-amber transition-colors">W_INTERVAL</span>
+            <span className="text-[5px] font-black text-white/10 uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors">W_INTERVAL</span>
             <input 
               type="number" value={workLimitMin} onChange={e => setWorkLimitMin(Math.max(1, Number(e.target.value)))}
-              className="w-10 bg-transparent border-none p-0 text-[10px] font-black focus:outline-none text-white/40 focus:text-terminal-amber transition-colors text-center appearance-none"
+              className="w-10 bg-transparent border-none p-0 text-[10px] font-black focus:outline-none text-white/40 focus:text-terminal-main transition-colors text-center appearance-none"
             />
           </div>
           <div className="flex flex-col items-center group/input cursor-pointer">
-            <span className="text-[5px] font-black text-white/10 uppercase tracking-[0.3em] group-hover/input:text-terminal-amber transition-colors">R_INTERVAL</span>
+            <span className="text-[5px] font-black text-white/10 uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors">R_INTERVAL</span>
             <input 
               type="number" value={restLimitMin} onChange={e => setRestLimitMin(Math.max(1, Number(e.target.value)))}
-              className="w-10 bg-transparent border-none p-0 text-[10px] font-black focus:outline-none text-white/40 focus:text-terminal-amber transition-colors text-center appearance-none"
+              className="w-10 bg-transparent border-none p-0 text-[10px] font-black focus:outline-none text-white/40 focus:text-terminal-main transition-colors text-center appearance-none"
             />
           </div>
         </div>
       </div>
 
       {isAdding && (
-        <div className="p-3 border border-terminal-amber/30 bg-terminal-amber/5 space-y-3">
+        <div className="p-3 border border-terminal-main/30 bg-terminal-main/5 space-y-3">
           <input 
             type="text" value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && addProject()}
             placeholder="PROJECT_ID..." 
-            className="w-full bg-black/60 border border-white/10 p-2.5 text-[10px] focus:outline-none focus:border-terminal-amber transition-all uppercase tracking-widest text-white/80" 
+            className="w-full bg-black/60 border border-white/10 p-2.5 text-[10px] focus:outline-none focus:border-terminal-main transition-all uppercase tracking-widest text-white/80" 
             autoFocus
           />
           <div className="flex gap-3 justify-end">
             <button onClick={() => setIsAdding(false)} className="text-[9px] font-bold text-white/20 uppercase tracking-widest hover:text-white">Abort</button>
-            <button onClick={addProject} className="bg-terminal-amber text-black px-4 py-1.5 text-[9px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)]">Execute</button>
+            <button onClick={addProject} className="bg-terminal-main text-black px-4 py-1.5 text-[9px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)]">Execute</button>
           </div>
         </div>
       )}
@@ -335,7 +335,7 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
         {!isAdding && (
           <button 
             onClick={() => setIsAdding(true)}
-            className="w-full mt-4 flex items-center justify-center gap-2 py-3 border border-dashed border-white/5 hover:border-terminal-amber/20 hover:bg-white/[0.01] transition-all text-white/5 hover:text-terminal-amber group"
+            className="w-full mt-4 flex items-center justify-center gap-2 py-3 border border-dashed border-white/5 hover:border-terminal-main/20 hover:bg-white/[0.01] transition-all text-white/5 hover:text-terminal-main group"
           >
             <Plus size={14} className="group-hover:rotate-90 transition-transform" />
             <span className="text-[9px] font-black tracking-widest uppercase italic">New Project</span>

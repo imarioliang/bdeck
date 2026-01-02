@@ -62,7 +62,7 @@ const SortableTodoItem = ({ todo, onToggle, onDelete, onUpdateText, onKeyDown, i
       <div className="flex-1 flex items-center gap-3">
         <button 
           onClick={onToggle}
-          className={`flex-shrink-0 transition-all ${todo.done ? 'text-terminal-amber' : 'text-white/10 hover:text-white/20'}`}
+          className={`flex-shrink-0 transition-all ${todo.done ? 'text-terminal-main' : 'text-white/10 hover:text-white/20'}`}
           title={todo.done ? "Mark as undone" : "Mark as done"}
         >
           {todo.done ? <CheckSquare size={18} strokeWidth={2} /> : <Square size={18} strokeWidth={2} />}
@@ -150,7 +150,7 @@ export const TodoPane = () => {
         <input 
           type="text"
           placeholder="NEW MISSION OBJECTIVE..."
-          className="w-full bg-white/[0.02] border border-white/5 px-8 py-2.5 text-[9px] font-black focus:outline-none focus:border-terminal-amber/20 transition-all placeholder:text-white/5 tracking-[0.1em] uppercase"
+          className="w-full bg-white/[0.02] border border-white/5 px-8 py-2.5 text-[9px] font-black focus:outline-none focus:border-terminal-main/20 transition-all placeholder:text-white/5 tracking-[0.1em] uppercase"
           onKeyDown={(e) => {
             if (e.key === 'Enter' && e.currentTarget.value.trim()) {
               const id = `todo-${Date.now()}`;
@@ -160,7 +160,7 @@ export const TodoPane = () => {
             }
           }}
         />
-        <CornerDownLeft className="absolute right-3 top-1/2 -translate-y-1/2 text-white/5 group-focus-within:text-terminal-amber/40 transition-colors" size={12} />
+        <CornerDownLeft className="absolute right-3 top-1/2 -translate-y-1/2 text-white/5 group-focus-within:text-terminal-main/40 transition-colors" size={12} />
       </div>
 
       <div className="flex-1 overflow-y-auto pr-1 custom-scrollbar">

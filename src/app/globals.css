@@ -3,11 +3,36 @@
 :root {
   --background: #0a0a0a;
   --foreground: #d4d4d4;
-  --terminal-amber: #ffb000; /* Adjusted for better contrast (WCAG AAA) */
-  --terminal-green: #4ade80; /* Already excellent contrast (~10:1) */
-  --terminal-red: #ff5f5f;   /* Adjusted for better contrast */
+  --terminal-main: #ffb000; /* Default Amber */
+  --terminal-green: #4ade80;
+  --terminal-red: #ff5f5f;
   --panel-bg: #111111;
   --border-color: #262626;
+}
+
+[data-theme='amber'] {
+  --terminal-main: #ffb000;
+}
+
+[data-theme='green'] {
+  --terminal-main: #4ade80;
+}
+
+[data-theme='blue'] {
+  --terminal-main: #3b82f6;
+}
+
+/* Font Scaling */
+[data-size='small'] {
+  font-size: 9px;
+}
+
+[data-size='standard'] {
+  font-size: 11px;
+}
+
+[data-size='large'] {
+  font-size: 13px;
 }
 
 body {
@@ -15,8 +40,8 @@ body {
   background: var(--background);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   text-transform: uppercase;
-  font-size: 11px;
   line-height: 1.2;
+  transition: font-size 0.2s ease-in-out;
 }
 
 /* Brutalist Custom Scrollbar */
@@ -37,12 +62,17 @@ body {
 }
 
 /* Custom Utilities */
-.text-terminal-amber { color: var(--terminal-amber); }
-.bg-terminal-amber { background-color: var(--terminal-amber); }
-.border-terminal-amber { border-color: var(--terminal-amber); }
+.text-terminal-main { color: var(--terminal-main); }
+.bg-terminal-main { background-color: var(--terminal-main); }
+.border-terminal-main { border-color: var(--terminal-main); }
 
 .text-terminal-green { color: var(--terminal-green); }
 .bg-terminal-green { background-color: var(--terminal-green); }
 
 .text-terminal-red { color: var(--terminal-red); }
 .bg-terminal-red { background-color: var(--terminal-red); }
+
+/* Glow Effects */
+.shadow-terminal {
+  box-shadow: 0 0 10px -2px var(--terminal-main);
+}

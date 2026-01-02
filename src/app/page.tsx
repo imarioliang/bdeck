@@ -30,7 +30,7 @@ export default function Home() {
   }, [links]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-[#d4d4d4] font-mono selection:bg-terminal-amber selection:text-black antialiased overflow-x-hidden">
+    <div className="min-h-screen bg-[#0a0a0a] text-[#d4d4d4] font-mono selection:bg-terminal-main selection:text-black antialiased overflow-x-hidden">
       <div className="max-w-[1400px] mx-auto p-4 md:p-6 space-y-6">
         
         {/* COMBINED CONTAINER FOR HEADER AND LINKS */}
@@ -40,10 +40,10 @@ export default function Home() {
           <header className="p-4 md:p-6 border-b border-white/10 bg-white/[0.01]">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
-                <div className="flex items-center gap-3 text-terminal-amber">
+                <div className="flex items-center gap-3 text-terminal-main">
                   <div className="grid grid-cols-3 gap-0.5">
                     {[...Array(9)].map((_, i) => (
-                      <div key={i} className={`w-0.5 h-0.5 rounded-full ${i === 4 ? 'bg-terminal-amber animate-pulse' : 'bg-terminal-amber/30'}`}></div>
+                      <div key={i} className={`w-0.5 h-0.5 rounded-full ${i === 4 ? 'bg-terminal-main animate-pulse' : 'bg-terminal-main/30'}`}></div>
                     ))}
                   </div>
                   <h1 className="text-xl md:text-2xl font-black tracking-[0.2em] uppercase leading-none">Command Center</h1>
@@ -51,13 +51,13 @@ export default function Home() {
                 <p className="text-[10px] text-white/30 mt-2 font-bold tracking-widest">&gt; SELECT A SUBSYSTEM TO INITIALIZE...</p>
               </div>
               <div className="relative group w-full md:w-auto">
-                <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-terminal-amber transition-colors" size={14} />
+                <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-terminal-main transition-colors" size={14} />
                 <input 
                   type="text" 
                   placeholder="SEARCH MODULES..."
                   value={linksSearchTerm}
                   onChange={(e) => setLinksSearchTerm(e.target.value)}
-                  className="bg-black/40 border border-white/10 px-4 pr-10 py-2 text-[10px] focus:outline-none focus:border-terminal-amber/40 w-full md:w-64 transition-all uppercase tracking-widest placeholder:text-white/5"
+                  className="bg-black/40 border border-white/10 px-4 pr-10 py-2 text-[10px] focus:outline-none focus:border-terminal-main/40 w-full md:w-64 transition-all uppercase tracking-widest placeholder:text-white/5"
                 />
               </div>
             </div>
@@ -70,7 +70,7 @@ export default function Home() {
                 <button 
                   key={tab}
                   onClick={() => setActiveCategory(tab)}
-                  className={`px-4 py-1 text-[9px] font-black border transition-all tracking-widest ${activeCategory === tab ? 'bg-terminal-amber text-black border-terminal-amber shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]' : 'border-white/5 text-white/20 hover:border-white/20 hover:text-white bg-white/[0.01]'}`}
+                  className={`px-4 py-1 text-[9px] font-black border transition-all tracking-widest ${activeCategory === tab ? 'bg-terminal-main text-black border-terminal-main shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]' : 'border-white/5 text-white/20 hover:border-white/20 hover:text-white bg-white/[0.01]'}`}
                 >
                   {tab}
                 </button>
@@ -119,7 +119,7 @@ export default function Home() {
               actions={
                 <div className="flex gap-1">
                   <div className="w-2 h-2 rounded-full bg-terminal-red opacity-40"></div>
-                  <div className="w-2 h-2 rounded-full bg-terminal-amber opacity-40"></div>
+                  <div className="w-2 h-2 rounded-full bg-terminal-main opacity-40"></div>
                   <div className="w-2 h-2 rounded-full bg-terminal-green opacity-40"></div>
                 </div>
               }

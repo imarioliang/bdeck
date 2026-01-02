@@ -83,7 +83,7 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
     <div 
       ref={setNodeRef}
       style={style}
-      className="relative group aspect-square flex flex-col items-center justify-center border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-terminal-amber/20 transition-all cursor-pointer overflow-hidden p-2"
+      className="relative group aspect-square flex flex-col items-center justify-center border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-terminal-main/20 transition-all cursor-pointer overflow-hidden p-2"
     >
       {/* FAVICON WATERMARK - REFINED */}
       {faviconUrl && (
@@ -99,7 +99,7 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
         rel="noopener noreferrer"
         className="w-full h-full flex flex-col items-center justify-center gap-2 relative z-10"
       >
-        <div className="text-white/10 group-hover:text-terminal-amber transition-colors">
+        <div className="text-white/10 group-hover:text-terminal-main transition-colors">
           <Icon size={24} strokeWidth={1.5} />
         </div>
         <div className="flex flex-col items-center gap-0.5 w-full">
@@ -113,17 +113,17 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
       </a>
 
       {link.isPinned && (
-        <div className="absolute top-1.5 left-1.5 text-terminal-amber/40">
+        <div className="absolute top-1.5 left-1.5 text-terminal-main/40">
           <Pin size={8} fill="currentColor" />
         </div>
       )}
 
       {/* OVERLAY ACTIONS */}
       <div className="absolute inset-0 bg-[#0a0a0a]/95 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
-        <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="p-1 text-white/20 hover:text-terminal-amber transition-colors" title="Pin">
-          <Pin size={12} className={link.isPinned ? "fill-terminal-amber text-terminal-amber" : ""} />
+        <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="p-1 text-white/20 hover:text-terminal-main transition-colors" title="Pin">
+          <Pin size={12} className={link.isPinned ? "fill-terminal-main text-terminal-main" : ""} />
         </button>
-        <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} className="p-1 text-white/20 hover:text-terminal-amber transition-colors" title="Edit">
+        <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} className="p-1 text-white/20 hover:text-terminal-main transition-colors" title="Edit">
           <Pencil size={12} />
         </button>
         <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} className="p-1 text-white/20 hover:text-terminal-red transition-colors" title="Delete">
@@ -241,7 +241,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
       {/* ADD APP BUTTON */}
       <button 
         onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
-        className="aspect-square flex flex-col items-center justify-center gap-2 border border-dashed border-white/5 hover:border-terminal-amber/30 hover:bg-white/[0.01] transition-all text-white/10 hover:text-terminal-amber group p-2"
+        className="aspect-square flex flex-col items-center justify-center gap-2 border border-dashed border-white/5 hover:border-terminal-main/30 hover:bg-white/[0.01] transition-all text-white/10 hover:text-terminal-main group p-2"
       >
         <Plus size={24} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform" />
         <div className="flex flex-col items-center">
@@ -253,21 +253,21 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
       {/* MODAL FORM */}
       {isAdding && (
         <div className="fixed inset-0 bg-[#0a0a0a]/95 backdrop-blur-md z-[100] flex items-center justify-center p-4">
-          <div className="bg-[#111111] border border-terminal-amber/30 p-8 w-full max-w-sm space-y-6 shadow-[0_0_50px_-20px_rgba(255,157,0,0.2)]">
-            <h3 className="text-terminal-amber text-sm font-black tracking-[0.2em] uppercase leading-none">{editingId ? 'Modify Module' : 'Initialize Module'}</h3>
+          <div className="bg-[#111111] border border-terminal-main/30 p-8 w-full max-w-sm space-y-6 shadow-[0_0_50px_-20px_rgba(255,157,0,0.2)]">
+            <h3 className="text-terminal-main text-sm font-black tracking-[0.2em] uppercase leading-none">{editingId ? 'Modify Module' : 'Initialize Module'}</h3>
             <div className="space-y-4">
               <div className="flex flex-col gap-1.5">
                 <label className="text-[8px] font-black text-white/20 uppercase tracking-widest">Identifier</label>
                 <input 
                   type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)}
-                  placeholder="MODULE_NAME..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber/40 transition-all uppercase tracking-widest text-white/80"
+                  placeholder="MODULE_NAME..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80"
                 />
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="text-[8px] font-black text-white/20 uppercase tracking-widest">Protocol Path</label>
                 <input 
                   type="text" value={newUrl} onChange={e => setNewUrl(e.target.value)}
-                  placeholder="PROTOCOL_PATH..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber/40 transition-all uppercase tracking-widest text-white/80"
+                  placeholder="PROTOCOL_PATH..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80"
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -276,7 +276,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                   <div className="flex gap-2">
                     <input 
                       type="text" value={newCategory} onChange={e => setNewCategory(e.target.value)}
-                      placeholder="NEW_CAT..." className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber uppercase tracking-widest text-white/80"
+                      placeholder="NEW_CAT..." className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-main uppercase tracking-widest text-white/80"
                       autoFocus
                     />
                     <button onClick={() => setIsCustomCategory(false)} className="text-[8px] font-bold text-white/20 hover:text-white uppercase tracking-tighter">Cancel</button>
@@ -293,7 +293,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                           setNewCategory(e.target.value);
                         }
                       }}
-                      className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber/40 transition-all uppercase tracking-widest text-white/80 appearance-none cursor-pointer"
+                      className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80 appearance-none cursor-pointer"
                     >
                       {categories.map(cat => (
                         <option key={cat} value={cat} className="bg-[#111111]">{cat}</option>
@@ -306,7 +306,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
             </div>
             <div className="flex gap-4 justify-end">
               <button onClick={() => { setIsAdding(false); setIsCustomCategory(false); }} className="text-[10px] font-black text-white/20 hover:text-white uppercase tracking-widest transition-colors">Abort</button>
-              <button onClick={addLink} className="bg-terminal-amber text-black px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)]">Execute</button>
+              <button onClick={addLink} className="bg-terminal-main text-black px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)]">Execute</button>
             </div>
           </div>
         </div>
