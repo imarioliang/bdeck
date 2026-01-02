@@ -9,7 +9,8 @@
 - [x] Task: Initialize Supabase Client [64ec923]
     -   Create `src/utils/supabaseClient.ts` (singleton instance).
     -   Write tests to verify client initialization (mocked).
-- [ ] Task: Conductor - User Manual Verification 'Infrastructure & Schema' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Infrastructure & Schema' (Protocol in workflow.md)
+## [checkpoint: b10e4e6]
 
 ## Phase 2: Authentication UI & Logic
 - [ ] Task: Create Auth Store Slice
