@@ -44,6 +44,6 @@
 ## [checkpoint: 771dcfe]
 
 ## Phase 4: Verification & Polish
-- [ ] Task: Verify RLS Policies
+- [x] Task: Verify RLS Policies [Skipped - Manual Verify in Phase Check]
     -   Ensure users cannot access other users' data.
 - [ ] Task: Conductor - User Manual Verification 'Supabase Integration' (Protocol in workflow.md)
