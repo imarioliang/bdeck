@@ -29,16 +29,16 @@
 - [x] Task: Implement Sync Utility [a3e385f]
     -   Create a helper to map Local Store state <-> Supabase Tables.
     -   Create `pushToCloud(table, data)` and `fetchFromCloud(table)` functions.
-- [ ] Task: Sync Implementation - Links
+- [x] Task: Sync Implementation - Links [fa07362]
     -   Update store to listen for changes to `links` and trigger push (debounced).
     -   Fetch `links` on load/login and merge with store.
-- [ ] Task: Sync Implementation - Todos
+- [x] Task: Sync Implementation - Todos [fa07362]
     -   Update store to listen for changes to `todos` and trigger push.
     -   Fetch `todos` on load/login and merge.
-- [ ] Task: Sync Implementation - Notes & Timers
+- [x] Task: Sync Implementation - Notes & Timers [fa07362]
     -   Update store to listen for changes to `notes` and `timers`.
     -   Fetch on load/login and merge.
-- [ ] Task: Merge on Login Logic
+- [x] Task: Merge on Login Logic [fa07362]
     -   Implement the specific logic: On successful login -> Read Local State -> Read Cloud State -> Merge -> Update both.
 - [ ] Task: Conductor - User Manual Verification 'Data Synchronization Logic' (Protocol in workflow.md)
 
