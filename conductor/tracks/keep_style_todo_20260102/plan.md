@@ -2,8 +2,8 @@
 
 ## Phase 1: Links Pinning Functionality
 - [ ] Task: Update the `Link` interface to include an `isPinned` property.
-- [ ] Task: Implement the pin icon and toggle logic in `LinksPane`.
-- [ ] Task: Update the sorting logic to ensure pinned links stay at the top.
+- [x] Task: Implement the pin icon (7e919ec) and toggle logic in `LinksPane`.
+- [x] Task: Update the sorting logic (7e919ec) to ensure pinned links stay at the top.
 - [ ] Task: Conductor - User Manual Verification 'Links Pinning' (Protocol in workflow.md)
 
 ## Phase 2: Google Keep Style Todo List (Core)
