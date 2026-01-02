@@ -8,7 +8,7 @@
 
 ## Phase 2: Timers and Links Logic Fix
 - [ ] Task: Analyze the `toggleTimer` and `intervalRefs` logic in `TimersPane.tsx` to identify why the "Stop" action fails.
-- [ ] Task: Fix the timer pause logic and write a unit test to verify that the timer stops correctly.
+- [x] Task: Fix the timer pause logic (c33f415) and write a unit test to verify that the timer stops correctly.
 - [ ] Task: Analyze the `startEditing` logic in `LinksPane.tsx` to identify why the edit form fails to open.
-- [ ] Task: Fix the link editing trigger and write a unit test to verify that the edit form opens correctly.
+- [x] Task: Fix the link editing trigger (c33f415) and write a unit test to verify that the edit form opens correctly.
 - [ ] Task: Conductor - User Manual Verification 'Timers and Links Logic' (Protocol in workflow.md)
