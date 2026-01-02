@@ -12,8 +12,8 @@
 - [x] Task: Implement the Export/Reset (611ffdf) data logic.
 - [x] Task: Conductor - User Manual Verification 'Customization Menu' (2a69284) (Protocol in workflow.md)
 
-## Phase 3: KBAR and Keyboard Shortcuts
-- [ ] Task: Implement the KBAR provider and define navigation actions.
-- [ ] Task: Style the KBAR components to match the retro-terminal aesthetic.
-- [ ] Task: Implement global keyboard shortcuts (`p`, `n`, `t`, `1-5`) using a custom hook.
-- [ ] Task: Conductor - User Manual Verification 'KBAR and Shortcuts' (Protocol in workflow.md)
+## Phase 3: KBAR and Keyboard Shortcuts [checkpoint: caaa6fb]
+- [x] Task: Implement the KBAR provider and define navigation actions.
+- [x] Task: Style the KBAR components to match the retro-terminal aesthetic.
+- [x] Task: Implement global keyboard shortcuts (caaa6fb) (`p`, `n`, `t`, `1-5`) using a custom hook.
+- [x] Task: Conductor - User Manual Verification 'KBAR and Shortcuts' (caaa6fb) (Protocol in workflow.md)
