@@ -19,7 +19,7 @@
     -   Create `src/components/auth/AuthModal.tsx`.
     -   Implement Email/Password Sign Up and Login forms.
     -   Handle loading and error states.
-- [ ] Task: Integrate Auth Trigger
+- [x] Task: Integrate Auth Trigger [973aa51]
     -   Add a "Login" button to the `CustomizationMenu` or `Header`.
     -   Ensure it opens the `AuthModal`.
 - [ ] Task: Conductor - User Manual Verification 'Authentication UI & Logic' (Protocol in workflow.md)
