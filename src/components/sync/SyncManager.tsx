@@ -14,58 +14,77 @@ export const SyncManager = () => {
   const [timers, setTimers] = useLocalStorage<any[]>('bdeck-timers', []);
   const [note, setNote] = useLocalStorage<string>('bdeck-note', '');
 
+  // Initialization refs to prevent overwriting cloud data on mount
+  const initialized = useRef(false);
+
   // Debounced pushers
   const pushLinks = useRef(debounce((data) => pushToCloud('links', data), 2000)).current;
   const pushTodos = useRef(debounce((data) => pushToCloud('todos', data), 2000)).current;
   const pushTimers = useRef(debounce((data) => pushToCloud('timers', data), 2000)).current;
   const pushNote = useRef(debounce((data) => pushToCloud('notes', data), 2000)).current;
 
-  // Sync on change (only if user is logged in)
-  useEffect(() => { if (user) pushLinks(links); }, [links, user]);
-  useEffect(() => { if (user) pushTodos(todos); }, [todos, user]);
-  useEffect(() => { if (user) pushTimers(timers); }, [timers, user]);
-  useEffect(() => { if (user) pushNote(note); }, [note, user]);
+  // Sync on change (only if user is logged in AND initialized)
+  useEffect(() => { if (user && initialized.current) pushLinks(links); }, [links, user]);
+  useEffect(() => { if (user && initialized.current) pushTodos(todos); }, [todos, user]);
+  useEffect(() => { if (user && initialized.current) pushTimers(timers); }, [timers, user]);
+  useEffect(() => { if (user && initialized.current) pushNote(note); }, [note, user]);
 
   // Initial Fetch / Merge on Login
   useEffect(() => {
     if (!user) return;
+    // Reset initialization on user change
+    initialized.current = false;
 
     const sync = async () => {
-      // 1. Push Local to Cloud (Merge Strategy: Push local first to ensure no data loss)
-      await pushToCloud('links', links);
-      await pushToCloud('todos', todos);
-      await pushToCloud('timers', timers);
-      await pushToCloud('notes', note);
-
-      // 2. Fetch from Cloud (to get the union or latest state)
+      // 1. Fetch from Cloud FIRST
       const cloudLinks = await fetchFromCloud('links');
-      if (cloudLinks && cloudLinks.length > 0) {
-        cloudLinks.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
-        setLinks(cloudLinks.map(mapLinkToLocal));
-      }
-
       const cloudTodos = await fetchFromCloud('todos');
-      if (cloudTodos && cloudTodos.length > 0) {
-        cloudTodos.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
-        setTodos(cloudTodos.map(mapTodoToLocal));
-      }
-
       const cloudTimers = await fetchFromCloud('timers');
-      if (cloudTimers && cloudTimers.length > 0) {
-        cloudTimers.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
-        setTimers(cloudTimers.map(mapTimerToLocal));
+      const cloudNotes = await fetchFromCloud('notes');
+
+      // 2. Determine Strategy
+      
+      // LINKS
+      if (cloudLinks && cloudLinks.length > 0) {
+         // Cloud wins
+         cloudLinks.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
+         setLinks(cloudLinks.map(mapLinkToLocal));
+      } else {
+         // Cloud empty, Push Local (using current closure value 'links')
+         await pushToCloud('links', links);
       }
 
-      const cloudNotes = await fetchFromCloud('notes');
-      if (cloudNotes && cloudNotes.length > 0) {
-        // Take the most recent one? Schema says PK is user_id, so only one.
-        setNote(mapNoteToLocal(cloudNotes[0]));
+      // TODOS
+      if (cloudTodos && cloudTodos.length > 0) {
+         cloudTodos.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
+         setTodos(cloudTodos.map(mapTodoToLocal));
+      } else {
+         await pushToCloud('todos', todos);
       }
+
+      // TIMERS
+      if (cloudTimers && cloudTimers.length > 0) {
+         cloudTimers.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
+         setTimers(cloudTimers.map(mapTimerToLocal));
+      } else {
+         await pushToCloud('timers', timers);
+      }
+
+      // NOTES
+      if (cloudNotes && cloudNotes.length > 0) {
+         setNote(mapNoteToLocal(cloudNotes[0]));
+      } else {
+         await pushToCloud('notes', note);
+      }
+
+      // 3. Mark Initialized
+      // This enables the listeners above.
+      initialized.current = true;
     };
 
     sync();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id]); // Only run when user ID changes (login)
+  }, [user?.id]); 
 
   return null;
 };
