@@ -1,7 +1,8 @@
 # Project Tracks
 
 This file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.
+
 ---
 
-## [x] Track: add auto favicon and add catogories function in links. add pomadoro function on rest time.
-*Link: [./conductor/tracks/dashboard_polish_20260102/](./conductor/tracks/dashboard_polish_20260102/)*
+## [x] Track: Polishing the app - Pomodoro sound, auto-favicon, categories, layout refinements
+*Link: [./conductor/tracks/app_polish_20260102/](./conductor/tracks/app_polish_20260102/)*
