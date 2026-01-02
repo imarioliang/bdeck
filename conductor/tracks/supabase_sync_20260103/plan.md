@@ -1,7 +1,7 @@
 # Plan: Supabase Integration
 
 ## Phase 1: Infrastructure & Schema
-- [ ] Task: Install Dependencies
+- [x] Task: Install Dependencies [6bf450e]
     -   Install `@supabase/supabase-js`.
     -   Add environment variables to `.env.local` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
 - [ ] Task: Database Schema Setup
