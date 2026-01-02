@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Pencil, Trash2, GripHorizontal } from 'lucide-react';
+import { Pencil, Trash2, GripHorizontal, Pin } from 'lucide-react';
 import {
   DndContext,
   closestCenter,
@@ -25,6 +25,7 @@ interface Link {
   id: string;
   title: string;
   url: string;
+  isPinned?: boolean;
 }
 
 interface LinksPaneProps {
@@ -37,10 +38,11 @@ interface SortableLinkItemProps {
   link: Link;
   onEdit: () => void;
   onDelete: () => void;
+  onTogglePin: () => void;
   isReorderable: boolean;
 }
 
-const SortableLinkItem = ({ link, onEdit, onDelete, isReorderable }: SortableLinkItemProps) => {
+const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }: SortableLinkItemProps) => {
   const {
     attributes,
     listeners,
@@ -67,13 +69,19 @@ const SortableLinkItem = ({ link, onEdit, onDelete, isReorderable }: SortableLin
         href={link.url} 
         target="_blank" 
         rel="noopener noreferrer"
-        className="w-full h-full border-4 border-black flex flex-col items-center justify-center text-center hover:bg-black hover:text-white transition-colors p-2"
+        className={`w-full h-full border-4 border-black flex flex-col items-center justify-center text-center hover:bg-black hover:text-white transition-colors p-2 ${link.isPinned ? 'bg-gray-100' : ''}`}
         title={link.title}
       >
         <span className="text-[10px] md:text-xs font-bold uppercase break-all line-clamp-2 leading-tight">
           {link.title}
         </span>
       </a>
+
+      {link.isPinned && (
+        <div className="absolute top-1 left-1 pointer-events-none">
+          <Pin size={10} className="fill-black" />
+        </div>
+      )}
       
       <div className="absolute top-0 right-0 flex flex-col opacity-0 group-hover:opacity-100 transition-opacity bg-white border-l-2 border-b-2 border-black z-10">
         {isReorderable && (
@@ -86,6 +94,13 @@ const SortableLinkItem = ({ link, onEdit, onDelete, isReorderable }: SortableLin
             <GripHorizontal size={10} />
           </button>
         )}
+        <button 
+          onClick={onTogglePin}
+          className="p-1 hover:bg-black hover:text-white border-b-2 border-black"
+          aria-label={link.isPinned ? "Unpin" : "Pin"}
+        >
+          <Pin size={10} className={link.isPinned ? "fill-black" : ""} />
+        </button>
         <button 
           onClick={onEdit}
           className="p-1 hover:bg-black hover:text-white border-b-2 border-black"
@@ -118,12 +133,20 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
     })
   );
 
+  const sortedLinks = useMemo(() => {
+    return [...links].sort((a, b) => {
+      if (a.isPinned && !b.isPinned) return -1;
+      if (!a.isPinned && b.isPinned) return 1;
+      return 0;
+    });
+  }, [links]);
+
   const filteredLinks = useMemo(() => {
-    return links.filter(link => 
+    return sortedLinks.filter(link => 
       link.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
       link.url.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [links, searchTerm]);
+  }, [sortedLinks, searchTerm]);
 
   const addLink = () => {
     if (newTitle.trim() && newUrl.trim()) {
@@ -139,13 +162,19 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
         setEditingId(null);
       } else {
         const id = Date.now().toString();
-        setLinks([...links, { id, title: newTitle.trim(), url: formattedUrl }]);
+        setLinks([...links, { id, title: newTitle.trim(), url: formattedUrl, isPinned: false }]);
       }
       
       setNewTitle('');
       setNewUrl('');
       setIsAdding(false);
     }
+  };
+
+  const togglePin = (id: string) => {
+    setLinks(links.map(link => 
+      link.id === id ? { ...link, isPinned: !link.isPinned } : link
+    ));
   };
 
   const startEditing = (id: string) => {
@@ -179,10 +208,11 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
     }
   };
 
-  // Ensure links have IDs (migration)
-  const sanitizedLinks = links.map((link, index) => ({
+  // Ensure links have IDs and isPinned (migration)
+  const sanitizedLinks = sortedLinks.map((link, index) => ({
     ...link,
-    id: link.id || `link-${index}-${Date.now()}`
+    id: link.id || `link-${index}-${Date.now()}`,
+    isPinned: link.isPinned ?? false
   }));
 
   const isReorderable = searchTerm === '';
@@ -250,6 +280,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
                   link={link}
                   onEdit={() => startEditing(link.id)}
                   onDelete={() => deleteLink(link.id)}
+                  onTogglePin={() => togglePin(link.id)}
                   isReorderable={isReorderable}
                 />
               ))}

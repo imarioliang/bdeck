@@ -12,8 +12,8 @@ describe('LinksPane', () => {
   const mockSetLinks = vi.fn();
   const mockSetIsAdding = vi.fn();
   const initialLinks = [
-    { id: '1', title: 'Google', url: 'https://google.com' },
-    { id: '2', title: 'GitHub', url: 'https://github.com' },
+    { id: '1', title: 'Google', url: 'https://google.com', isPinned: false },
+    { id: '2', title: 'GitHub', url: 'https://github.com', isPinned: false },
   ];
 
   beforeEach(() => {
@@ -40,7 +40,7 @@ describe('LinksPane', () => {
 
     expect(mockSetLinks).toHaveBeenCalledWith(
       expect.arrayContaining([
-        expect.objectContaining({ title: 'Vercel', url: 'https://vercel.com' }),
+        expect.objectContaining({ title: 'Vercel', url: 'https://vercel.com', isPinned: false }),
       ])
     );
     
@@ -72,7 +72,6 @@ describe('LinksPane', () => {
 
     expect(mockSetIsAdding).toHaveBeenCalledWith(true);
     
-    // Rerender with isAdding true to show the form
     rerender(<LinksPane isAdding={true} setIsAdding={mockSetIsAdding} searchTerm="" />);
 
     const titleInput = screen.getByPlaceholderText('Title');
@@ -81,8 +80,19 @@ describe('LinksPane', () => {
     fireEvent.click(saveButton);
 
     expect(mockSetLinks).toHaveBeenCalledWith([
-      { id: '1', title: 'Google Updated', url: 'https://google.com' },
-      { id: '2', title: 'GitHub', url: 'https://github.com' },
+      { id: '1', title: 'Google Updated', url: 'https://google.com', isPinned: false },
+      { id: '2', title: 'GitHub', url: 'https://github.com', isPinned: false },
+    ]);
+  });
+
+  it('should call setLinks when toggling pin', () => {
+    render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="" />);
+    const pinButtons = screen.getAllByLabelText(/pin/i);
+    fireEvent.click(pinButtons[0]);
+    
+    expect(mockSetLinks).toHaveBeenCalledWith([
+      { ...initialLinks[0], isPinned: true },
+      initialLinks[1],
     ]);
   });
 });
