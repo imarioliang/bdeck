@@ -135,8 +135,10 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
 
   const sortedLinks = useMemo(() => {
     return [...links].sort((a, b) => {
-      if (a.isPinned && !b.isPinned) return -1;
-      if (!a.isPinned && b.isPinned) return 1;
+      const aPinned = a.isPinned ?? false;
+      const bPinned = b.isPinned ?? false;
+      if (aPinned && !bPinned) return -1;
+      if (!aPinned && bPinned) return 1;
       return 0;
     });
   }, [links]);
@@ -173,7 +175,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
 
   const togglePin = (id: string) => {
     setLinks(links.map(link => 
-      link.id === id ? { ...link, isPinned: !link.isPinned } : link
+      link.id === id ? { ...link, isPinned: !(link.isPinned ?? false) } : link
     ));
   };
 

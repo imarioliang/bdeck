@@ -3,6 +3,8 @@
 ## Frontend
 - **Framework:** Next.js (React) with TypeScript
 - **Styling:** Tailwind CSS
+- **Icons:** Lucide React
+- **Drag and Drop:** dnd-kit
 - **State Management:** Zustand
 - **Command Palette:** KBAR (for keyboard-driven navigation)
 
