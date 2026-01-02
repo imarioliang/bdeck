@@ -1,10 +1,10 @@
 # Track Plan: Dashboard Polish and Advanced Features
 
-## Phase 1: Link Categories and Filtering
+## Phase 1: Link Categories and Filtering [checkpoint: 09386df]
 - [ ] Task: Update `Link` interface to include a `category` string.
 - [x] Task: Update the navigation tabs (6027d66) in `page.tsx` to handle active state and filtering logic.
 - [ ] Task: Update the `LinksPane` form to include a category dropdown/input.
-- [ ] Task: Conductor - User Manual Verification 'Categories and Filtering' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Categories and Filtering' (09386df) (Protocol in workflow.md)
 
 ## Phase 2: Auto-Favicons and Card Polish
 - [ ] Task: Create a utility function to generate favicon URLs (using Google S2).
