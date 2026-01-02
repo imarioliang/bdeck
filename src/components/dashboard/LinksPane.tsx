@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Pencil, Trash2, GripHorizontal, Pin, Mail, Calendar, Music, HardDrive, BarChart3, Code, Plus, ShieldCheck } from 'lucide-react';
+import { getFaviconUrl } from '@/utils/favicon';
 import {
   DndContext,
   closestCenter,
@@ -69,6 +70,7 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
 
   const Icon = getIcon(link.title);
   const status = getStatusText(link.title);
+  const faviconUrl = getFaviconUrl(link.url);
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -83,11 +85,19 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
       style={style}
       className="relative group aspect-square flex flex-col items-center justify-center border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-terminal-amber/20 transition-all cursor-pointer overflow-hidden p-2"
     >
+      {/* FAVICON WATERMARK */}
+      {faviconUrl && (
+        <div 
+          className="absolute inset-0 opacity-[0.03] pointer-events-none transition-opacity group-hover:opacity-[0.07] bg-center bg-no-repeat grayscale invert brightness-0"
+          style={{ backgroundImage: `url(${faviconUrl})`, backgroundSize: '60%' }}
+        />
+      )}
+
       <a 
         href={link.url} 
         target="_blank" 
         rel="noopener noreferrer"
-        className="w-full h-full flex flex-col items-center justify-center gap-2"
+        className="w-full h-full flex flex-col items-center justify-center gap-2 relative z-10"
       >
         <div className="text-white/10 group-hover:text-terminal-amber transition-colors">
           <Icon size={24} strokeWidth={1.5} />
