@@ -13,9 +13,9 @@
 - [x] Task: Implement the link editing form (f5f17bc)/modal logic.
 - [x] Task: Conductor - User Manual Verification 'CRUD Operations' (5faf944) (Protocol in workflow.md)
 
-## Phase 3: Drag and Drop Implementation
-- [~] Task: Implement sortable reordering for the `TodoPane` list.
+## Phase 3: Drag and Drop Implementation [checkpoint: 3f548b2]
+- [x] Task: Implement sortable reordering for the `TodoPane` (3f548b2) list.
 - [x] Task: Implement sortable reordering for the `LinksPane` (3f548b2) grid icons.
 - [x] Task: Implement sortable reordering for the `TimersPane` (3f548b2) project list.
 - [x] Task: Ensure the new order of items is persisted (3f548b2) to LocalStorage after a drop event.
-- [ ] Task: Conductor - User Manual Verification 'Drag and Drop' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Drag and Drop' (3f548b2) (Protocol in workflow.md)
