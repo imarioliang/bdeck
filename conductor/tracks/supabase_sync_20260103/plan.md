@@ -13,7 +13,7 @@
 ## [checkpoint: b10e4e6]
 
 ## Phase 2: Authentication UI & Logic
-- [ ] Task: Create Auth Store Slice
+- [x] Task: Create Auth Store Slice [9082b2b]
     -   Update `useDashboardStore` or create `useAuthStore` to manage `session`, `user`, and `authModalOpen` state.
 - [ ] Task: Create Auth Modal Component
     -   Create `src/components/auth/AuthModal.tsx`.
