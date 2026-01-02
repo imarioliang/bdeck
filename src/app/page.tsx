@@ -10,6 +10,7 @@ import { CustomizationMenu } from "@/components/dashboard/CustomizationMenu";
 import { Search } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useDashboardStore } from '@/store/useDashboardStore';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 export default function Home() {
   const [linksSearchTerm, setLinksSearchTerm] = useState('');
@@ -18,6 +19,9 @@ export default function Home() {
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   
   const { activeCategory, setActiveCategory } = useDashboardStore();
+  
+  // Initialize Global Shortcuts
+  useKeyboardShortcuts();
   
   const [projects] = useLocalStorage<any[]>('bdeck-timers', []);
   const [todos] = useLocalStorage<any[]>('bdeck-todos', []);
@@ -99,17 +103,17 @@ export default function Home() {
 
         {/* MAIN DASHBOARD CONTENT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <div className="lg:col-span-4 h-full">
+          <div id="pane-timers" className="lg:col-span-4 h-full">
             <Pane title="Project Timers" badge={`TOTAL: ${projects.length}`} label="SYS_CHRONO">
               <TimersPane isAdding={isAddingTimer} setIsAdding={setIsAddingTimer} />
             </Pane>
           </div>
-          <div className="lg:col-span-4 h-full">
+          <div id="pane-todo" className="lg:col-span-4 h-full">
             <Pane title="Mission Objectives" badge={`${pendingTodosCount} Pending`} label="OBJ_PRIORITY">
               <TodoPane />
             </Pane>
           </div>
-          <div className="lg:col-span-4 h-full">
+          <div id="pane-notes" className="lg:col-span-4 h-full">
             <Pane title="Data Log" label="LOG_STREAM" actions={<WindowControls />}>
               <NotesPane />
             </Pane>
