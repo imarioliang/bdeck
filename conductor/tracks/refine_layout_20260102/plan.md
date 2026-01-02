@@ -6,9 +6,9 @@
 - [ ] Task: Conductor - User Manual Verification 'Grid and Layout Restructuring' (Protocol in workflow.md)
 
 ## Phase 2: Component Header Integration
-- [ ] Task: Refactor `TodoPane` to move the add task input to the top.
-- [ ] Task: Refactor `LinksPane` to move the add link input to the top.
-- [ ] Task: Refactor `TimersPane` to move the add project input to the top.
+- [x] Task: Refactor `TodoPane` (2fa8281) to move the add task input to the top.
+- [x] Task: Refactor `LinksPane` (2fa8281) to move the add link input to the top.
+- [x] Task: Refactor `TimersPane` (2fa8281) to move the add project input to the top.
 - [ ] Task: Conductor - User Manual Verification 'Component Header Integration' (Protocol in workflow.md)
 
 ## Phase 3: Visual Polish and Verification
