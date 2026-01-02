@@ -14,6 +14,6 @@
 
 ## Phase 3: Pomodoro Integration
 - [ ] Task: Add `restMode` and `restTimeRemaining` state to `TimersPane`.
-- [ ] Task: Implement the auto-rest logic: transition to countdown when a work session is stopped.
-- [ ] Task: Update the "REST TIMER" button UI to show active countdown status.
+- [x] Task: Implement the auto-rest logic (29671f8): transition to countdown when a work session is stopped.
+- [x] Task: Update the "REST TIMER" button UI (29671f8) to show active countdown status.
 - [ ] Task: Conductor - User Manual Verification 'Pomodoro Integration' (Protocol in workflow.md)
