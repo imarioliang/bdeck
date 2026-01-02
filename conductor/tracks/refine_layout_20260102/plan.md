@@ -2,7 +2,7 @@
 
 ## Phase 1: Grid and Layout Restructuring
 - [x] Task: Update the main grid container (922f5cb) in `src/app/page.tsx` to remove fixed height and adjust the layout for a full-width Links pane.
-- [ ] Task: Update the `Pane` component to support input integration in the header area.
+- [x] Task: Update the `Pane` component (4866a7e) to support input integration in the header area.
 - [ ] Task: Conductor - User Manual Verification 'Grid and Layout Restructuring' (Protocol in workflow.md)
 
 ## Phase 2: Component Header Integration
