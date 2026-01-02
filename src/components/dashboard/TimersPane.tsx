@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Trash2, GripVertical } from 'lucide-react';
 import {
@@ -85,7 +85,7 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime }:
       <div className="flex gap-2">
         <button 
           onClick={onToggle}
-          className={`flex-1 p-1 border-2 border-black text-[10px] font-bold uppercase ${project.isActive ? 'bg-black text-white' : 'hover:bg-gray-100'}`}
+          className={`flex-1 p-1 border-2 border-black text-[10px] font-bold uppercase transition-colors ${project.isActive ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-100'}`}
         >
           {project.isActive ? 'Stop' : 'Start'}
         </button>
@@ -112,34 +112,49 @@ export const TimersPane = () => {
     })
   );
 
+  // Migration logic for projects without IDs - run only when projects length changes or on mount
   useEffect(() => {
+    const hasMissingIds = projects.some(p => !p.id);
+    if (hasMissingIds) {
+      const sanitized = projects.map((p, i) => ({
+        ...p,
+        id: p.id || `timer-${i}-${Date.now()}`
+      }));
+      setProjects(sanitized);
+    }
+  }, [projects.length]);
+
+  useEffect(() => {
+    // Single effect to manage all intervals
     projects.forEach((project) => {
-      if (project.isActive && !intervalRefs.current[project.id]) {
-        intervalRefs.current[project.id] = setInterval(() => {
-          setProjects((prev) => 
-            prev.map((p) => p.id === project.id ? { ...p, time: p.time + 1 } : p)
-          );
-        }, 1000);
-      } else if (!project.isActive && intervalRefs.current[project.id]) {
-        clearInterval(intervalRefs.current[project.id]);
-        delete intervalRefs.current[project.id];
+      if (project.isActive) {
+        if (!intervalRefs.current[project.id]) {
+          intervalRefs.current[project.id] = setInterval(() => {
+            // Use functional updater to avoid dependency on 'projects' array
+            setProjects((prev) => 
+              prev.map((p) => p.id === project.id ? { ...p, time: p.time + 1 } : p)
+            );
+          }, 1000);
+        }
+      } else {
+        if (intervalRefs.current[project.id]) {
+          clearInterval(intervalRefs.current[project.id]);
+          delete intervalRefs.current[project.id];
+        }
       }
     });
 
-    // Cleanup logic: remove intervals for projects that are no longer in the list
-    const currentIds = projects.map(p => p.id);
+    // Cleanup for deleted projects
+    const currentIds = new Set(projects.map(p => p.id));
     Object.keys(intervalRefs.current).forEach(id => {
-      if (!currentIds.includes(id)) {
+      if (!currentIds.has(id)) {
         clearInterval(intervalRefs.current[id]);
         delete intervalRefs.current[id];
       }
     });
 
-    return () => {
-      // We don't clear everything on unmount because useLocalStorage updates
-      // will trigger effect re-runs. We only clear on explicit deactivation or removal.
-    };
-  }, [projects, setProjects]);
+    // DO NOT clear all intervals on cleanup to prevent flicker/reset during high-frequency state updates
+  }, [projects.map(p => `${p.id}-${p.isActive}`).join(',')]); // Stable dependency
 
   const addProject = () => {
     if (newProjectName.trim()) {
@@ -150,13 +165,13 @@ export const TimersPane = () => {
   };
 
   const toggleTimer = (id: string) => {
-    setProjects(projects.map((p) => 
+    setProjects((prev) => prev.map((p) => 
       p.id === id ? { ...p, isActive: !p.isActive } : p
     ));
   };
 
   const resetTimer = (id: string) => {
-    setProjects(projects.map((p) => 
+    setProjects((prev) => prev.map((p) => 
       p.id === id ? { ...p, time: 0, isActive: false } : p
     ));
   };
@@ -166,7 +181,7 @@ export const TimersPane = () => {
       clearInterval(intervalRefs.current[id]);
       delete intervalRefs.current[id];
     }
-    setProjects(projects.filter(p => p.id !== id));
+    setProjects((prev) => prev.filter(p => p.id !== id));
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -185,12 +200,6 @@ export const TimersPane = () => {
     const secs = seconds % 60;
     return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
-
-  // Migration logic for projects without IDs
-  const sanitizedProjects = projects.map((project, index) => ({
-    ...project,
-    id: project.id || `timer-${index}-${Date.now()}`
-  }));
 
   return (
     <div className="space-y-4 h-full flex flex-col pt-2">
@@ -212,7 +221,7 @@ export const TimersPane = () => {
       </div>
 
       <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-        {sanitizedProjects.length === 0 && (
+        {projects.length === 0 && (
           <p className="text-xs italic text-gray-500">No projects. Add one above to track time.</p>
         )}
         
@@ -222,11 +231,11 @@ export const TimersPane = () => {
           onDragEnd={handleDragEnd}
         >
           <SortableContext 
-            items={sanitizedProjects.map(p => p.id)}
+            items={projects.map(p => p.id)}
             strategy={verticalListSortingStrategy}
           >
             <div className="space-y-4">
-              {sanitizedProjects.map((project) => (
+              {projects.map((project) => (
                 <SortableTimerItem 
                   key={project.id} 
                   project={project}

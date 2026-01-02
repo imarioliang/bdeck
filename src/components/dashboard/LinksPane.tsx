@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Pencil, Trash2, GripHorizontal, Pin } from 'lucide-react';
 import {
@@ -55,7 +55,7 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    zIndex: isDragging ? 1 : 0,
+    zIndex: isDragging ? 10 : 0,
     opacity: isDragging ? 0.5 : 1,
   };
 
@@ -102,14 +102,22 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
           <Pin size={10} className={link.isPinned ? "fill-black" : ""} />
         </button>
         <button 
-          onClick={onEdit}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onEdit();
+          }}
           className="p-1 hover:bg-black hover:text-white border-b-2 border-black"
           aria-label="Edit"
         >
           <Pencil size={10} />
         </button>
         <button 
-          onClick={onDelete}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onDelete();
+          }}
           className="p-1 hover:bg-black hover:text-white"
           aria-label="Delete"
         >
@@ -132,6 +140,18 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  // Migration logic
+  useEffect(() => {
+    const hasMissingIds = links.some(l => !l.id);
+    if (hasMissingIds) {
+      const sanitized = links.map((l, i) => ({
+        ...l,
+        id: l.id || `link-${i}-${Date.now()}`
+      }));
+      setLinks(sanitized);
+    }
+  }, [links.length]);
 
   const sortedLinks = useMemo(() => {
     return [...links].sort((a, b) => {
@@ -157,26 +177,20 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
         formattedUrl = 'https://' + formattedUrl;
       }
       
-      if (editingId !== null) {
-        setLinks(links.map(link => 
+      if (editingId) {
+        setLinks(prev => prev.map(link => 
           link.id === editingId ? { ...link, title: newTitle.trim(), url: formattedUrl } : link
         ));
         setEditingId(null);
       } else {
-        const id = Date.now().toString();
-        setLinks([...links, { id, title: newTitle.trim(), url: formattedUrl, isPinned: false }]);
+        const id = `link-${Date.now()}`;
+        setLinks(prev => [...prev, { id, title: newTitle.trim(), url: formattedUrl, isPinned: false }]);
       }
       
       setNewTitle('');
       setNewUrl('');
       setIsAdding(false);
     }
-  };
-
-  const togglePin = (id: string) => {
-    setLinks(links.map(link => 
-      link.id === id ? { ...link, isPinned: !(link.isPinned ?? false) } : link
-    ));
   };
 
   const startEditing = (id: string) => {
@@ -189,8 +203,14 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
     }
   };
 
+  const togglePin = (id: string) => {
+    setLinks(prev => prev.map(link => 
+      link.id === id ? { ...link, isPinned: !(link.isPinned ?? false) } : link
+    ));
+  };
+
   const deleteLink = (id: string) => {
-    setLinks(links.filter(link => link.id !== id));
+    setLinks(prev => prev.filter(link => link.id !== id));
   };
 
   const cancelAction = () => {
@@ -210,13 +230,6 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
     }
   };
 
-  // Ensure links have IDs and isPinned (migration)
-  const sanitizedLinks = sortedLinks.map((link, index) => ({
-    ...link,
-    id: link.id || `link-${index}-${Date.now()}`,
-    isPinned: link.isPinned ?? false
-  }));
-
   const isReorderable = searchTerm === '';
 
   return (
@@ -224,7 +237,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
       <div className="mb-4">
         {isAdding && (
           <div className="mb-4 space-y-2 bg-gray-50 p-2 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-[10px] font-bold uppercase">{editingId !== null ? 'Edit Link' : 'Add New Link'}</p>
+            <p className="text-[10px] font-bold uppercase">{editingId ? 'Edit Link' : 'Add New Link'}</p>
             <input 
               type="text" 
               value={newTitle}
@@ -258,7 +271,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
       </div>
 
       <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-        {(isReorderable ? sanitizedLinks : filteredLinks).length === 0 && !isAdding && (
+        {filteredLinks.length === 0 && !isAdding && (
           <div className="p-2 border-2 border-dashed border-black bg-gray-50 mb-4">
             <p className="text-xs italic text-gray-500">
               {links.length === 0 ? "No links found. Add your first link using the '+' button." : "No matches found."}
@@ -272,11 +285,11 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
           onDragEnd={handleDragEnd}
         >
           <SortableContext 
-            items={(isReorderable ? sanitizedLinks : filteredLinks).map(l => l.id)}
+            items={filteredLinks.map(l => l.id)}
             strategy={rectSortingStrategy}
           >
             <div className="flex flex-wrap gap-4">
-              {(isReorderable ? sanitizedLinks : filteredLinks).map((link) => (
+              {filteredLinks.map((link) => (
                 <SortableLinkItem 
                   key={link.id} 
                   link={link}
