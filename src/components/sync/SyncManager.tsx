@@ -13,6 +13,7 @@ export const SyncManager = () => {
   const [todos, setTodos] = useLocalStorage<any[]>('bdeck-todos', []);
   const [timers, setTimers] = useLocalStorage<any[]>('bdeck-timers', []);
   const [note, setNote] = useLocalStorage<string>('bdeck-note', '');
+  const [lastUserId, setLastUserId] = useLocalStorage<string | null>('bdeck-last-user-id', null);
 
   // Initialization refs to prevent overwriting cloud data on mount
   const initialized = useRef(false);
@@ -36,6 +37,8 @@ export const SyncManager = () => {
     initialized.current = false;
 
     const sync = async () => {
+      const isUserSwitch = lastUserId && lastUserId !== user.id;
+
       // 1. Fetch from Cloud FIRST
       const cloudLinks = await fetchFromCloud('links');
       const cloudTodos = await fetchFromCloud('todos');
@@ -50,8 +53,14 @@ export const SyncManager = () => {
          cloudLinks.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
          setLinks(cloudLinks.map(mapLinkToLocal));
       } else {
-         // Cloud empty, Push Local (using current closure value 'links')
-         await pushToCloud('links', links);
+         // Cloud empty.
+         if (isUserSwitch) {
+            // Different user -> Wipe local
+            setLinks([]);
+         } else {
+            // Same user or Anonymous -> Push Local
+            await pushToCloud('links', links);
+         }
       }
 
       // TODOS
@@ -59,7 +68,11 @@ export const SyncManager = () => {
          cloudTodos.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
          setTodos(cloudTodos.map(mapTodoToLocal));
       } else {
-         await pushToCloud('todos', todos);
+         if (isUserSwitch) {
+            setTodos([]);
+         } else {
+            await pushToCloud('todos', todos);
+         }
       }
 
       // TIMERS
@@ -67,18 +80,26 @@ export const SyncManager = () => {
          cloudTimers.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
          setTimers(cloudTimers.map(mapTimerToLocal));
       } else {
-         await pushToCloud('timers', timers);
+         if (isUserSwitch) {
+            setTimers([]);
+         } else {
+            await pushToCloud('timers', timers);
+         }
       }
 
       // NOTES
       if (cloudNotes && cloudNotes.length > 0) {
          setNote(mapNoteToLocal(cloudNotes[0]));
       } else {
-         await pushToCloud('notes', note);
+         if (isUserSwitch) {
+            setNote('');
+         } else {
+            await pushToCloud('notes', note);
+         }
       }
 
-      // 3. Mark Initialized
-      // This enables the listeners above.
+      // 3. Mark Initialized and Update Last User
+      setLastUserId(user.id);
       initialized.current = true;
     };
 
