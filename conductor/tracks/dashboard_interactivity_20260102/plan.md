@@ -5,11 +5,11 @@
 - [x] Task: Write unit tests for `useLocalStorage` (5a37220) to verify data saving and retrieval.
 - [x] Task: Conductor - User Manual Verification 'Shared Storage Logic' (ede7b33) (Protocol in workflow.md)
 
-## Phase 2: Todo List Implementation
+## Phase 2: Todo List Implementation [checkpoint: 9b107f7]
 - [ ] Task: Write tests for `TodoPane` logic (adding items, toggling completion).
 - [x] Task: Implement the add/toggle logic (a8a3168) in `TodoPane` using `useLocalStorage`.
 - [x] Task: Update the UI to reflect completion status (a8a3168) with the "Brutalist" style (strikethrough).
-- [ ] Task: Conductor - User Manual Verification 'Todo List Implementation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Todo List Implementation' (9b107f7) (Protocol in workflow.md)
 
 ## Phase 3: Links Pane Implementation
 - [ ] Task: Write tests for `LinksPane` logic (adding new links, URL validation).
