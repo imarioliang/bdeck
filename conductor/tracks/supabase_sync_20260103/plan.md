@@ -26,7 +26,7 @@
 ## [checkpoint: 59856a7]
 
 ## Phase 3: Data Synchronization Logic
-- [ ] Task: Implement Sync Utility
+- [x] Task: Implement Sync Utility [a3e385f]
     -   Create a helper to map Local Store state <-> Supabase Tables.
     -   Create `pushToCloud(table, data)` and `fetchFromCloud(table)` functions.
 - [ ] Task: Sync Implementation - Links
