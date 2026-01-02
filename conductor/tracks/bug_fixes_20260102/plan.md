@@ -1,10 +1,10 @@
 # Track Plan: Bug Fixes - Links, Timers, and React Keys
 
-## Phase 1: Diagnostics and Key Warning Fix
+## Phase 1: Diagnostics and Key Warning Fix [checkpoint: 48fe0d5]
 - [ ] Task: Audit `TodoPane.tsx` to identify missing or unstable `key` props.
 - [x] Task: Ensure all list items (7d3c3f2) and components within the `SortableContext` use unique, persistent IDs as keys.
 - [x] Task: Verify that the console warning is resolved (7d3c3f2).
-- [ ] Task: Conductor - User Manual Verification 'Key Warning Fix' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Key Warning Fix' (48fe0d5) (Protocol in workflow.md)
 
 ## Phase 2: Timers and Links Logic Fix
 - [ ] Task: Analyze the `toggleTimer` and `intervalRefs` logic in `TimersPane.tsx` to identify why the "Stop" action fails.
