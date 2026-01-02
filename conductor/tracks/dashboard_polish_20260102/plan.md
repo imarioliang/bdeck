@@ -2,7 +2,7 @@
 
 ## Phase 1: Link Categories and Filtering
 - [ ] Task: Update `Link` interface to include a `category` string.
-- [ ] Task: Update the navigation tabs in `page.tsx` to handle active state and filtering logic.
+- [x] Task: Update the navigation tabs (6027d66) in `page.tsx` to handle active state and filtering logic.
 - [ ] Task: Update the `LinksPane` form to include a category dropdown/input.
 - [ ] Task: Conductor - User Manual Verification 'Categories and Filtering' (Protocol in workflow.md)
 
