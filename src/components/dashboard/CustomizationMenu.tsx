@@ -1,7 +1,8 @@
 'use client';
 
 import { useDashboardStore, TerminalTheme, FontSize } from '@/store/useDashboardStore';
-import { X, Download, RotateCcw, Monitor, Type } from 'lucide-react';
+import { useAuthStore } from '@/store/useAuthStore';
+import { X, Download, RotateCcw, Monitor, Type, User, LogIn, LogOut } from 'lucide-react';
 
 interface CustomizationMenuProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface CustomizationMenuProps {
 
 export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) => {
   const { theme, fontSize, setTheme, setFontSize, resetAllData } = useDashboardStore();
+  const { user, setAuthModalOpen, setSession } = useAuthStore();
 
   const themes: { name: string; value: TerminalTheme; color: string }[] = [
     { name: 'Amber', value: 'amber', color: '#ffb000' },
@@ -51,6 +53,37 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
             <X size={20} />
           </button>
         </div>
+
+        {/* AUTHENTICATION */}
+        <section className="space-y-4 border-b border-white/5 pb-6">
+            <div className="flex items-center gap-2 text-white/40">
+                <User size={14} />
+                <span className="text-[0.65rem] font-black tracking-widest uppercase">Operator Identity</span>
+            </div>
+            {user ? (
+                <div className="bg-white/[0.02] border border-white/5 p-4 flex flex-col gap-3">
+                    <div className="flex items-center gap-2 text-terminal-main">
+                        <div className="w-2 h-2 rounded-full bg-terminal-main animate-pulse"></div>
+                        <span className="text-[0.6rem] font-black uppercase truncate">{user.email}</span>
+                    </div>
+                    <button 
+                        onClick={() => setSession(null)}
+                        className="flex items-center gap-2 text-[0.6rem] font-bold text-white/40 hover:text-terminal-red uppercase tracking-wider transition-colors"
+                    >
+                        <LogOut size={12} />
+                        Terminate Session
+                    </button>
+                </div>
+            ) : (
+                <button 
+                    onClick={() => { onClose(); setAuthModalOpen(true); }}
+                    className="w-full py-3 border border-terminal-main/30 bg-terminal-main/5 hover:bg-terminal-main/10 text-terminal-main flex items-center justify-center gap-2 text-[0.65rem] font-black uppercase tracking-widest transition-all shadow-[0_0_15px_-5px_rgba(255,176,0,0.15)]"
+                >
+                    <LogIn size={14} />
+                    Identify / Login
+                </button>
+            )}
+        </section>
 
         {/* THEME SELECTOR */}
         <section className="space-y-4">
