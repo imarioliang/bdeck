@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Pencil, Trash2, GripHorizontal, Pin } from 'lucide-react';
+import { Pencil, Trash2, GripHorizontal, Pin, Mail, Calendar, Music, HardDrive, BarChart3, Code, Plus, ShieldCheck } from 'lucide-react';
 import {
   DndContext,
   closestCenter,
@@ -34,28 +34,44 @@ interface LinksPaneProps {
   searchTerm: string;
 }
 
-interface SortableLinkItemProps {
+const getIcon = (title: string) => {
+  const t = title.toLowerCase();
+  if (t.includes('mail')) return Mail;
+  if (t.includes('calendar')) return Calendar;
+  if (t.includes('audio') || t.includes('music')) return Music;
+  if (t.includes('drive')) return HardDrive;
+  if (t.includes('stats') || t.includes('analyt')) return BarChart3;
+  if (t.includes('dev') || t.includes('git') || t.includes('code')) return Code;
+  return ShieldCheck;
+};
+
+const getStatusText = (title: string) => {
+  const t = title.toLowerCase();
+  if (t.includes('mail')) return 'INBOX: 0';
+  if (t.includes('calendar')) return '4 EVENTS';
+  if (t.includes('audio')) return 'PAUSED';
+  if (t.includes('drive')) return 'SYNC: OK';
+  if (t.includes('stats')) return 'LIVE';
+  if (t.includes('dev')) return 'IDLE';
+  return 'STANDBY';
+};
+
+const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }: {
   link: Link;
   onEdit: () => void;
   onDelete: () => void;
   onTogglePin: () => void;
   isReorderable: boolean;
-}
+}) => {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: link.id, disabled: !isReorderable });
 
-const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }: SortableLinkItemProps) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: link.id, disabled: !isReorderable });
+  const Icon = getIcon(link.title);
+  const status = getStatusText(link.title);
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    zIndex: isDragging ? 10 : 0,
+    zIndex: isDragging ? 50 : 0,
     opacity: isDragging ? 0.5 : 1,
   };
 
@@ -63,66 +79,47 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
     <div 
       ref={setNodeRef}
       style={style}
-      className="relative group w-20 h-20 md:w-24 md:h-24 bg-white"
+      className="relative group aspect-square flex flex-col items-center justify-center border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-terminal-amber/20 transition-all cursor-pointer overflow-hidden p-2"
     >
       <a 
         href={link.url} 
         target="_blank" 
         rel="noopener noreferrer"
-        className={`w-full h-full border-4 border-black flex flex-col items-center justify-center text-center hover:bg-black hover:text-white transition-colors p-2 ${link.isPinned ? 'bg-gray-100' : ''}`}
-        title={link.title}
+        className="w-full h-full flex flex-col items-center justify-center gap-2"
       >
-        <span className="text-[10px] md:text-xs font-bold uppercase break-all line-clamp-2 leading-tight">
-          {link.title}
-        </span>
+        <div className="text-white/10 group-hover:text-terminal-amber transition-colors">
+          <Icon size={24} strokeWidth={1.5} />
+        </div>
+        <div className="flex flex-col items-center gap-0.5 w-full">
+          <span className="text-[9px] font-black tracking-widest text-white/60 group-hover:text-white uppercase truncate w-full text-center px-1">
+            {link.title}
+          </span>
+          <span className="text-[7px] text-white/10 font-bold uppercase tracking-tighter truncate w-full text-center">
+            {link.isPinned ? 'SYS_PRIORITY' : status}
+          </span>
+        </div>
       </a>
 
       {link.isPinned && (
-        <div className="absolute top-1 left-1 pointer-events-none">
-          <Pin size={10} className="fill-black" />
+        <div className="absolute top-1.5 left-1.5 text-terminal-amber/40">
+          <Pin size={8} fill="currentColor" />
         </div>
       )}
-      
-      <div className="absolute top-0 right-0 flex flex-col opacity-0 group-hover:opacity-100 transition-opacity bg-white border-l-2 border-b-2 border-black z-10">
-        {isReorderable && (
-          <button 
-            {...attributes}
-            {...listeners}
-            className="p-1 hover:bg-black hover:text-white border-b-2 border-black cursor-grab active:cursor-grabbing"
-            aria-label="Reorder"
-          >
-            <GripHorizontal size={10} />
-          </button>
-        )}
-        <button 
-          onClick={onTogglePin}
-          className="p-1 hover:bg-black hover:text-white border-b-2 border-black"
-          aria-label={link.isPinned ? "Unpin" : "Pin"}
-        >
-          <Pin size={10} className={link.isPinned ? "fill-black" : ""} />
+
+      {/* OVERLAY ACTIONS */}
+      <div className="absolute inset-0 bg-[#0a0a0a]/95 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button onClick={onTogglePin} className="p-1 text-white/20 hover:text-terminal-amber transition-colors" title="Pin">
+          <Pin size={12} className={link.isPinned ? "fill-terminal-amber text-terminal-amber" : ""} />
         </button>
-        <button 
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onEdit();
-          }}
-          className="p-1 hover:bg-black hover:text-white border-b-2 border-black"
-          aria-label="Edit"
-        >
-          <Pencil size={10} />
+        <button onClick={onEdit} className="p-1 text-white/20 hover:text-terminal-amber transition-colors" title="Edit">
+          <Pencil size={12} />
         </button>
-        <button 
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onDelete();
-          }}
-          className="p-1 hover:bg-black hover:text-white"
-          aria-label="Delete"
-        >
-          <Trash2 size={10} />
+        <button onClick={onDelete} className="p-1 text-white/20 hover:text-terminal-red transition-colors" title="Delete">
+          <Trash2 size={12} />
         </button>
+        <div {...attributes} {...listeners} className="p-1 text-white/10 hover:text-white cursor-grab active:cursor-grabbing">
+          <GripHorizontal size={12} />
+        </div>
       </div>
     </div>
   );
@@ -134,24 +131,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
   const [newUrl, setNewUrl] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  // Migration logic
-  useEffect(() => {
-    const hasMissingIds = links.some(l => !l.id);
-    if (hasMissingIds) {
-      const sanitized = links.map((l, i) => ({
-        ...l,
-        id: l.id || `link-${i}-${Date.now()}`
-      }));
-      setLinks(sanitized);
-    }
-  }, [links.length]);
+  const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
 
   const sortedLinks = useMemo(() => {
     return [...links].sort((a, b) => {
@@ -165,144 +145,91 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
 
   const filteredLinks = useMemo(() => {
     return sortedLinks.filter(link => 
-      link.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      link.url.toLowerCase().includes(searchTerm.toLowerCase())
+      link.title.toLowerCase().includes(searchTerm.toLowerCase()) || link.url.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [sortedLinks, searchTerm]);
 
   const addLink = () => {
     if (newTitle.trim() && newUrl.trim()) {
       let formattedUrl = newUrl.trim();
-      if (!/^https?:\/\//i.test(formattedUrl)) {
-        formattedUrl = 'https://' + formattedUrl;
-      }
-      
+      if (!/^https?:\/\//i.test(formattedUrl)) formattedUrl = 'https://' + formattedUrl;
       if (editingId) {
-        setLinks(prev => prev.map(link => 
-          link.id === editingId ? { ...link, title: newTitle.trim(), url: formattedUrl } : link
-        ));
+        setLinks(prev => prev.map(l => l.id === editingId ? { ...l, title: newTitle.trim(), url: formattedUrl } : l));
         setEditingId(null);
       } else {
         const id = `link-${Date.now()}`;
         setLinks(prev => [...prev, { id, title: newTitle.trim(), url: formattedUrl, isPinned: false }]);
       }
-      
-      setNewTitle('');
-      setNewUrl('');
-      setIsAdding(false);
+      setNewTitle(''); setNewUrl(''); setIsAdding(false);
     }
   };
 
   const startEditing = (id: string) => {
     const link = links.find(l => l.id === id);
     if (link) {
-      setNewTitle(link.title);
-      setNewUrl(link.url);
-      setEditingId(id);
-      setIsAdding(true);
+      setNewTitle(link.title); setNewUrl(link.url); setEditingId(id); setIsAdding(true);
     }
   };
 
-  const togglePin = (id: string) => {
-    setLinks(prev => prev.map(link => 
-      link.id === id ? { ...link, isPinned: !(link.isPinned ?? false) } : link
-    ));
-  };
-
-  const deleteLink = (id: string) => {
-    setLinks(prev => prev.filter(link => link.id !== id));
-  };
-
-  const cancelAction = () => {
-    setIsAdding(false);
-    setEditingId(null);
-    setNewTitle('');
-    setNewUrl('');
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (over && active.id !== over.id) {
-      const oldIndex = links.findIndex((l) => l.id === active.id);
-      const newIndex = links.findIndex((l) => l.id === over.id);
-      setLinks(arrayMove(links, oldIndex, newIndex));
-    }
-  };
-
-  const isReorderable = searchTerm === '';
+  const deleteLink = (id: string) => setLinks(prev => prev.filter(l => l.id !== id));
+  const togglePin = (id: string) => setLinks(prev => prev.map(l => l.id === id ? { ...l, isPinned: !l.isPinned } : l));
 
   return (
-    <div className="h-full flex flex-col pt-2">
-      <div className="mb-4">
-        {isAdding && (
-          <div className="mb-4 space-y-2 bg-gray-50 p-2 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-[10px] font-bold uppercase">{editingId ? 'Edit Link' : 'Add New Link'}</p>
-            <input 
-              type="text" 
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              placeholder="Title" 
-              className="w-full text-xs border-b-2 border-black focus:outline-none bg-transparent" 
+    <>
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(e) => {
+        const { active, over } = e;
+        if (over && active.id !== over.id) {
+          const oldIndex = links.findIndex(l => l.id === active.id);
+          const newIndex = links.findIndex(l => l.id === over.id);
+          setLinks(arrayMove(links, oldIndex, newIndex));
+        }
+      }}>
+        <SortableContext items={filteredLinks.map(l => l.id)} strategy={rectSortingStrategy}>
+          {filteredLinks.map(link => (
+            <SortableLinkItem 
+              key={link.id} 
+              link={link} 
+              onEdit={() => startEditing(link.id)} 
+              onDelete={() => deleteLink(link.id)} 
+              onTogglePin={() => togglePin(link.id)}
+              isReorderable={searchTerm === ''}
             />
-            <input 
-              type="text" 
-              value={newUrl}
-              onChange={(e) => setNewUrl(e.target.value)}
-              placeholder="URL (https://...)" 
-              className="w-full text-xs border-b-2 border-black focus:outline-none bg-transparent" 
-            />
-            <div className="flex gap-2 justify-end">
-              <button 
-                onClick={cancelAction}
-                className="text-[10px] font-bold uppercase underline"
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={addLink}
-                className="text-[10px] font-bold uppercase bg-black text-white px-2 py-0.5"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
+          ))}
+        </SortableContext>
+      </DndContext>
 
-      <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-        {filteredLinks.length === 0 && !isAdding && (
-          <div className="p-2 border-2 border-dashed border-black bg-gray-50 mb-4">
-            <p className="text-xs italic text-gray-500">
-              {links.length === 0 ? "No links found. Add your first link using the '+' button." : "No matches found."}
-            </p>
-          </div>
-        )}
-        
-        <DndContext 
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext 
-            items={filteredLinks.map(l => l.id)}
-            strategy={rectSortingStrategy}
-          >
-            <div className="flex flex-wrap gap-4">
-              {filteredLinks.map((link) => (
-                <SortableLinkItem 
-                  key={link.id} 
-                  link={link}
-                  onEdit={() => startEditing(link.id)}
-                  onDelete={() => deleteLink(link.id)}
-                  onTogglePin={() => togglePin(link.id)}
-                  isReorderable={isReorderable}
-                />
-              ))}
+      <button 
+        onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setIsAdding(true); }}
+        className="aspect-square flex flex-col items-center justify-center gap-2 border border-dashed border-white/5 hover:border-terminal-amber/30 hover:bg-white/[0.01] transition-all text-white/10 hover:text-terminal-amber group p-2"
+      >
+        <Plus size={24} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform" />
+        <div className="flex flex-col items-center">
+          <span className="text-[9px] font-black tracking-widest uppercase italic">Add App</span>
+          <span className="text-[7px] font-bold uppercase opacity-30">System</span>
+        </div>
+      </button>
+
+      {isAdding && (
+        <div className="fixed inset-0 bg-[#0a0a0a]/95 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+          <div className="bg-[#111111] border border-terminal-amber/30 p-8 w-full max-w-sm space-y-6 shadow-[0_0_50px_-20px_rgba(255,157,0,0.2)]">
+            <h3 className="text-terminal-amber text-sm font-black tracking-[0.2em] uppercase leading-none">{editingId ? 'Modify Module' : 'Initialize Module'}</h3>
+            <div className="space-y-4">
+              <input 
+                type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)}
+                placeholder="MODULE_NAME..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber/40 transition-all uppercase tracking-widest text-white/80"
+              />
+              <input 
+                type="text" value={newUrl} onChange={e => setNewUrl(e.target.value)}
+                placeholder="PROTOCOL_PATH..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber/40 transition-all uppercase tracking-widest text-white/80"
+              />
             </div>
-          </SortableContext>
-        </DndContext>
-      </div>
-    </div>
+            <div className="flex gap-4 justify-end">
+              <button onClick={() => setIsAdding(false)} className="text-[10px] font-black text-white/20 hover:text-white uppercase tracking-widest transition-colors">Abort</button>
+              <button onClick={addLink} className="bg-terminal-amber text-black px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all">Execute</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };

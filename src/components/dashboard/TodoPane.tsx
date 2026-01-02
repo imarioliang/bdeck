@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Trash2, GripVertical } from 'lucide-react';
+import { Trash2, GripVertical, CheckSquare, Square, CornerDownLeft } from 'lucide-react';
 import {
   DndContext,
   closestCenter,
@@ -28,79 +28,68 @@ interface Todo {
   level: number; // 0 for task, 1 for subtask
 }
 
-interface SortableTodoItemProps {
+const SortableTodoItem = ({ todo, onToggle, onDelete, onUpdateText, onKeyDown, isFocused }: {
   todo: Todo;
   onToggle: () => void;
   onDelete: () => void;
   onUpdateText: (text: string) => void;
   onKeyDown: (e: React.KeyboardEvent) => void;
   isFocused: boolean;
-}
-
-const SortableTodoItem = ({ todo, onToggle, onDelete, onUpdateText, onKeyDown, isFocused }: SortableTodoItemProps) => {
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: todo.id });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: todo.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    zIndex: isDragging ? 10 : 0,
+    zIndex: isDragging ? 50 : 0,
     opacity: isDragging ? 0.5 : 1,
-    paddingLeft: todo.level === 1 ? '2rem' : '0',
+    paddingLeft: todo.level === 1 ? '2.5rem' : '0.5rem',
   };
 
-  useEffect(() => {
-    if (isFocused && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isFocused]);
+  useEffect(() => { if (isFocused && inputRef.current) inputRef.current.focus(); }, [isFocused]);
 
   return (
     <li 
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-2 group bg-white border-b border-gray-100 last:border-0 relative"
+      className="flex items-center gap-2.5 group bg-white/[0.01] border-b border-white/5 py-2.5 pr-2.5"
     >
-      <button 
-        {...attributes} 
-        {...listeners}
-        className="cursor-grab active:cursor-grabbing p-1 hover:bg-gray-100 text-gray-400 hover:text-black transition-colors shrink-0"
-        aria-label="Reorder"
-      >
+      <div {...attributes} {...listeners} className="text-white/5 group-hover:text-white/20 cursor-grab active:cursor-grabbing shrink-0">
         <GripVertical size={14} />
-      </button>
+      </div>
       
-      <div className="flex-1 flex items-center gap-2 py-1">
+      <div className="flex-1 flex items-center gap-3">
         <button 
           onClick={onToggle}
-          className={`w-4 h-4 border-2 border-black flex-shrink-0 transition-colors ${todo.done ? 'bg-black' : 'bg-white'}`}
-          aria-label={todo.done ? "Mark as undone" : "Mark as done"}
-        />
+          className={`flex-shrink-0 transition-all ${todo.done ? 'text-terminal-amber' : 'text-white/10 hover:text-white/20'}`}
+          title={todo.done ? "Mark as undone" : "Mark as done"}
+        >
+          {todo.done ? <CheckSquare size={18} strokeWidth={2} /> : <Square size={18} strokeWidth={2} />}
+        </button>
         
-        <input
-          ref={inputRef}
-          type="text"
-          value={todo.text}
-          onChange={(e) => onUpdateText(e.target.value)}
-          onKeyDown={onKeyDown}
-          placeholder="List item"
-          className={`flex-1 text-sm bg-transparent focus:outline-none border-none p-0 ${todo.done ? 'line-through text-gray-400' : ''}`}
-        />
+        <div className="flex flex-col flex-1 gap-0">
+          <input
+            ref={inputRef}
+            type="text"
+            value={todo.text}
+            onChange={(e) => onUpdateText(e.target.value)}
+            onKeyDown={onKeyDown}
+            placeholder="OBJECTIVE_INPUT..."
+            className={`bg-transparent focus:outline-none border-none p-0 text-[10px] font-black uppercase tracking-wider transition-all ${todo.done ? 'line-through text-white/10' : 'text-white/80'}`}
+          />
+          <span className={`text-[7px] font-black tracking-widest ${todo.done ? 'text-terminal-green/30' : 'text-white/10'}`}>
+            {todo.done ? 'STATUS: NOMINAL' : 'PRIORITY: STANDBY'}
+          </span>
+        </div>
       </div>
 
       <button 
         onClick={onDelete}
-        className="opacity-0 group-hover:opacity-100 p-1 hover:bg-black hover:text-white transition-opacity shrink-0"
-        aria-label="Delete"
+        className="opacity-0 group-hover:opacity-100 p-1.5 text-white/10 hover:text-terminal-red transition-all hover:bg-terminal-red/5 rounded-sm"
+        title="Delete"
       >
-        <Trash2 size={14} />
+        <Trash2 size={12} />
       </button>
     </li>
   );
@@ -110,31 +99,15 @@ export const TodoPane = () => {
   const [todos, setTodos] = useLocalStorage<Todo[]>('bdeck-todos', []);
   const [focusedId, setFocusedId] = useState<string | null>(null);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  // Sanitize and migration logic
-  const sanitizedTodos = useMemo(() => {
-    return todos.map((todo, index) => ({
-      ...todo,
-      id: todo.id || `todo-${index}-${Date.now()}`,
-      level: todo.level ?? 0,
-      text: todo.text ?? '',
-      done: !!todo.done
-    }));
-  }, [todos]);
+  const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
 
   const sortedTodos = useMemo(() => {
-    return [...sanitizedTodos].sort((a, b) => {
+    return [...todos].sort((a, b) => {
       if (a.done && !b.done) return 1;
       if (!a.done && b.done) return -1;
       return 0;
     });
-  }, [sanitizedTodos]);
+  }, [todos]);
 
   const updateTodo = (id: string, updates: Partial<Todo>) => {
     setTodos(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
@@ -142,78 +115,65 @@ export const TodoPane = () => {
 
   const deleteTodo = (id: string) => {
     const index = sortedTodos.findIndex(t => t.id === id);
-    const newTodos = sanitizedTodos.filter(t => t.id !== id);
+    const newTodos = todos.filter(t => t.id !== id);
     setTodos(newTodos);
-    
-    // Move focus
-    if (index > 0) {
-      setFocusedId(sortedTodos[index - 1].id);
-    } else if (newTodos.length > 0) {
-      setFocusedId(newTodos[0].id);
-    }
+    if (index > 0) setFocusedId(sortedTodos[index - 1].id);
+    else if (newTodos.length > 0) setFocusedId(newTodos[0].id);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, id: string) => {
     const index = sortedTodos.findIndex(t => t.id === id);
-    const currentTodo = sortedTodos[index];
-
     if (e.key === 'Enter') {
       e.preventDefault();
       const newId = `todo-${Date.now()}`;
-      const newTodoItem = { id: newId, text: '', done: false, level: currentTodo.level };
-      const originalIndex = sanitizedTodos.findIndex(t => t.id === id);
-      const newTodos = [...sanitizedTodos];
-      newTodos.splice(originalIndex + 1, 0, newTodoItem);
-      setTodos(newTodos);
-      setFocusedId(newId);
-    } else if (e.key === 'Backspace' && currentTodo.text === '' && sanitizedTodos.length > 1) {
-      e.preventDefault();
-      deleteTodo(id);
+      const newTodos = [...todos];
+      const origIndex = todos.findIndex(t => t.id === id);
+      newTodos.splice(origIndex + 1, 0, { id: newId, text: '', done: false, level: todos[origIndex].level });
+      setTodos(newTodos); setFocusedId(newId);
+    } else if (e.key === 'Backspace' && todos.find(t => t.id === id)?.text === '' && todos.length > 1) {
+      e.preventDefault(); deleteTodo(id);
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      if (e.shiftKey) {
-        updateTodo(id, { level: 0 });
-      } else {
-        if (index > 0) {
-          updateTodo(id, { level: 1 });
-        }
-      }
-    } else if (e.key === 'ArrowUp' && index > 0) {
-      setFocusedId(sortedTodos[index - 1].id);
-    } else if (e.key === 'ArrowDown' && index < sortedTodos.length - 1) {
-      setFocusedId(sortedTodos[index + 1].id);
-    }
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (over && active.id !== over.id) {
-      const oldIndex = sanitizedTodos.findIndex((t) => t.id === active.id);
-      const newIndex = sanitizedTodos.findIndex((t) => t.id === over.id);
-      setTodos(arrayMove(sanitizedTodos, oldIndex, newIndex));
+      updateTodo(id, { level: e.shiftKey ? 0 : 1 });
     }
   };
 
   useEffect(() => {
-    if (todos.length === 0) {
-      setTodos([{ id: 'todo-init', text: '', done: false, level: 0 }]);
-    }
+    if (todos.length === 0) setTodos([{ id: 'todo-init', text: '', done: false, level: 0 }]);
   }, [todos.length, setTodos]);
 
   return (
-    <div className="h-full flex flex-col pt-2 overflow-hidden">
-      <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-        <DndContext 
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext 
-            items={sortedTodos.map(t => t.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            <ul className="space-y-0">
+    <div className="h-full flex flex-col gap-4">
+      {/* ADD INPUT BAR */}
+      <div className="relative group">
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-white/10 font-black text-xs">+</div>
+        <input 
+          type="text"
+          placeholder="NEW MISSION OBJECTIVE..."
+          className="w-full bg-white/[0.02] border border-white/5 px-8 py-2.5 text-[9px] font-black focus:outline-none focus:border-terminal-amber/20 transition-all placeholder:text-white/5 tracking-[0.1em] uppercase"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && e.currentTarget.value.trim()) {
+              const id = `todo-${Date.now()}`;
+              setTodos([{ id, text: e.currentTarget.value.trim(), done: false, level: 0 }, ...todos]);
+              e.currentTarget.value = '';
+              setFocusedId(id);
+            }
+          }}
+        />
+        <CornerDownLeft className="absolute right-3 top-1/2 -translate-y-1/2 text-white/5 group-focus-within:text-terminal-amber/40 transition-colors" size={12} />
+      </div>
+
+      <div className="flex-1 overflow-y-auto pr-1 custom-scrollbar">
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(e) => {
+          const { active, over } = e;
+          if (over && active.id !== over.id) {
+            const oldIndex = todos.findIndex(t => t.id === active.id);
+            const newIndex = todos.findIndex(t => t.id === over.id);
+            setTodos(arrayMove(todos, oldIndex, newIndex));
+          }
+        }}>
+          <SortableContext items={sortedTodos.map(t => t.id)} strategy={verticalListSortingStrategy}>
+            <ul className="space-y-0.5">
               {sortedTodos.map((todo) => (
                 <SortableTodoItem 
                   key={todo.id} 
@@ -228,17 +188,6 @@ export const TodoPane = () => {
             </ul>
           </SortableContext>
         </DndContext>
-        
-        <button 
-          onClick={() => {
-            const newId = `todo-${Date.now()}`;
-            setTodos([...sanitizedTodos, { id: newId, text: '', done: false, level: 0 }]);
-            setFocusedId(newId);
-          }}
-          className="w-full text-left px-10 py-2 text-sm text-gray-400 hover:text-black transition-colors flex items-center gap-2"
-        >
-          <span className="text-xl leading-none">+</span> List item
-        </button>
       </div>
     </div>
   );

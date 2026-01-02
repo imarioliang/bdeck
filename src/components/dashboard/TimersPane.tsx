@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Trash2, GripVertical } from 'lucide-react';
+import { Trash2, GripVertical, Play, Pause, Square, RotateCcw, Plus } from 'lucide-react';
 import {
   DndContext,
   closestCenter,
@@ -33,28 +33,19 @@ interface TimersPaneProps {
   setIsAdding: (isAdding: boolean) => void;
 }
 
-interface SortableTimerItemProps {
+const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime }: {
   project: ProjectTimer;
   onToggle: () => void;
   onReset: () => void;
   onDelete: () => void;
   formatTime: (seconds: number) => string;
-}
-
-const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime }: SortableTimerItemProps) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: project.id });
+}) => {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: project.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    zIndex: isDragging ? 10 : 0,
+    zIndex: isDragging ? 50 : 0,
     opacity: isDragging ? 0.5 : 1,
   };
 
@@ -62,44 +53,39 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime }:
     <div 
       ref={setNodeRef}
       style={style}
-      className="relative group border-2 border-black p-2 space-y-2 bg-white"
+      className="group flex flex-col p-2.5 border border-white/5 bg-white/[0.01] hover:bg-white/[0.02] transition-all gap-2"
     >
-      <div className="flex justify-between items-center border-b-2 border-black pb-1">
-        <div className="flex items-center gap-2 overflow-hidden">
-          <button 
-            {...attributes} 
-            {...listeners}
-            className="cursor-grab active:cursor-grabbing p-1 hover:bg-gray-100 text-gray-400 hover:text-black transition-colors"
-            aria-label="Reorder"
-          >
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-3 overflow-hidden">
+          <div {...attributes} {...listeners} className="text-white/5 group-hover:text-white/20 cursor-grab active:cursor-grabbing">
             <GripVertical size={12} />
-          </button>
-          <span className="text-xs font-bold uppercase truncate">{project.name}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className={`w-1.5 h-1.5 rounded-full ${project.isActive ? 'bg-terminal-amber animate-pulse shadow-[0_0_5px_rgba(255,157,0,0.5)]' : 'bg-white/5'}`}></span>
+            <div className="flex flex-col">
+              <span className="text-[9px] font-black uppercase tracking-wider text-white/70 truncate">{project.name}</span>
+              <span className={`text-[11px] font-black font-mono tracking-tighter ${project.isActive ? 'text-terminal-amber' : 'text-white/20'}`}>
+                {formatTime(project.time)}
+              </span>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-mono font-bold">{formatTime(project.time)}</span>
+        
+        <div className="flex items-center gap-1 opacity-20 group-hover:opacity-100 transition-opacity">
           <button 
-            onClick={onDelete}
-            className="opacity-0 group-hover:opacity-100 p-1 hover:bg-black hover:text-white transition-opacity"
-            aria-label="Delete"
+            onClick={onToggle}
+            className={`p-1.5 hover:bg-white/5 transition-colors ${project.isActive ? 'text-terminal-amber' : 'text-white'}`}
+            title={project.isActive ? "Pause" : "Start"}
           >
+            {project.isActive ? <Pause size={12} fill="currentColor" /> : <Play size={12} fill="currentColor" />}
+          </button>
+          <button onClick={onReset} className="p-1.5 hover:bg-white/5 transition-colors text-white/40" title="Reset">
+            <Square size={12} fill="currentColor" />
+          </button>
+          <button onClick={onDelete} className="p-1.5 hover:bg-white/5 hover:text-terminal-red transition-colors text-white/40" title="Delete">
             <Trash2 size={12} />
           </button>
         </div>
-      </div>
-      <div className="flex gap-2">
-        <button 
-          onClick={onToggle}
-          className={`flex-1 p-1 border-2 border-black text-[10px] font-bold uppercase transition-colors ${project.isActive ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-100'}`}
-        >
-          {project.isActive ? 'Stop' : 'Start'}
-        </button>
-        <button 
-          onClick={onReset}
-          className="flex-1 p-1 border-2 border-black text-[10px] font-bold uppercase hover:bg-gray-100"
-        >
-          Reset
-        </button>
       </div>
     </div>
   );
@@ -110,21 +96,14 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
   const [newProjectName, setNewProjectName] = useState('');
   const intervalRefs = useRef<{ [key: string]: NodeJS.Timeout }>({});
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
+  const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
 
   useEffect(() => {
     projects.forEach((project) => {
       if (project.isActive) {
         if (!intervalRefs.current[project.id]) {
           intervalRefs.current[project.id] = setInterval(() => {
-            setProjects((prev) => 
-              prev.map((p) => p.id === project.id ? { ...p, time: p.time + 1 } : p)
-            );
+            setProjects((prev) => prev.map((p) => p.id === project.id ? { ...p, time: p.time + 1 } : p));
           }, 1000);
         }
       } else {
@@ -134,49 +113,28 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
         }
       }
     });
-
-    const activeProjectIds = new Set(projects.map(p => p.id));
-    Object.keys(intervalRefs.current).forEach(id => {
-      if (!activeProjectIds.has(id)) {
-        clearInterval(intervalRefs.current[id]);
-        delete intervalRefs.current[id];
-      }
-    });
+    return () => {
+      const activeIds = new Set(projects.map(p => p.id));
+      Object.keys(intervalRefs.current).forEach(id => {
+        if (!activeIds.has(id)) {
+          clearInterval(intervalRefs.current[id]);
+          delete intervalRefs.current[id];
+        }
+      });
+    };
   }, [projects.map(p => `${p.id}-${p.isActive}`).join(',')]);
 
   const addProject = () => {
     if (newProjectName.trim()) {
       const id = `timer-${Date.now()}`;
-      setProjects((prev) => [...prev, { id, name: newProjectName.trim(), time: 0, isActive: false }]);
-      setNewProjectName('');
-      setIsAdding(false);
+      setProjects([...projects, { id, name: newProjectName.trim(), time: 0, isActive: false }]);
+      setNewProjectName(''); setIsAdding(false);
     }
   };
 
-  const toggleTimer = (id: string) => {
-    setProjects((prev) => prev.map((p) => 
-      p.id === id ? { ...p, isActive: !p.isActive } : p
-    ));
-  };
-
-  const resetTimer = (id: string) => {
-    setProjects((prev) => prev.map((p) => 
-      p.id === id ? { ...p, time: 0, isActive: false } : p
-    ));
-  };
-
-  const deleteProject = (id: string) => {
-    setProjects((prev) => prev.filter(p => p.id !== id));
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (over && active.id !== over.id) {
-      const oldIndex = projects.findIndex((p) => p.id === active.id);
-      const newIndex = projects.findIndex((p) => p.id === over.id);
-      setProjects((prev) => arrayMove(prev, oldIndex, newIndex));
-    }
+  const restProtocol = () => {
+    // REST TIMER function: Pause all active timers
+    setProjects(prev => prev.map(p => ({ ...p, isActive: false })));
   };
 
   const formatTime = (seconds: number) => {
@@ -187,53 +145,75 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
   };
 
   return (
-    <div className="space-y-4 h-full flex flex-col pt-2">
+    <div className="space-y-4 h-full flex flex-col">
+      
+      <button 
+        onClick={restProtocol}
+        className="w-full py-2.5 border border-terminal-red/30 hover:bg-terminal-red/10 text-terminal-red text-[9px] font-black tracking-[0.2em] uppercase flex items-center justify-center gap-2 transition-all group"
+      >
+        <RotateCcw size={10} className="group-hover:-rotate-90 transition-transform duration-500" />
+        REST TIMER
+      </button>
+
       {isAdding && (
-        <div className="flex gap-2 mb-2 p-2 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <input 
-            type="text" 
-            value={newProjectName}
-            onChange={(e) => setNewProjectName(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && addProject()}
-            placeholder="Project name" 
-            className="flex-1 text-xs border-b-2 border-black focus:outline-none bg-transparent" 
-            autoFocus
-          />
-          <div className="flex gap-2">
-            <button onClick={() => setIsAdding(false)} className="text-[10px] font-bold uppercase underline">Cancel</button>
-            <button onClick={addProject} className="text-[10px] font-bold uppercase bg-black text-white px-2 py-0.5">Save</button>
+        <div className="p-3 border border-terminal-amber/30 bg-terminal-amber/5 space-y-3">
+          <div className="flex flex-col gap-1">
+            <span className="text-[8px] font-black text-terminal-amber/60 tracking-widest">INITIALIZING_NEW_CHRONO_STREAM</span>
+            <input 
+              type="text" value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && addProject()}
+              placeholder="PROJECT_ID..." 
+              className="w-full bg-black/60 border border-white/10 p-2.5 text-[10px] focus:outline-none focus:border-terminal-amber transition-all uppercase tracking-widest text-white/80" 
+              autoFocus
+            />
+          </div>
+          <div className="flex gap-3 justify-end">
+            <button onClick={() => setIsAdding(false)} className="text-[9px] font-bold text-white/20 uppercase tracking-widest hover:text-white">Abort</button>
+            <button onClick={addProject} className="bg-terminal-amber text-black px-4 py-1.5 text-[9px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)]">Execute</button>
           </div>
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto pr-1 custom-scrollbar space-y-2">
         {projects.length === 0 && !isAdding && (
-          <p className="text-xs italic text-gray-500">No projects. Add one using the '+' button.</p>
+          <div className="text-center py-8 opacity-10">
+            <p className="text-[9px] tracking-[0.2em] uppercase italic">System Chrono Idle</p>
+          </div>
         )}
         
-        <DndContext 
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext 
-            items={projects.map(p => p.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            <div className="space-y-4">
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(e) => {
+          const { active, over } = e;
+          if (over && active.id !== over.id) {
+            const oldIndex = projects.findIndex((p) => p.id === active.id);
+            const newIndex = projects.findIndex((p) => p.id === over.id);
+            setProjects(arrayMove(projects, oldIndex, newIndex));
+          }
+        }}>
+          <SortableContext items={projects.map(p => p.id)} strategy={verticalListSortingStrategy}>
+            <div className="space-y-2">
               {projects.map((project) => (
                 <SortableTimerItem 
                   key={project.id} 
                   project={project}
-                  onToggle={() => toggleTimer(project.id)}
-                  onReset={() => resetTimer(project.id)}
-                  onDelete={() => deleteProject(project.id)}
+                  onToggle={() => setProjects(prev => prev.map(p => p.id === project.id ? { ...p, isActive: !p.isActive } : p))}
+                  onReset={() => setProjects(prev => prev.map(p => p.id === project.id ? { ...p, time: 0, isActive: false } : p))}
+                  onDelete={() => setProjects(prev => prev.filter(p => p.id !== project.id))}
                   formatTime={formatTime}
                 />
               ))}
             </div>
           </SortableContext>
         </DndContext>
+
+        {!isAdding && (
+          <button 
+            onClick={() => setIsAdding(true)}
+            className="w-full mt-4 flex items-center justify-center gap-2 py-3 border border-dashed border-white/5 hover:border-terminal-amber/20 hover:bg-white/[0.01] transition-all text-white/5 hover:text-terminal-amber group"
+          >
+            <Plus size={14} className="group-hover:rotate-90 transition-transform" />
+            <span className="text-[9px] font-black tracking-widest uppercase italic">New Project</span>
+          </button>
+        )}
       </div>
     </div>
   );

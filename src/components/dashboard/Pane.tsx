@@ -1,13 +1,21 @@
-export const Pane = ({ title, label, children, actions, className = "" }: { title: string, label: string, children: React.ReactNode, actions?: React.ReactNode, className?: string }) => (
-  <div className={`border-4 md:border-8 border-black p-4 md:p-6 bg-white hover:bg-gray-50 transition-colors flex flex-col shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] ${className}`}>
-    <div className="flex justify-between items-start mb-6 border-b-4 md:border-b-8 border-black pb-2">
-      <div>
-        <h2 className="text-xl md:text-2xl font-black uppercase tracking-tighter inline-block">
+export const Pane = ({ title, label, children, actions, badge, className = "" }: { title: string, label: string, children: React.ReactNode, actions?: React.ReactNode, badge?: string | number, className?: string }) => (
+  <div className={`border border-white/10 bg-[#111111] p-3 md:p-4 flex flex-col ${className}`}>
+    <div className="flex justify-between items-center mb-3 border-b border-white/5 pb-2">
+      <div className="flex items-center gap-2">
+        <span className="w-1.5 h-1.5 bg-terminal-amber rounded-full shadow-[0_0_5px_rgba(255,157,0,0.5)] animate-pulse"></span>
+        <h2 className="text-[10px] md:text-xs font-black text-terminal-amber tracking-widest uppercase">
           {title}
         </h2>
-        <p className="text-[10px] md:text-xs font-bold opacity-70 leading-none mt-1">{label}</p>
+        {badge !== undefined && (
+          <span className="bg-terminal-amber/5 border border-terminal-amber/20 text-terminal-amber text-[8px] font-bold px-1.5 py-0.5 rounded-[1px]">
+            {badge}
+          </span>
+        )}
       </div>
-      {actions && <div className="flex items-center gap-2">{actions}</div>}
+      <div className="flex items-center gap-3 text-white/10">
+        <span className="text-[8px] font-bold tracking-tighter uppercase">{label}</span>
+        {actions && <div className="flex items-center gap-1.5">{actions}</div>}
+      </div>
     </div>
     <div className="flex-1">
       {children}

@@ -27,18 +27,17 @@ describe('TimersPane', () => {
 
   it('should render initial projects', () => {
     render(<TimersPane isAdding={false} setIsAdding={mockSetIsAdding} />);
-    expect(screen.getByText('Project 1')).toBeDefined();
+    expect(screen.getByText(/Project 1/i)).toBeDefined();
     expect(screen.getByText('00:00:00')).toBeDefined();
   });
 
   it('should call setProjects when adding a new project', () => {
     const { rerender } = render(<TimersPane isAdding={false} setIsAdding={mockSetIsAdding} />);
     
-    // Simulate clicking the add button in parent
     rerender(<TimersPane isAdding={true} setIsAdding={mockSetIsAdding} />);
 
-    const input = screen.getByPlaceholderText('Project name');
-    const saveButton = screen.getByText('Save');
+    const input = screen.getByPlaceholderText(/PROJECT_ID/i);
+    const saveButton = screen.getByText(/Execute/i);
 
     fireEvent.change(input, { target: { value: 'Project 2' } });
     fireEvent.click(saveButton);
@@ -49,8 +48,15 @@ describe('TimersPane', () => {
 
   it('should call setProjects when deleting a project', () => {
     render(<TimersPane isAdding={false} setIsAdding={mockSetIsAdding} />);
-    const deleteButton = screen.getByLabelText(/delete/i);
+    const deleteButton = screen.getByTitle(/Delete/i);
     fireEvent.click(deleteButton);
+    expect(mockSetProjects).toHaveBeenCalled();
+  });
+
+  it('should call setProjects when clicking REST TIMER', () => {
+    render(<TimersPane isAdding={false} setIsAdding={mockSetIsAdding} />);
+    const restButton = screen.getByText(/REST TIMER/i);
+    fireEvent.click(restButton);
     expect(mockSetProjects).toHaveBeenCalled();
   });
 });

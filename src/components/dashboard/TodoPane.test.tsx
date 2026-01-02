@@ -24,18 +24,19 @@ describe('TodoPane', () => {
     expect(screen.getByDisplayValue('Task 1')).toBeDefined();
   });
 
-  it('should call setTodos when adding a new todo via button', () => {
+  it('should call setTodos when adding a new todo via input bar', () => {
     render(<TodoPane />);
-    const addButton = screen.getByText(/List item/i);
+    const input = screen.getByPlaceholderText(/NEW MISSION OBJECTIVE/i);
 
-    fireEvent.click(addButton);
+    fireEvent.change(input, { target: { value: 'New Task' } });
+    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
 
     expect(mockSetTodos).toHaveBeenCalled();
   });
 
   it('should call setTodos when toggling a todo', () => {
     render(<TodoPane />);
-    const toggleButton = screen.getByLabelText(/mark as done/i);
+    const toggleButton = screen.getByTitle(/Mark as done/i);
     
     fireEvent.click(toggleButton);
 
@@ -44,7 +45,7 @@ describe('TodoPane', () => {
 
   it('should call setTodos when deleting a todo', () => {
     render(<TodoPane />);
-    const deleteButton = screen.getByLabelText(/delete/i);
+    const deleteButton = screen.getByTitle(/Delete/i);
     fireEvent.click(deleteButton);
     expect(mockSetTodos).toHaveBeenCalled();
   });

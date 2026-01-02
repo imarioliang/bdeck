@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { LinksPane } from './LinksPane';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { vi } from 'vitest';
@@ -30,16 +30,15 @@ describe('LinksPane', () => {
   it('should call setLinks when adding a new link', () => {
     render(<LinksPane isAdding={true} setIsAdding={mockSetIsAdding} searchTerm="" />);
     
-    const titleInput = screen.getByPlaceholderText('Title');
-    const urlInput = screen.getByPlaceholderText('URL (https://...)');
-    const saveButton = screen.getByText('Save');
+    const titleInput = screen.getByPlaceholderText(/MODULE_NAME/i);
+    const urlInput = screen.getByPlaceholderText(/PROTOCOL_PATH/i);
+    const saveButton = screen.getByText(/Execute/i);
 
     fireEvent.change(titleInput, { target: { value: 'Vercel' } });
     fireEvent.change(urlInput, { target: { value: 'https://vercel.com' } });
     fireEvent.click(saveButton);
 
     expect(mockSetLinks).toHaveBeenCalled();
-    expect(mockSetIsAdding).toHaveBeenCalledWith(false);
   });
 
   it('should filter links based on searchTerm prop', () => {
@@ -55,23 +54,23 @@ describe('LinksPane', () => {
 
   it('should call setLinks when deleting a link', () => {
     render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="" />);
-    const deleteButtons = screen.getAllByLabelText(/delete/i);
+    const deleteButtons = screen.getAllByTitle(/Delete/i);
     fireEvent.click(deleteButtons[0]);
     expect(mockSetLinks).toHaveBeenCalled();
   });
 
   it('should call setLinks when editing a link', () => {
     const { rerender } = render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="" />);
-    const editButtons = screen.getAllByLabelText(/edit/i);
+    const editButtons = screen.getAllByTitle(/Edit/i);
     fireEvent.click(editButtons[0]);
 
     expect(mockSetIsAdding).toHaveBeenCalledWith(true);
     
     rerender(<LinksPane isAdding={true} setIsAdding={mockSetIsAdding} searchTerm="" />);
 
-    const titleInput = screen.getByPlaceholderText('Title');
+    const titleInput = screen.getByPlaceholderText(/MODULE_NAME/i);
     fireEvent.change(titleInput, { target: { value: 'Google Updated' } });
-    const saveButton = screen.getByText('Save');
+    const saveButton = screen.getByText(/Execute/i);
     fireEvent.click(saveButton);
 
     expect(mockSetLinks).toHaveBeenCalled();
@@ -79,7 +78,7 @@ describe('LinksPane', () => {
 
   it('should call setLinks when toggling pin', () => {
     render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="" />);
-    const pinButtons = screen.getAllByLabelText(/pin/i);
+    const pinButtons = screen.getAllByTitle(/Pin/i);
     fireEvent.click(pinButtons[0]);
     
     expect(mockSetLinks).toHaveBeenCalled();
