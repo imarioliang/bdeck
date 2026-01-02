@@ -31,20 +31,26 @@ export const LinksPane = () => {
     <div className="space-y-4 h-full flex flex-col">
       <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
         {links.length === 0 && !isAdding && (
-          <div className="p-2 border-2 border-dashed border-black bg-gray-50">
+          <div className="p-2 border-2 border-dashed border-black bg-gray-50 mb-4">
             <p className="text-xs italic text-gray-500">No links found. Add your first link below.</p>
           </div>
         )}
-        <div className="grid grid-cols-2 gap-2">
+        <div className="flex flex-wrap gap-4">
           {links.map((link, i) => (
             <a 
               key={i} 
               href={link.url} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="p-2 border-2 border-black text-xs font-bold hover:bg-black hover:text-white cursor-pointer transition-colors text-center uppercase truncate block"
+              className="w-20 h-20 md:w-24 md:h-24 border-4 border-black flex flex-col items-center justify-center text-center hover:bg-black hover:text-white transition-colors group p-2"
+              title={link.title}
             >
-              {link.title}
+              <span className="text-[10px] md:text-xs font-bold uppercase break-all line-clamp-2 leading-tight">
+                {link.title}
+              </span>
+              <span className="mt-1 text-[8px] opacity-0 group-hover:opacity-70 transition-opacity truncate w-full px-1">
+                {link.url.replace(/^https?:\/\//, '')}
+              </span>
             </a>
           ))}
         </div>
