@@ -49,7 +49,7 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime }:
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    zIndex: isDragging ? 1 : 0,
+    zIndex: isDragging ? 10 : 0,
     opacity: isDragging ? 0.5 : 1,
   };
 
@@ -126,21 +126,24 @@ export const TimersPane = () => {
       }
     });
 
+    // Cleanup logic: remove intervals for projects that are no longer in the list
+    const currentIds = projects.map(p => p.id);
+    Object.keys(intervalRefs.current).forEach(id => {
+      if (!currentIds.includes(id)) {
+        clearInterval(intervalRefs.current[id]);
+        delete intervalRefs.current[id];
+      }
+    });
+
     return () => {
-      // Clean up intervals for projects that might have been deleted
-      const currentProjectIds = projects.map(p => p.id);
-      Object.keys(intervalRefs.current).forEach(id => {
-        if (!currentProjectIds.includes(id)) {
-          clearInterval(intervalRefs.current[id]);
-          delete intervalRefs.current[id];
-        }
-      });
+      // We don't clear everything on unmount because useLocalStorage updates
+      // will trigger effect re-runs. We only clear on explicit deactivation or removal.
     };
   }, [projects, setProjects]);
 
   const addProject = () => {
     if (newProjectName.trim()) {
-      const id = Date.now().toString();
+      const id = `timer-${Date.now()}`;
       setProjects([...projects, { id, name: newProjectName.trim(), time: 0, isActive: false }]);
       setNewProjectName('');
     }
@@ -183,10 +186,10 @@ export const TimersPane = () => {
     return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Ensure projects have IDs (migration)
+  // Migration logic for projects without IDs
   const sanitizedProjects = projects.map((project, index) => ({
     ...project,
-    id: project.id || `project-${index}-${Date.now()}`
+    id: project.id || `timer-${index}-${Date.now()}`
   }));
 
   return (
