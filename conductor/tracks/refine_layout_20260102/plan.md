@@ -5,11 +5,11 @@
 - [x] Task: Update the `Pane` component (4866a7e) to support input integration in the header area.
 - [ ] Task: Conductor - User Manual Verification 'Grid and Layout Restructuring' (Protocol in workflow.md)
 
-## Phase 2: Component Header Integration
+## Phase 2: Component Header Integration [checkpoint: 39a2939]
 - [x] Task: Refactor `TodoPane` (2fa8281) to move the add task input to the top.
 - [x] Task: Refactor `LinksPane` (2fa8281) to move the add link input to the top.
 - [x] Task: Refactor `TimersPane` (2fa8281) to move the add project input to the top.
-- [ ] Task: Conductor - User Manual Verification 'Component Header Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Component Header Integration' (39a2939) (Protocol in workflow.md)
 
 ## Phase 3: Visual Polish and Verification
 - [ ] Task: Ensure all borders and spacing remain consistent with the "Brutalist" style after layout changes.
