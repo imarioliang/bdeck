@@ -56,4 +56,32 @@ describe('LinksPane', () => {
     expect(screen.getAllByText(/GitHub/i).length).toBeGreaterThan(0);
     expect(screen.queryByText(/Google/i)).toBeNull();
   });
+
+  it('should call setLinks when deleting a link', () => {
+    render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="" />);
+    const deleteButtons = screen.getAllByLabelText(/delete/i);
+    fireEvent.click(deleteButtons[0]);
+    expect(mockSetLinks).toHaveBeenCalledWith([initialLinks[1]]);
+  });
+
+  it('should call setLinks when editing a link', () => {
+    const { rerender } = render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="" />);
+    const editButtons = screen.getAllByLabelText(/edit/i);
+    fireEvent.click(editButtons[0]);
+
+    expect(mockSetIsAdding).toHaveBeenCalledWith(true);
+    
+    // Rerender with isAdding true to show the form
+    rerender(<LinksPane isAdding={true} setIsAdding={mockSetIsAdding} searchTerm="" />);
+
+    const titleInput = screen.getByPlaceholderText('Title');
+    fireEvent.change(titleInput, { target: { value: 'Google Updated' } });
+    const saveButton = screen.getByText('Save');
+    fireEvent.click(saveButton);
+
+    expect(mockSetLinks).toHaveBeenCalledWith([
+      { title: 'Google Updated', url: 'https://google.com' },
+      { title: 'GitHub', url: 'https://github.com' },
+    ]);
+  });
 });

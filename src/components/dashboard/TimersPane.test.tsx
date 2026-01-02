@@ -44,4 +44,11 @@ describe('TimersPane', () => {
       { name: 'Project 2', time: 0, isActive: false },
     ]);
   });
+
+  it('should call setProjects when deleting a project', () => {
+    render(<TimersPane />);
+    const deleteButton = screen.getByLabelText(/delete/i);
+    fireEvent.click(deleteButton);
+    expect(mockSetProjects).toHaveBeenCalledWith([]);
+  });
 });

@@ -48,4 +48,11 @@ describe('TodoPane', () => {
       { text: 'Task 1', done: true },
     ]);
   });
+
+  it('should call setTodos when deleting a todo', () => {
+    render(<TodoPane />);
+    const deleteButton = screen.getByLabelText(/delete/i);
+    fireEvent.click(deleteButton);
+    expect(mockSetTodos).toHaveBeenCalledWith([]);
+  });
 });

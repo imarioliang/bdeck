@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { Trash2 } from 'lucide-react';
 
 interface ProjectTimer {
   name: string;
@@ -52,6 +53,15 @@ export const TimersPane = () => {
     ));
   };
 
+  const deleteProject = (index: number) => {
+    if (intervalRefs.current[index]) {
+      clearInterval(intervalRefs.current[index]);
+      delete intervalRefs.current[index];
+    }
+    const updatedProjects = projects.filter((_, i) => i !== index);
+    setProjects(updatedProjects);
+  };
+
   const formatTime = (seconds: number) => {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
@@ -83,10 +93,19 @@ export const TimersPane = () => {
           <p className="text-xs italic text-gray-500">No projects. Add one above to track time.</p>
         )}
         {projects.map((project, i) => (
-          <div key={i} className="border-2 border-black p-2 space-y-2">
+          <div key={i} className="relative group border-2 border-black p-2 space-y-2">
             <div className="flex justify-between items-center border-b-2 border-black pb-1">
               <span className="text-xs font-bold uppercase truncate max-w-[150px]">{project.name}</span>
-              <span className="text-sm font-mono font-bold">{formatTime(project.time)}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-mono font-bold">{formatTime(project.time)}</span>
+                <button 
+                  onClick={() => deleteProject(i)}
+                  className="opacity-0 group-hover:opacity-100 p-1 hover:bg-black hover:text-white transition-opacity"
+                  aria-label="Delete"
+                >
+                  <Trash2 size={12} />
+                </button>
+              </div>
             </div>
             <div className="flex gap-2">
               <button 

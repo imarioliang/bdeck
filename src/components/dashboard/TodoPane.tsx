@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { Trash2 } from 'lucide-react';
 
 interface Todo {
   text: string;
@@ -23,6 +24,11 @@ export const TodoPane = () => {
     const updatedTodos = todos.map((todo, i) => 
       i === index ? { ...todo, done: !todo.done } : todo
     );
+    setTodos(updatedTodos);
+  };
+
+  const deleteTodo = (index: number) => {
+    const updatedTodos = todos.filter((_, i) => i !== index);
     setTodos(updatedTodos);
   };
 
@@ -58,11 +64,22 @@ export const TodoPane = () => {
         {todos.map((todo, i) => (
           <li 
             key={i} 
-            className="flex items-center gap-2 group cursor-pointer"
-            onClick={() => toggleTodo(i)}
+            className="flex items-center gap-2 group"
           >
-            <span className={`w-4 h-4 border-2 border-black inline-block shrink-0 ${todo.done ? 'bg-black' : 'bg-white'}`}></span>
-            <span className={`text-sm break-all ${todo.done ? 'line-through text-gray-400' : ''}`}>{todo.text}</span>
+            <div 
+              className="flex-1 flex items-center gap-2 cursor-pointer"
+              onClick={() => toggleTodo(i)}
+            >
+              <span className={`w-4 h-4 border-2 border-black inline-block shrink-0 ${todo.done ? 'bg-black' : 'bg-white'}`}></span>
+              <span className={`text-sm break-all ${todo.done ? 'line-through text-gray-400' : ''}`}>{todo.text}</span>
+            </div>
+            <button 
+              onClick={() => deleteTodo(i)}
+              className="opacity-0 group-hover:opacity-100 p-1 hover:bg-black hover:text-white transition-opacity"
+              aria-label="Delete"
+            >
+              <Trash2 size={14} />
+            </button>
           </li>
         ))}
       </ul>
