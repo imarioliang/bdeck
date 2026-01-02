@@ -4,6 +4,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Fix Hydration, Categories UI, and Theme/Font Toggles
+## [x] Track: Fix Hydration, Categories UI, and Theme/Font Toggles
 *Link: [./conductor/tracks/ui_hydration_fixes_20260102/](./conductor/tracks/ui_hydration_fixes_20260102/)*
 
