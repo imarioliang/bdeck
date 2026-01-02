@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 interface Link {
@@ -17,6 +17,14 @@ export const LinksPane = ({ isAdding, setIsAdding }: LinksPaneProps) => {
   const [links, setLinks] = useLocalStorage<Link[]>('bdeck-links', []);
   const [newTitle, setNewTitle] = useState('');
   const [newUrl, setNewUrl] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredLinks = useMemo(() => {
+    return links.filter(link => 
+      link.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      link.url.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [links, searchTerm]);
 
   const addLink = () => {
     if (newTitle.trim() && newUrl.trim()) {
@@ -33,47 +41,59 @@ export const LinksPane = ({ isAdding, setIsAdding }: LinksPaneProps) => {
 
   return (
     <div className="h-full flex flex-col pt-2">
-      {isAdding && (
-        <div className="mb-4 space-y-2 bg-gray-50 p-2 border-2 border-black">
-          <input 
-            type="text" 
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-            placeholder="Title" 
-            className="w-full text-xs border-b-2 border-black focus:outline-none bg-transparent" 
-          />
-          <input 
-            type="text" 
-            value={newUrl}
-            onChange={(e) => setNewUrl(e.target.value)}
-            placeholder="URL (https://...)" 
-            className="w-full text-xs border-b-2 border-black focus:outline-none bg-transparent" 
-          />
-          <div className="flex gap-2 justify-end">
-            <button 
-              onClick={() => setIsAdding(false)}
-              className="text-[10px] font-bold uppercase underline"
-            >
-              Cancel
-            </button>
-            <button 
-              onClick={addLink}
-              className="text-[10px] font-bold uppercase bg-black text-white px-2 py-0.5"
-            >
-              Save
-            </button>
+      <div className="mb-4">
+        <input 
+          type="text" 
+          placeholder="Search links..." 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full text-xs border-b-2 border-black focus:outline-none bg-transparent mb-4"
+        />
+
+        {isAdding && (
+          <div className="mb-4 space-y-2 bg-gray-50 p-2 border-2 border-black">
+            <input 
+              type="text" 
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              placeholder="Title" 
+              className="w-full text-xs border-b-2 border-black focus:outline-none bg-transparent" 
+            />
+            <input 
+              type="text" 
+              value={newUrl}
+              onChange={(e) => setNewUrl(e.target.value)}
+              placeholder="URL (https://...)" 
+              className="w-full text-xs border-b-2 border-black focus:outline-none bg-transparent" 
+            />
+            <div className="flex gap-2 justify-end">
+              <button 
+                onClick={() => setIsAdding(false)}
+                className="text-[10px] font-bold uppercase underline"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={addLink}
+                className="text-[10px] font-bold uppercase bg-black text-white px-2 py-0.5"
+              >
+                Save
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-        {links.length === 0 && !isAdding && (
+        {filteredLinks.length === 0 && (
           <div className="p-2 border-2 border-dashed border-black bg-gray-50 mb-4">
-            <p className="text-xs italic text-gray-500">No links found. Add your first link using the '+' button.</p>
+            <p className="text-xs italic text-gray-500">
+              {links.length === 0 ? "No links found. Add your first link using the '+' button." : "No matches found."}
+            </p>
           </div>
         )}
         <div className="flex flex-wrap gap-4">
-          {links.map((link, i) => (
+          {filteredLinks.map((link, i) => (
             <a 
               key={i} 
               href={link.url} 
