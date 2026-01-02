@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Trash2, GripVertical } from 'lucide-react';
 import {
@@ -112,25 +112,13 @@ export const TimersPane = () => {
     })
   );
 
-  // Migration logic for projects without IDs - run only when projects length changes or on mount
+  // Separate effect for interval management
   useEffect(() => {
-    const hasMissingIds = projects.some(p => !p.id);
-    if (hasMissingIds) {
-      const sanitized = projects.map((p, i) => ({
-        ...p,
-        id: p.id || `timer-${i}-${Date.now()}`
-      }));
-      setProjects(sanitized);
-    }
-  }, [projects.length]);
-
-  useEffect(() => {
-    // Single effect to manage all intervals
+    // Synchronize intervals with the 'isActive' state of projects
     projects.forEach((project) => {
       if (project.isActive) {
         if (!intervalRefs.current[project.id]) {
           intervalRefs.current[project.id] = setInterval(() => {
-            // Use functional updater to avoid dependency on 'projects' array
             setProjects((prev) => 
               prev.map((p) => p.id === project.id ? { ...p, time: p.time + 1 } : p)
             );
@@ -144,22 +132,22 @@ export const TimersPane = () => {
       }
     });
 
-    // Cleanup for deleted projects
-    const currentIds = new Set(projects.map(p => p.id));
+    // Cleanup for removed projects
+    const activeProjectIds = new Set(projects.map(p => p.id));
     Object.keys(intervalRefs.current).forEach(id => {
-      if (!currentIds.has(id)) {
+      if (!activeProjectIds.has(id)) {
         clearInterval(intervalRefs.current[id]);
         delete intervalRefs.current[id];
       }
     });
 
-    // DO NOT clear all intervals on cleanup to prevent flicker/reset during high-frequency state updates
-  }, [projects.map(p => `${p.id}-${p.isActive}`).join(',')]); // Stable dependency
+    // No blanket cleanup here to prevent reset on every state change
+  }, [projects.map(p => `${p.id}-${p.isActive}`).join(',')]);
 
   const addProject = () => {
     if (newProjectName.trim()) {
       const id = `timer-${Date.now()}`;
-      setProjects([...projects, { id, name: newProjectName.trim(), time: 0, isActive: false }]);
+      setProjects((prev) => [...prev, { id, name: newProjectName.trim(), time: 0, isActive: false }]);
       setNewProjectName('');
     }
   };
@@ -177,10 +165,6 @@ export const TimersPane = () => {
   };
 
   const deleteProject = (id: string) => {
-    if (intervalRefs.current[id]) {
-      clearInterval(intervalRefs.current[id]);
-      delete intervalRefs.current[id];
-    }
     setProjects((prev) => prev.filter(p => p.id !== id));
   };
 
@@ -190,7 +174,7 @@ export const TimersPane = () => {
     if (over && active.id !== over.id) {
       const oldIndex = projects.findIndex((p) => p.id === active.id);
       const newIndex = projects.findIndex((p) => p.id === over.id);
-      setProjects(arrayMove(projects, oldIndex, newIndex));
+      setProjects((prev) => arrayMove(prev, oldIndex, newIndex));
     }
   };
 
