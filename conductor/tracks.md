@@ -2,7 +2,8 @@
 
 This file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.
 
+
 ---
 
-## [~] Track: Initialize the Next.js project and implement the core multi-pane dashboard layout with placeholder components.
-*Link: [./conductor/tracks/initialize_dashboard_20260102/](./conductor/tracks/initialize_dashboard_20260102/)*
+## [~] Track: todo list cannot add, cannot check done, links cant be add new, timer don't work
+*Link: [./conductor/tracks/dashboard_interactivity_20260102/](./conductor/tracks/dashboard_interactivity_20260102/)*
