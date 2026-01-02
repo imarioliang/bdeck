@@ -22,13 +22,13 @@ describe('LinksPane', () => {
   });
 
   it('should render initial links', () => {
-    render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} />);
+    render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="" />);
     expect(screen.getAllByText(/Google/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/GitHub/i).length).toBeGreaterThan(0);
   });
 
   it('should call setLinks when adding a new link', () => {
-    render(<LinksPane isAdding={true} setIsAdding={mockSetIsAdding} />);
+    render(<LinksPane isAdding={true} setIsAdding={mockSetIsAdding} searchTerm="" />);
     
     const titleInput = screen.getByPlaceholderText('Title');
     const urlInput = screen.getByPlaceholderText('URL (https://...)');
@@ -46,19 +46,13 @@ describe('LinksPane', () => {
     expect(mockSetIsAdding).toHaveBeenCalledWith(false);
   });
 
-  it('should filter links based on search input', () => {
-    render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} />);
-    
-    const searchInput = screen.getByPlaceholderText(/search/i);
-    
-    // Search for "Google"
-    fireEvent.change(searchInput, { target: { value: 'Google' } });
+  it('should filter links based on searchTerm prop', () => {
+    const { rerender } = render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="Google" />);
     
     expect(screen.getAllByText(/Google/i).length).toBeGreaterThan(0);
     expect(screen.queryByText(/GitHub/i)).toBeNull();
     
-    // Search for "git"
-    fireEvent.change(searchInput, { target: { value: 'git' } });
+    rerender(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="git" />);
     expect(screen.getAllByText(/GitHub/i).length).toBeGreaterThan(0);
     expect(screen.queryByText(/Google/i)).toBeNull();
   });
