@@ -34,7 +34,7 @@ describe('TimersPane', () => {
     render(<TimersPane />);
     
     const input = screen.getByPlaceholderText('New project name...');
-    const addButton = screen.getByText('Add Project');
+    const addButton = screen.getByText('Add');
 
     fireEvent.change(input, { target: { value: 'Project 2' } });
     fireEvent.click(addButton);
