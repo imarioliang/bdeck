@@ -2,16 +2,16 @@
 
 This plan addresses the hydration mismatch causing UI breakage in the Links Categories and failure of Theme/Font Size toggles.
 
-## Phase 1: Diagnosis and Test Setup
+## Phase 1: Diagnosis and Test Setup [checkpoint: 10d3631]
 - [x] Task: Identify specific hydration mismatch points in `layout.tsx` or `page.tsx`
 - [x] Task: Create reproduction tests for the Categories UI alignment issue
 - [x] Task: Create failing tests for Theme and Font Size toggles
-- [~] Task: Conductor - User Manual Verification 'Phase 1: Diagnosis and Test Setup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Diagnosis and Test Setup' (Protocol in workflow.md)
 
 ## Phase 2: Resolve Hydration Error
-- [ ] Task: Implement a 'mounted' state check or `useEffect` pattern to prevent server/client mismatch for `localStorage` dependent values
-- [ ] Task: Ensure the initial render is consistent regardless of the stored theme/font size
-- [ ] Task: Verify that the console no longer reports hydration errors
+- [~] Task: Implement a 'mounted' state check or `useEffect` pattern to prevent server/client mismatch for `localStorage` dependent values
+- [~] Task: Ensure the initial render is consistent regardless of the stored theme/font size
+- [~] Task: Verify that the console no longer reports hydration errors
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Resolve Hydration Error' (Protocol in workflow.md)
 
 ## Phase 3: Restore UI and Toggles
