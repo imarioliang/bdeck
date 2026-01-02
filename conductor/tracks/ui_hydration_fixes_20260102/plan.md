@@ -14,14 +14,14 @@ This plan addresses the hydration mismatch causing UI breakage in the Links Cate
 - [x] Task: Verify that the console no longer reports hydration errors
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Resolve Hydration Error' (Protocol in workflow.md)
 
-## Phase 3: Restore UI and Toggles
-- [~] Task: Fix styling for Links Categories UI to ensure proper alignment and spacing
-- [~] Task: Restore event handling for Theme Toggle
-- [~] Task: Restore event handling for Font Size Toggle
-- [~] Task: Verify persistence of selections after page refresh
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Restore UI and Toggles' (Protocol in workflow.md)
+## Phase 3: Restore UI and Toggles [checkpoint: c89257f]
+- [x] Task: Fix styling for Links Categories UI to ensure proper alignment and spacing
+- [x] Task: Restore event handling for Theme Toggle
+- [x] Task: Restore event handling for Font Size Toggle
+- [x] Task: Verify persistence of selections after page refresh
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Restore UI and Toggles' (Protocol in workflow.md)
 
 ## Phase 4: Final Verification and Cleanup
-- [ ] Task: Run full test suite to ensure no regressions
-- [ ] Task: Perform final manual check on mobile and desktop views
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Verification and Cleanup' (Protocol in workflow.md)
+- [~] Task: Run full test suite to ensure no regressions
+- [~] Task: Perform final manual check on mobile and desktop views
+- [~] Task: Conductor - User Manual Verification 'Phase 4: Final Verification and Cleanup' (Protocol in workflow.md)
