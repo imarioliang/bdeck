@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [ ] Track: Initialize the Next.js project and implement the core multi-pane dashboard layout with placeholder components.
+## [~] Track: Initialize the Next.js project and implement the core multi-pane dashboard layout with placeholder components.
 *Link: [./conductor/tracks/initialize_dashboard_20260102/](./conductor/tracks/initialize_dashboard_20260102/)*
