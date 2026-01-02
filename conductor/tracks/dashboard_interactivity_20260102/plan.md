@@ -20,5 +20,5 @@
 ## Phase 4: Multi-Project Concurrent Timers
 - [ ] Task: Write tests for timer logic (independent counting, persistence).
 - [ ] Task: Implement the `TimersPane` logic to support an arbitrary number of concurrent timers.
-- [ ] Task: Add the ability to name a new project and initialize its timer.
+- [x] Task: Add the ability to name a new project (540fe7f) and initialize its timer.
 - [ ] Task: Conductor - User Manual Verification 'Multi-Project Concurrent Timers' (Protocol in workflow.md)
