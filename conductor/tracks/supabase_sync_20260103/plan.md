@@ -4,7 +4,7 @@
 - [x] Task: Install Dependencies [6bf450e]
     -   Install `@supabase/supabase-js`.
     -   Add environment variables to `.env.local` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
-- [ ] Task: Database Schema Setup
+- [x] Task: Database Schema Setup [ebcb3d2]
     -   Create a `supabase/schema.sql` file documenting the required tables (`profiles`, `links`, `todos`, `notes`, `timers`) and RLS policies.
 - [ ] Task: Initialize Supabase Client
     -   Create `src/utils/supabaseClient.ts` (singleton instance).
