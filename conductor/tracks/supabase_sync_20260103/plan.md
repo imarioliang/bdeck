@@ -6,7 +6,7 @@
     -   Add environment variables to `.env.local` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
 - [x] Task: Database Schema Setup [ebcb3d2]
     -   Create a `supabase/schema.sql` file documenting the required tables (`profiles`, `links`, `todos`, `notes`, `timers`) and RLS policies.
-- [ ] Task: Initialize Supabase Client
+- [x] Task: Initialize Supabase Client [64ec923]
     -   Create `src/utils/supabaseClient.ts` (singleton instance).
     -   Write tests to verify client initialization (mocked).
 - [ ] Task: Conductor - User Manual Verification 'Infrastructure & Schema' (Protocol in workflow.md)
