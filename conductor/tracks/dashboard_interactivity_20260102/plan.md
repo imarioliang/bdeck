@@ -11,11 +11,11 @@
 - [x] Task: Update the UI to reflect completion status (a8a3168) with the "Brutalist" style (strikethrough).
 - [x] Task: Conductor - User Manual Verification 'Todo List Implementation' (9b107f7) (Protocol in workflow.md)
 
-## Phase 3: Links Pane Implementation
+## Phase 3: Links Pane Implementation [checkpoint: e5f9c24]
 - [ ] Task: Write tests for `LinksPane` logic (adding new links, URL validation).
 - [x] Task: Implement the inline "Add Link" row (ee2981f) and persistence logic in `LinksPane`.
 - [x] Task: Ensure newly added links are clickable (ee2981f) and open in a new tab.
-- [ ] Task: Conductor - User Manual Verification 'Links Pane Implementation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Links Pane Implementation' (e5f9c24) (Protocol in workflow.md)
 
 ## Phase 4: Multi-Project Concurrent Timers
 - [ ] Task: Write tests for timer logic (independent counting, persistence).
