@@ -7,8 +7,8 @@
 
 ## Phase 2: Todo List Implementation
 - [ ] Task: Write tests for `TodoPane` logic (adding items, toggling completion).
-- [ ] Task: Implement the add/toggle logic in `TodoPane` using `useLocalStorage`.
-- [ ] Task: Update the UI to reflect completion status with the "Brutalist" style (strikethrough).
+- [x] Task: Implement the add/toggle logic (a8a3168) in `TodoPane` using `useLocalStorage`.
+- [x] Task: Update the UI to reflect completion status (a8a3168) with the "Brutalist" style (strikethrough).
 - [ ] Task: Conductor - User Manual Verification 'Todo List Implementation' (Protocol in workflow.md)
 
 ## Phase 3: Links Pane Implementation
