@@ -13,8 +13,8 @@
 
 ## Phase 3: Links Pane Implementation
 - [ ] Task: Write tests for `LinksPane` logic (adding new links, URL validation).
-- [ ] Task: Implement the inline "Add Link" row and persistence logic in `LinksPane`.
-- [ ] Task: Ensure newly added links are clickable and open in a new tab.
+- [x] Task: Implement the inline "Add Link" row (ee2981f) and persistence logic in `LinksPane`.
+- [x] Task: Ensure newly added links are clickable (ee2981f) and open in a new tab.
 - [ ] Task: Conductor - User Manual Verification 'Links Pane Implementation' (Protocol in workflow.md)
 
 ## Phase 4: Multi-Project Concurrent Timers
