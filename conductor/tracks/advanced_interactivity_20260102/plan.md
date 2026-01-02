@@ -7,10 +7,10 @@
 - [x] Task: Conductor - User Manual Verification 'Environment and Search Setup' (a4ae94b) (Protocol in workflow.md)
 
 ## Phase 2: CRUD Operations (Delete & Edit)
-- [ ] Task: Write tests for item deletion in `TodoPane`, `LinksPane`, and `TimersPane`.
-- [ ] Task: Implement hover management icons (trash icon) for all three panes and the edit icon for Links.
-- [ ] Task: Implement the logic to remove items and update LocalStorage state.
-- [ ] Task: Implement the link editing form/modal logic.
+- [x] Task: Write tests for item deletion (f5f17bc) in `TodoPane`, `LinksPane`, and `TimersPane`.
+- [x] Task: Implement hover management icons (f5f17bc) (trash icon) for all three panes and the edit icon for Links.
+- [x] Task: Implement the logic to remove items (f5f17bc) and update LocalStorage state.
+- [x] Task: Implement the link editing form (f5f17bc)/modal logic.
 - [ ] Task: Conductor - User Manual Verification 'CRUD Operations' (Protocol in workflow.md)
 
 ## Phase 3: Drag and Drop Implementation
