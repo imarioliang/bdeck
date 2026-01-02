@@ -9,7 +9,7 @@
 ## Phase 2: Auto-Favicons and Card Polish
 - [ ] Task: Create a utility function to generate favicon URLs (using Google S2).
 - [ ] Task: Update `SortableLinkItem` to render the favicon as a dimmed background watermark.
-- [ ] Task: Refine the CSS/SVG transparency for better watermark legibility.
+- [x] Task: Refine the CSS/SVG transparency (6bbcb7e) for better watermark legibility.
 - [ ] Task: Conductor - User Manual Verification 'Auto-Favicons' (Protocol in workflow.md)
 
 ## Phase 3: Pomodoro Integration
