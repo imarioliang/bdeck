@@ -17,8 +17,8 @@
 - [x] Task: Ensure newly added links are clickable (ee2981f) and open in a new tab.
 - [x] Task: Conductor - User Manual Verification 'Links Pane Implementation' (e5f9c24) (Protocol in workflow.md)
 
-## Phase 4: Multi-Project Concurrent Timers
+## Phase 4: Multi-Project Concurrent Timers [checkpoint: 2be4d77]
 - [ ] Task: Write tests for timer logic (independent counting, persistence).
 - [ ] Task: Implement the `TimersPane` logic to support an arbitrary number of concurrent timers.
 - [x] Task: Add the ability to name a new project (540fe7f) and initialize its timer.
-- [ ] Task: Conductor - User Manual Verification 'Multi-Project Concurrent Timers' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Multi-Project Concurrent Timers' (2be4d77) (Protocol in workflow.md)
