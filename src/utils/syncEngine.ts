@@ -38,6 +38,32 @@ const mapNoteToCloud = (note: string, userId: string) => ({
   updated_at: new Date().toISOString()
 });
 
+// Reverse Mappers
+export const mapLinkToLocal = (row: any) => ({
+  id: row.id,
+  title: row.title,
+  url: row.url,
+  category: row.category,
+  isPinned: row.is_pinned
+});
+
+export const mapTodoToLocal = (row: any) => ({
+  id: row.id,
+  text: row.text,
+  done: row.done,
+  level: row.level
+});
+
+export const mapTimerToLocal = (row: any) => ({
+  id: row.id,
+  name: row.name,
+  time: row.time,
+  isActive: row.is_active,
+  sessionStartTime: row.session_start_time
+});
+
+export const mapNoteToLocal = (row: any) => row.content;
+
 export const pushToCloud = async (table: string, data: any) => {
   const user = useAuthStore.getState().user;
   if (!user) return;

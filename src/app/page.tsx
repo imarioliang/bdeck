@@ -8,6 +8,7 @@ import { TodoPane } from "@/components/dashboard/TodoPane";
 import { NotesPane } from "@/components/dashboard/NotesPane";
 import { CustomizationMenu } from "@/components/dashboard/CustomizationMenu";
 import { AuthModal } from "@/components/auth/AuthModal";
+import { SyncManager } from "@/components/sync/SyncManager";
 import { Search } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useDashboardStore } from '@/store/useDashboardStore';
@@ -38,6 +39,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#d4d4d4] font-mono selection:bg-terminal-main selection:text-black antialiased overflow-x-hidden">
+      <SyncManager />
       <AuthModal />
       <div className="max-w-[1400px] mx-auto p-4 md:p-6 space-y-6">
         
