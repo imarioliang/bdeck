@@ -1,0 +1,19 @@
+# Track Plan: Dashboard Polish and Advanced Features
+
+## Phase 1: Link Categories and Filtering
+- [ ] Task: Update `Link` interface to include a `category` string.
+- [ ] Task: Update the navigation tabs in `page.tsx` to handle active state and filtering logic.
+- [ ] Task: Update the `LinksPane` form to include a category dropdown/input.
+- [ ] Task: Conductor - User Manual Verification 'Categories and Filtering' (Protocol in workflow.md)
+
+## Phase 2: Auto-Favicons and Card Polish
+- [ ] Task: Create a utility function to generate favicon URLs (using Google S2).
+- [ ] Task: Update `SortableLinkItem` to render the favicon as a dimmed background watermark.
+- [ ] Task: Refine the CSS/SVG transparency for better watermark legibility.
+- [ ] Task: Conductor - User Manual Verification 'Auto-Favicons' (Protocol in workflow.md)
+
+## Phase 3: Pomodoro Integration
+- [ ] Task: Add `restMode` and `restTimeRemaining` state to `TimersPane`.
+- [ ] Task: Implement the auto-rest logic: transition to countdown when a work session is stopped.
+- [ ] Task: Update the "REST TIMER" button UI to show active countdown status.
+- [ ] Task: Conductor - User Manual Verification 'Pomodoro Integration' (Protocol in workflow.md)
