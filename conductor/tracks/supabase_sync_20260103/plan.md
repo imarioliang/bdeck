@@ -40,7 +40,8 @@
     -   Fetch on load/login and merge.
 - [x] Task: Merge on Login Logic [fa07362]
     -   Implement the specific logic: On successful login -> Read Local State -> Read Cloud State -> Merge -> Update both.
-- [ ] Task: Conductor - User Manual Verification 'Data Synchronization Logic' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Data Synchronization Logic' (Protocol in workflow.md)
+## [checkpoint: 771dcfe]
 
 ## Phase 4: Verification & Polish
 - [ ] Task: Verify RLS Policies
