@@ -60,10 +60,27 @@ export const TimersPane = () => {
   };
 
   return (
-    <div className="space-y-4 h-full flex flex-col">
+    <div className="space-y-4 h-full flex flex-col pt-2">
+      <div className="flex gap-2 mb-2">
+        <input 
+          type="text" 
+          value={newProjectName}
+          onChange={(e) => setNewProjectName(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && addProject()}
+          placeholder="New project name..." 
+          className="flex-1 text-sm border-b-2 border-black focus:outline-none bg-transparent" 
+        />
+        <button 
+          onClick={addProject}
+          className="text-xs font-bold uppercase underline hover:no-underline"
+        >
+          Add
+        </button>
+      </div>
+
       <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-4">
         {projects.length === 0 && (
-          <p className="text-xs italic text-gray-500">No projects. Add one below to track time.</p>
+          <p className="text-xs italic text-gray-500">No projects. Add one above to track time.</p>
         )}
         {projects.map((project, i) => (
           <div key={i} className="border-2 border-black p-2 space-y-2">
@@ -87,23 +104,6 @@ export const TimersPane = () => {
             </div>
           </div>
         ))}
-      </div>
-
-      <div className="border-t-2 border-black pt-4 flex gap-2">
-        <input 
-          type="text" 
-          value={newProjectName}
-          onChange={(e) => setNewProjectName(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && addProject()}
-          placeholder="New project name..." 
-          className="flex-1 text-xs border-b-2 border-black focus:outline-none bg-transparent" 
-        />
-        <button 
-          onClick={addProject}
-          className="text-xs font-bold uppercase underline"
-        >
-          Add Project
-        </button>
       </div>
     </div>
   );
