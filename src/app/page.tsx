@@ -33,19 +33,21 @@ export default function Home() {
           </Pane>
         </div>
 
-        {/* Left Column: Timers */}
+        {/* 3-Column Layout for the rest */}
         <div className="md:col-span-4">
           <Pane title="02_Timers" label="/dev/timers" className="h-full">
             <TimersPane />
           </Pane>
         </div>
 
-        {/* Right Column: Todo and Notes */}
-        <div className="md:col-span-8 flex flex-col gap-6 md:gap-8">
-          <Pane title="03_Todo" label="/var/tasks">
+        <div className="md:col-span-4">
+          <Pane title="03_Todo" label="/var/tasks" className="h-full">
             <TodoPane />
           </Pane>
-          <Pane title="04_Notes" label="/tmp/scratchpad">
+        </div>
+
+        <div className="md:col-span-4">
+          <Pane title="04_Notes" label="/tmp/scratchpad" className="h-full">
             <NotesPane />
           </Pane>
         </div>
