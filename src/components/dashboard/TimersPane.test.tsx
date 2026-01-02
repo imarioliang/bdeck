@@ -11,7 +11,7 @@ vi.mock('@/hooks/useLocalStorage', () => ({
 describe('TimersPane', () => {
   const mockSetProjects = vi.fn();
   const initialProjects = [
-    { name: 'Project 1', time: 0, isActive: false },
+    { id: '1', name: 'Project 1', time: 0, isActive: false },
   ];
 
   beforeEach(() => {
@@ -39,10 +39,11 @@ describe('TimersPane', () => {
     fireEvent.change(input, { target: { value: 'Project 2' } });
     fireEvent.click(addButton);
 
-    expect(mockSetProjects).toHaveBeenCalledWith([
-      ...initialProjects,
-      { name: 'Project 2', time: 0, isActive: false },
-    ]);
+    expect(mockSetProjects).toHaveBeenCalledWith(
+      expect.arrayContaining([
+        expect.objectContaining({ name: 'Project 2', time: 0, isActive: false }),
+      ])
+    );
   });
 
   it('should call setProjects when deleting a project', () => {

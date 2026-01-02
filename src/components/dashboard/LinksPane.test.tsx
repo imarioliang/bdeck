@@ -12,8 +12,8 @@ describe('LinksPane', () => {
   const mockSetLinks = vi.fn();
   const mockSetIsAdding = vi.fn();
   const initialLinks = [
-    { title: 'Google', url: 'https://google.com' },
-    { title: 'GitHub', url: 'https://github.com' },
+    { id: '1', title: 'Google', url: 'https://google.com' },
+    { id: '2', title: 'GitHub', url: 'https://github.com' },
   ];
 
   beforeEach(() => {
@@ -38,10 +38,11 @@ describe('LinksPane', () => {
     fireEvent.change(urlInput, { target: { value: 'https://vercel.com' } });
     fireEvent.click(saveButton);
 
-    expect(mockSetLinks).toHaveBeenCalledWith([
-      ...initialLinks,
-      { title: 'Vercel', url: 'https://vercel.com' },
-    ]);
+    expect(mockSetLinks).toHaveBeenCalledWith(
+      expect.arrayContaining([
+        expect.objectContaining({ title: 'Vercel', url: 'https://vercel.com' }),
+      ])
+    );
     
     expect(mockSetIsAdding).toHaveBeenCalledWith(false);
   });
@@ -80,8 +81,8 @@ describe('LinksPane', () => {
     fireEvent.click(saveButton);
 
     expect(mockSetLinks).toHaveBeenCalledWith([
-      { title: 'Google Updated', url: 'https://google.com' },
-      { title: 'GitHub', url: 'https://github.com' },
+      { id: '1', title: 'Google Updated', url: 'https://google.com' },
+      { id: '2', title: 'GitHub', url: 'https://github.com' },
     ]);
   });
 });

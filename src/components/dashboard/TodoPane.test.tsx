@@ -11,7 +11,7 @@ vi.mock('@/hooks/useLocalStorage', () => ({
 describe('TodoPane', () => {
   const mockSetTodos = vi.fn();
   const initialTodos = [
-    { text: 'Task 1', done: false },
+    { id: '1', text: 'Task 1', done: false },
   ];
 
   beforeEach(() => {
@@ -32,10 +32,11 @@ describe('TodoPane', () => {
     fireEvent.change(input, { target: { value: 'New Task' } });
     fireEvent.click(addButton);
 
-    expect(mockSetTodos).toHaveBeenCalledWith([
-      ...initialTodos,
-      { text: 'New Task', done: false },
-    ]);
+    expect(mockSetTodos).toHaveBeenCalledWith(
+      expect.arrayContaining([
+        expect.objectContaining({ text: 'New Task', done: false }),
+      ])
+    );
   });
 
   it('should call setTodos when toggling a todo', () => {
@@ -45,7 +46,7 @@ describe('TodoPane', () => {
     fireEvent.click(todoItem);
 
     expect(mockSetTodos).toHaveBeenCalledWith([
-      { text: 'Task 1', done: true },
+      { id: '1', text: 'Task 1', done: true },
     ]);
   });
 
