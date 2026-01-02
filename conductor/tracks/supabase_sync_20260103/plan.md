@@ -22,7 +22,8 @@
 - [x] Task: Integrate Auth Trigger [973aa51]
     -   Add a "Login" button to the `CustomizationMenu` or `Header`.
     -   Ensure it opens the `AuthModal`.
-- [ ] Task: Conductor - User Manual Verification 'Authentication UI & Logic' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Authentication UI & Logic' (Protocol in workflow.md)
+## [checkpoint: 59856a7]
 
 ## Phase 3: Data Synchronization Logic
 - [ ] Task: Implement Sync Utility
