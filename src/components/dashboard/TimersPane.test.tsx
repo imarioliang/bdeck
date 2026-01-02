@@ -10,6 +10,7 @@ vi.mock('@/hooks/useLocalStorage', () => ({
 
 describe('TimersPane', () => {
   const mockSetProjects = vi.fn();
+  const mockSetIsAdding = vi.fn();
   const initialProjects = [
     { id: '1', name: 'Project 1', time: 0, isActive: false },
   ];
@@ -25,25 +26,29 @@ describe('TimersPane', () => {
   });
 
   it('should render initial projects', () => {
-    render(<TimersPane />);
+    render(<TimersPane isAdding={false} setIsAdding={mockSetIsAdding} />);
     expect(screen.getByText('Project 1')).toBeDefined();
     expect(screen.getByText('00:00:00')).toBeDefined();
   });
 
   it('should call setProjects when adding a new project', () => {
-    render(<TimersPane />);
+    const { rerender } = render(<TimersPane isAdding={false} setIsAdding={mockSetIsAdding} />);
     
-    const input = screen.getByPlaceholderText('New project name...');
-    const addButton = screen.getByText('Add');
+    // Simulate clicking the add button in parent
+    rerender(<TimersPane isAdding={true} setIsAdding={mockSetIsAdding} />);
+
+    const input = screen.getByPlaceholderText('Project name');
+    const saveButton = screen.getByText('Save');
 
     fireEvent.change(input, { target: { value: 'Project 2' } });
-    fireEvent.click(addButton);
+    fireEvent.click(saveButton);
 
     expect(mockSetProjects).toHaveBeenCalled();
+    expect(mockSetIsAdding).toHaveBeenCalledWith(false);
   });
 
   it('should call setProjects when deleting a project', () => {
-    render(<TimersPane />);
+    render(<TimersPane isAdding={false} setIsAdding={mockSetIsAdding} />);
     const deleteButton = screen.getByLabelText(/delete/i);
     fireEvent.click(deleteButton);
     expect(mockSetProjects).toHaveBeenCalled();

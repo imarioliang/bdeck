@@ -28,6 +28,11 @@ interface ProjectTimer {
   isActive: boolean;
 }
 
+interface TimersPaneProps {
+  isAdding: boolean;
+  setIsAdding: (isAdding: boolean) => void;
+}
+
 interface SortableTimerItemProps {
   project: ProjectTimer;
   onToggle: () => void;
@@ -100,7 +105,7 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime }:
   );
 };
 
-export const TimersPane = () => {
+export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
   const [projects, setProjects] = useLocalStorage<ProjectTimer[]>('bdeck-timers', []);
   const [newProjectName, setNewProjectName] = useState('');
   const intervalRefs = useRef<{ [key: string]: NodeJS.Timeout }>({});
@@ -112,9 +117,7 @@ export const TimersPane = () => {
     })
   );
 
-  // Separate effect for interval management
   useEffect(() => {
-    // Synchronize intervals with the 'isActive' state of projects
     projects.forEach((project) => {
       if (project.isActive) {
         if (!intervalRefs.current[project.id]) {
@@ -132,7 +135,6 @@ export const TimersPane = () => {
       }
     });
 
-    // Cleanup for removed projects
     const activeProjectIds = new Set(projects.map(p => p.id));
     Object.keys(intervalRefs.current).forEach(id => {
       if (!activeProjectIds.has(id)) {
@@ -140,8 +142,6 @@ export const TimersPane = () => {
         delete intervalRefs.current[id];
       }
     });
-
-    // No blanket cleanup here to prevent reset on every state change
   }, [projects.map(p => `${p.id}-${p.isActive}`).join(',')]);
 
   const addProject = () => {
@@ -149,6 +149,7 @@ export const TimersPane = () => {
       const id = `timer-${Date.now()}`;
       setProjects((prev) => [...prev, { id, name: newProjectName.trim(), time: 0, isActive: false }]);
       setNewProjectName('');
+      setIsAdding(false);
     }
   };
 
@@ -187,26 +188,27 @@ export const TimersPane = () => {
 
   return (
     <div className="space-y-4 h-full flex flex-col pt-2">
-      <div className="flex gap-2 mb-2">
-        <input 
-          type="text" 
-          value={newProjectName}
-          onChange={(e) => setNewProjectName(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && addProject()}
-          placeholder="New project name..." 
-          className="flex-1 text-sm border-b-2 border-black focus:outline-none bg-transparent" 
-        />
-        <button 
-          onClick={addProject}
-          className="text-xs font-bold uppercase underline hover:no-underline"
-        >
-          Add
-        </button>
-      </div>
+      {isAdding && (
+        <div className="flex gap-2 mb-2 p-2 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <input 
+            type="text" 
+            value={newProjectName}
+            onChange={(e) => setNewProjectName(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && addProject()}
+            placeholder="Project name" 
+            className="flex-1 text-xs border-b-2 border-black focus:outline-none bg-transparent" 
+            autoFocus
+          />
+          <div className="flex gap-2">
+            <button onClick={() => setIsAdding(false)} className="text-[10px] font-bold uppercase underline">Cancel</button>
+            <button onClick={addProject} className="text-[10px] font-bold uppercase bg-black text-white px-2 py-0.5">Save</button>
+          </div>
+        </div>
+      )}
 
       <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-        {projects.length === 0 && (
-          <p className="text-xs italic text-gray-500">No projects. Add one above to track time.</p>
+        {projects.length === 0 && !isAdding && (
+          <p className="text-xs italic text-gray-500">No projects. Add one using the '+' button.</p>
         )}
         
         <DndContext 
