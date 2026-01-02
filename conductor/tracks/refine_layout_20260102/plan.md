@@ -11,7 +11,7 @@
 - [x] Task: Refactor `TimersPane` (2fa8281) to move the add project input to the top.
 - [x] Task: Conductor - User Manual Verification 'Component Header Integration' (39a2939) (Protocol in workflow.md)
 
-## Phase 3: Visual Polish and Verification
+## Phase 3: Visual Polish and Verification [checkpoint: ed25b21]
 - [x] Task: Ensure all borders and spacing (da49b10) remain consistent with the "Brutalist" style after layout changes.
 - [x] Task: Verify that the page scrolls correctly (da49b10) when content exceeds the viewport height.
-- [ ] Task: Conductor - User Manual Verification 'Visual Polish and Verification' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Visual Polish and Verification' (ed25b21) (Protocol in workflow.md)
