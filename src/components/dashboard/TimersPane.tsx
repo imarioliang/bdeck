@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Trash2, GripVertical, Play, Pause, Square, RotateCcw, Plus } from 'lucide-react';
+import { Trash2, GripVertical, Play, Pause, Square, RotateCcw, Plus, Coffee } from 'lucide-react';
 import {
   DndContext,
   closestCenter,
@@ -93,11 +93,15 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime }:
 
 export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
   const [projects, setProjects] = useLocalStorage<ProjectTimer[]>('bdeck-timers', []);
+  const [restMode, setRestMode] = useLocalStorage<boolean>('bdeck-rest-mode', false);
+  const [restTime, setRestTime] = useLocalStorage<number>('bdeck-rest-time', 0); // Seconds
   const [newProjectName, setNewProjectName] = useState('');
   const intervalRefs = useRef<{ [key: string]: NodeJS.Timeout }>({});
+  const restIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
 
+  // Work Timer Effect
   useEffect(() => {
     projects.forEach((project) => {
       if (project.isActive) {
@@ -124,6 +128,34 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
     };
   }, [projects.map(p => `${p.id}-${p.isActive}`).join(',')]);
 
+  // Rest Timer Effect
+  useEffect(() => {
+    if (restMode && restTime > 0) {
+      if (!restIntervalRef.current) {
+        restIntervalRef.current = setInterval(() => {
+          setRestTime(prev => {
+            if (prev <= 1) {
+              setRestMode(false);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      }
+    } else {
+      if (restIntervalRef.current) {
+        clearInterval(restIntervalRef.current);
+        restIntervalRef.current = null;
+      }
+    }
+    return () => {
+      if (restIntervalRef.current) {
+        clearInterval(restIntervalRef.current);
+        restIntervalRef.current = null;
+      }
+    };
+  }, [restMode, restTime]);
+
   const addProject = () => {
     if (newProjectName.trim()) {
       const id = `timer-${Date.now()}`;
@@ -133,8 +165,17 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
   };
 
   const restProtocol = () => {
-    // REST TIMER function: Pause all active timers
-    setProjects(prev => prev.map(p => ({ ...p, isActive: false })));
+    // If work timers are active, stop them and start 5m rest
+    const anyActive = projects.some(p => p.isActive);
+    if (anyActive) {
+      setProjects(prev => prev.map(p => ({ ...p, isActive: false })));
+      setRestTime(5 * 60); // 5 minutes
+      setRestMode(true);
+    } else {
+      // Toggle rest manually
+      setRestMode(!restMode);
+      if (!restMode) setRestTime(5 * 60);
+    }
   };
 
   const formatTime = (seconds: number) => {
@@ -147,12 +188,22 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
   return (
     <div className="space-y-4 h-full flex flex-col">
       
+      {/* REST TIMER BUTTON */}
       <button 
         onClick={restProtocol}
-        className="w-full py-2.5 border border-terminal-red/30 hover:bg-terminal-red/10 text-terminal-red text-[9px] font-black tracking-[0.2em] uppercase flex items-center justify-center gap-2 transition-all group"
+        className={`w-full py-2.5 border transition-all group flex items-center justify-center gap-2 ${restMode ? 'border-terminal-green bg-terminal-green/10 text-terminal-green animate-pulse' : 'border-terminal-red/30 hover:bg-terminal-red/10 text-terminal-red'}`}
       >
-        <RotateCcw size={10} className="group-hover:-rotate-90 transition-transform duration-500" />
-        REST TIMER
+        {restMode ? (
+          <>
+            <Coffee size={12} />
+            <span className="text-[9px] font-black tracking-[0.2em] uppercase">RESTING: {formatTime(restTime)}</span>
+          </>
+        ) : (
+          <>
+            <RotateCcw size={10} className="group-hover:-rotate-90 transition-transform duration-500" />
+            <span className="text-[9px] font-black tracking-[0.2em] uppercase">REST TIMER</span>
+          </>
+        )}
       </button>
 
       {isAdding && (
