@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((val: T) => T)) => void] {
   // Get from local storage then
@@ -11,18 +11,25 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
-      console.log(error);
+      console.error(`Error reading localStorage key "${key}":`, error);
       return initialValue;
     }
   });
+
+  // Use a ref to keep track of the current value for the setValue closure
+  const valueRef = useRef<T>(storedValue);
+  useEffect(() => {
+    valueRef.current = storedValue;
+  }, [storedValue]);
 
   // Return a wrapped version of useState's setter function that ...
   // ... persists the new value to localStorage.
   const setValue = (value: T | ((val: T) => T)) => {
     try {
-      // Allow value to be a function so we have same API as useState
+      // Use valueRef.current to get the most up-to-date value, 
+      // even if the closure where setValue was defined is stale.
       const valueToStore =
-        value instanceof Function ? value(storedValue) : value;
+        value instanceof Function ? value(valueRef.current) : value;
       
       // Save state
       setStoredValue(valueToStore);
@@ -32,7 +39,7 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
       }
     } catch (error) {
-      console.log(error);
+      console.error(`Error setting localStorage key "${key}":`, error);
     }
   };
 
