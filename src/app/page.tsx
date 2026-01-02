@@ -13,6 +13,7 @@ export default function Home() {
   const [linksSearchTerm, setLinksSearchTerm] = useState('');
   const [isAddingLink, setIsAddingLink] = useState(false);
   const [isAddingTimer, setIsAddingTimer] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('ALL SYSTEMS');
   
   const [projects] = useLocalStorage<any[]>('bdeck-timers', []);
   const [todos] = useLocalStorage<any[]>('bdeck-todos', []);
@@ -56,10 +57,11 @@ export default function Home() {
           {/* NAVIGATION TABS (Inside Container) */}
           <div className="px-4 md:px-6 pt-4">
             <nav className="flex flex-wrap gap-2">
-              {['ALL SYSTEMS', 'DEVELOPMENT', 'COMMUNICATION', 'ANALYTICS', 'SYSTEM'].map((tab, i) => (
+              {['ALL SYSTEMS', 'DEVELOPMENT', 'COMMUNICATION', 'ANALYTICS', 'SYSTEM'].map((tab) => (
                 <button 
                   key={tab}
-                  className={`px-4 py-1 text-[9px] font-black border transition-all tracking-widest ${i === 0 ? 'bg-terminal-amber text-black border-terminal-amber shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]' : 'border-white/5 text-white/20 hover:border-white/20 hover:text-white bg-white/[0.01]'}`}
+                  onClick={() => setActiveCategory(tab)}
+                  className={`px-4 py-1 text-[9px] font-black border transition-all tracking-widest ${activeCategory === tab ? 'bg-terminal-amber text-black border-terminal-amber shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]' : 'border-white/5 text-white/20 hover:border-white/20 hover:text-white bg-white/[0.01]'}`}
                 >
                   {tab}
                 </button>
@@ -73,6 +75,7 @@ export default function Home() {
               isAdding={isAddingLink} 
               setIsAdding={setIsAddingLink} 
               searchTerm={linksSearchTerm}
+              activeCategory={activeCategory}
             />
           </section>
         </div>
@@ -122,15 +125,15 @@ export default function Home() {
         <footer className="pt-8 pb-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-[9px] font-black text-white/10 tracking-[0.2em] border-t border-white/5 uppercase">
           <div className="flex gap-6">
             <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-terminal-green rounded-full"></span>
+              <span className="w-1.5 h-1.5 bg-terminal-green rounded-full shadow-[0_0_8px_rgba(74,222,128,0.3)]"></span>
               <span>MEM: 64K OK</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-terminal-green rounded-full animate-pulse"></span>
+              <span className="w-1.5 h-1.5 bg-terminal-green rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.3)]"></span>
               <span>CPU: 8%</span>
             </div>
           </div>
-          <div>Retro.OS Build 2024.1</div>
+          <div className="hover:text-white/20 transition-colors cursor-default">Retro.OS Build 2024.1</div>
         </footer>
       </div>
     </div>

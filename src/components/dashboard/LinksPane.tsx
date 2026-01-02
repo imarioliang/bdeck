@@ -33,6 +33,7 @@ interface LinksPaneProps {
   isAdding: boolean;
   setIsAdding: (isAdding: boolean) => void;
   searchTerm: string;
+  activeCategory: string;
 }
 
 const getIcon = (title: string) => {
@@ -109,13 +110,13 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
 
       {/* OVERLAY ACTIONS */}
       <div className="absolute inset-0 bg-[#0a0a0a]/95 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <button onClick={onTogglePin} className="p-1 text-white/20 hover:text-terminal-amber transition-colors" title="Pin">
+        <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="p-1 text-white/20 hover:text-terminal-amber transition-colors" title="Pin">
           <Pin size={12} className={link.isPinned ? "fill-terminal-amber text-terminal-amber" : ""} />
         </button>
-        <button onClick={onEdit} className="p-1 text-white/20 hover:text-terminal-amber transition-colors" title="Edit">
+        <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} className="p-1 text-white/20 hover:text-terminal-amber transition-colors" title="Edit">
           <Pencil size={12} />
         </button>
-        <button onClick={onDelete} className="p-1 text-white/20 hover:text-terminal-red transition-colors" title="Delete">
+        <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} className="p-1 text-white/20 hover:text-terminal-red transition-colors" title="Delete">
           <Trash2 size={12} />
         </button>
         <div {...attributes} {...listeners} className="p-1 text-white/10 hover:text-white cursor-grab active:cursor-grabbing">
@@ -126,13 +127,27 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
   );
 };
 
-export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps) => {
+export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }: LinksPaneProps) => {
   const [links, setLinks] = useLocalStorage<Link[]>('bdeck-links', []);
   const [newTitle, setNewTitle] = useState('');
   const [newUrl, setNewUrl] = useState('');
+  const [newCategory, setNewCategory] = useState('SYSTEM');
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
+
+  // Migration logic
+  useEffect(() => {
+    const hasMissingIds = links.some(l => !l.id || !l.category);
+    if (hasMissingIds) {
+      const sanitized = links.map((l, i) => ({
+        ...l,
+        id: l.id || `link-${i}-${Date.now()}`,
+        category: l.category || 'SYSTEM'
+      }));
+      setLinks(sanitized);
+    }
+  }, [links.length]);
 
   const sortedLinks = useMemo(() => {
     return [...links].sort((a, b) => {
@@ -145,21 +160,25 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
   }, [links]);
 
   const filteredLinks = useMemo(() => {
-    return sortedLinks.filter(link => 
-      link.title.toLowerCase().includes(searchTerm.toLowerCase()) || link.url.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [sortedLinks, searchTerm]);
+    return sortedLinks.filter(link => {
+      const matchesSearch = link.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                           link.url.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = activeCategory === 'ALL SYSTEMS' || link.category === activeCategory;
+      return matchesSearch && matchesCategory;
+    });
+  }, [sortedLinks, searchTerm, activeCategory]);
 
   const addLink = () => {
     if (newTitle.trim() && newUrl.trim()) {
       let formattedUrl = newUrl.trim();
       if (!/^https?:\/\//i.test(formattedUrl)) formattedUrl = 'https://' + formattedUrl;
+      
       if (editingId) {
-        setLinks(prev => prev.map(l => l.id === editingId ? { ...l, title: newTitle.trim(), url: formattedUrl } : l));
+        setLinks(prev => prev.map(l => l.id === editingId ? { ...l, title: newTitle.trim(), url: formattedUrl, category: newCategory } : l));
         setEditingId(null);
       } else {
         const id = `link-${Date.now()}`;
-        setLinks(prev => [...prev, { id, title: newTitle.trim(), url: formattedUrl, isPinned: false }]);
+        setLinks(prev => [...prev, { id, title: newTitle.trim(), url: formattedUrl, category: newCategory, isPinned: false }]);
       }
       setNewTitle(''); setNewUrl(''); setIsAdding(false);
     }
@@ -168,7 +187,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
   const startEditing = (id: string) => {
     const link = links.find(l => l.id === id);
     if (link) {
-      setNewTitle(link.title); setNewUrl(link.url); setEditingId(id); setIsAdding(true);
+      setNewTitle(link.title); setNewUrl(link.url); setNewCategory(link.category || 'SYSTEM'); setEditingId(id); setIsAdding(true);
     }
   };
 
@@ -199,8 +218,9 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
         </SortableContext>
       </DndContext>
 
+      {/* ADD APP BUTTON */}
       <button 
-        onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setIsAdding(true); }}
+        onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); }}
         className="aspect-square flex flex-col items-center justify-center gap-2 border border-dashed border-white/5 hover:border-terminal-amber/30 hover:bg-white/[0.01] transition-all text-white/10 hover:text-terminal-amber group p-2"
       >
         <Plus size={24} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform" />
@@ -210,23 +230,42 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm }: LinksPaneProps)
         </div>
       </button>
 
+      {/* MODAL FORM */}
       {isAdding && (
         <div className="fixed inset-0 bg-[#0a0a0a]/95 backdrop-blur-md z-[100] flex items-center justify-center p-4">
           <div className="bg-[#111111] border border-terminal-amber/30 p-8 w-full max-w-sm space-y-6 shadow-[0_0_50px_-20px_rgba(255,157,0,0.2)]">
             <h3 className="text-terminal-amber text-sm font-black tracking-[0.2em] uppercase leading-none">{editingId ? 'Modify Module' : 'Initialize Module'}</h3>
             <div className="space-y-4">
-              <input 
-                type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)}
-                placeholder="MODULE_NAME..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber/40 transition-all uppercase tracking-widest text-white/80"
-              />
-              <input 
-                type="text" value={newUrl} onChange={e => setNewUrl(e.target.value)}
-                placeholder="PROTOCOL_PATH..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber/40 transition-all uppercase tracking-widest text-white/80"
-              />
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[8px] font-black text-white/20 uppercase tracking-widest">Identifier</label>
+                <input 
+                  type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)}
+                  placeholder="MODULE_NAME..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber/40 transition-all uppercase tracking-widest text-white/80"
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[8px] font-black text-white/20 uppercase tracking-widest">Protocol Path</label>
+                <input 
+                  type="text" value={newUrl} onChange={e => setNewUrl(e.target.value)}
+                  placeholder="PROTOCOL_PATH..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber/40 transition-all uppercase tracking-widest text-white/80"
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[8px] font-black text-white/20 uppercase tracking-widest">Category</label>
+                <select 
+                  value={newCategory} 
+                  onChange={e => setNewCategory(e.target.value)}
+                  className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber/40 transition-all uppercase tracking-widest text-white/80 appearance-none"
+                >
+                  {['DEVELOPMENT', 'COMMUNICATION', 'ANALYTICS', 'SYSTEM'].map(cat => (
+                    <option key={cat} value={cat} className="bg-[#111111]">{cat}</option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className="flex gap-4 justify-end">
               <button onClick={() => setIsAdding(false)} className="text-[10px] font-black text-white/20 hover:text-white uppercase tracking-widest transition-colors">Abort</button>
-              <button onClick={addLink} className="bg-terminal-amber text-black px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all">Execute</button>
+              <button onClick={addLink} className="bg-terminal-amber text-black px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)]">Execute</button>
             </div>
           </div>
         </div>
