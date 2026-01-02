@@ -6,11 +6,11 @@
 - [ ] Task: Update `globals.css` to use CSS variables for theme colors.
 - [x] Task: Conductor - User Manual Verification 'State and Theme' (730c4cc) (Protocol in workflow.md)
 
-## Phase 2: Customization Menu and Logo Implementation
+## Phase 2: Customization Menu and Logo Implementation [checkpoint: 2a69284]
 - [x] Task: Refactor the header logo (611ffdf) into a clickable menu trigger.
 - [x] Task: Implement the Customization Menu (611ffdf) overlay with theme, font size, and data controls.
 - [x] Task: Implement the Export/Reset (611ffdf) data logic.
-- [ ] Task: Conductor - User Manual Verification 'Customization Menu' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Customization Menu' (2a69284) (Protocol in workflow.md)
 
 ## Phase 3: KBAR and Keyboard Shortcuts
 - [ ] Task: Implement the KBAR provider and define navigation actions.
