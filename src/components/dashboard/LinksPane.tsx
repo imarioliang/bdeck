@@ -85,11 +85,11 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
       style={style}
       className="relative group aspect-square flex flex-col items-center justify-center border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-terminal-amber/20 transition-all cursor-pointer overflow-hidden p-2"
     >
-      {/* FAVICON WATERMARK */}
+      {/* FAVICON WATERMARK - REFINED */}
       {faviconUrl && (
         <div 
-          className="absolute inset-0 opacity-[0.03] pointer-events-none transition-opacity group-hover:opacity-[0.07] bg-center bg-no-repeat grayscale invert brightness-0"
-          style={{ backgroundImage: `url(${faviconUrl})`, backgroundSize: '60%' }}
+          className="absolute inset-0 opacity-[0.02] pointer-events-none transition-opacity group-hover:opacity-[0.05] bg-center bg-no-repeat grayscale invert brightness-0"
+          style={{ backgroundImage: `url(${faviconUrl})`, backgroundSize: '50%' }}
         />
       )}
 
@@ -119,7 +119,7 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
       )}
 
       {/* OVERLAY ACTIONS */}
-      <div className="absolute inset-0 bg-[#0a0a0a]/95 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute inset-0 bg-[#0a0a0a]/95 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
         <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="p-1 text-white/20 hover:text-terminal-amber transition-colors" title="Pin">
           <Pin size={12} className={link.isPinned ? "fill-terminal-amber text-terminal-amber" : ""} />
         </button>
@@ -142,9 +142,17 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
   const [newTitle, setNewTitle] = useState('');
   const [newUrl, setNewUrl] = useState('');
   const [newCategory, setNewCategory] = useState('SYSTEM');
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
+
+  // Extraction of categories from existing links
+  const categories = useMemo(() => {
+    const base = ['DEVELOPMENT', 'COMMUNICATION', 'ANALYTICS', 'SYSTEM'];
+    const custom = links.map(l => l.category).filter(Boolean) as string[];
+    return Array.from(new Set([...base, ...custom]));
+  }, [links]);
 
   // Migration logic
   useEffect(() => {
@@ -183,14 +191,16 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
       let formattedUrl = newUrl.trim();
       if (!/^https?:\/\//i.test(formattedUrl)) formattedUrl = 'https://' + formattedUrl;
       
+      const category = newCategory.trim().toUpperCase();
+
       if (editingId) {
-        setLinks(prev => prev.map(l => l.id === editingId ? { ...l, title: newTitle.trim(), url: formattedUrl, category: newCategory } : l));
+        setLinks(prev => prev.map(l => l.id === editingId ? { ...l, title: newTitle.trim(), url: formattedUrl, category } : l));
         setEditingId(null);
       } else {
         const id = `link-${Date.now()}`;
-        setLinks(prev => [...prev, { id, title: newTitle.trim(), url: formattedUrl, category: newCategory, isPinned: false }]);
+        setLinks(prev => [...prev, { id, title: newTitle.trim(), url: formattedUrl, category, isPinned: false }]);
       }
-      setNewTitle(''); setNewUrl(''); setIsAdding(false);
+      setNewTitle(''); setNewUrl(''); setIsAdding(false); setIsCustomCategory(false);
     }
   };
 
@@ -230,7 +240,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
 
       {/* ADD APP BUTTON */}
       <button 
-        onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); }}
+        onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
         className="aspect-square flex flex-col items-center justify-center gap-2 border border-dashed border-white/5 hover:border-terminal-amber/30 hover:bg-white/[0.01] transition-all text-white/10 hover:text-terminal-amber group p-2"
       >
         <Plus size={24} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform" />
@@ -262,19 +272,40 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="text-[8px] font-black text-white/20 uppercase tracking-widest">Category</label>
-                <select 
-                  value={newCategory} 
-                  onChange={e => setNewCategory(e.target.value)}
-                  className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber/40 transition-all uppercase tracking-widest text-white/80 appearance-none"
-                >
-                  {['DEVELOPMENT', 'COMMUNICATION', 'ANALYTICS', 'SYSTEM'].map(cat => (
-                    <option key={cat} value={cat} className="bg-[#111111]">{cat}</option>
-                  ))}
-                </select>
+                {isCustomCategory ? (
+                  <div className="flex gap-2">
+                    <input 
+                      type="text" value={newCategory} onChange={e => setNewCategory(e.target.value)}
+                      placeholder="NEW_CAT..." className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber uppercase tracking-widest text-white/80"
+                      autoFocus
+                    />
+                    <button onClick={() => setIsCustomCategory(false)} className="text-[8px] font-bold text-white/20 hover:text-white uppercase tracking-tighter">Cancel</button>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <select 
+                      value={newCategory} 
+                      onChange={e => {
+                        if (e.target.value === 'CUSTOM') {
+                          setNewCategory('');
+                          setIsCustomCategory(true);
+                        } else {
+                          setNewCategory(e.target.value);
+                        }
+                      }}
+                      className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-amber/40 transition-all uppercase tracking-widest text-white/80 appearance-none cursor-pointer"
+                    >
+                      {categories.map(cat => (
+                        <option key={cat} value={cat} className="bg-[#111111]">{cat}</option>
+                      ))}
+                      <option value="CUSTOM" className="bg-[#111111]">ADD NEW...</option>
+                    </select>
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex gap-4 justify-end">
-              <button onClick={() => setIsAdding(false)} className="text-[10px] font-black text-white/20 hover:text-white uppercase tracking-widest transition-colors">Abort</button>
+              <button onClick={() => { setIsAdding(false); setIsCustomCategory(false); }} className="text-[10px] font-black text-white/20 hover:text-white uppercase tracking-widest transition-colors">Abort</button>
               <button onClick={addLink} className="bg-terminal-amber text-black px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)]">Execute</button>
             </div>
           </div>

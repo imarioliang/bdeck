@@ -17,8 +17,17 @@ export default function Home() {
   
   const [projects] = useLocalStorage<any[]>('bdeck-timers', []);
   const [todos] = useLocalStorage<any[]>('bdeck-todos', []);
+  const [links] = useLocalStorage<any[]>('bdeck-links', []);
 
   const pendingTodosCount = useMemo(() => todos.filter(t => !t.done).length, [todos]);
+
+  const categories = useMemo(() => {
+    const base = ['ALL SYSTEMS', 'DEVELOPMENT', 'COMMUNICATION', 'ANALYTICS', 'SYSTEM'];
+    const custom = links.map(l => l.category).filter(Boolean) as string[];
+    // Filter out duplicates and ensure 'ALL SYSTEMS' is first
+    const unique = Array.from(new Set([...base, ...custom]));
+    return unique;
+  }, [links]);
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#d4d4d4] font-mono selection:bg-terminal-amber selection:text-black antialiased overflow-x-hidden">
@@ -57,7 +66,7 @@ export default function Home() {
           {/* NAVIGATION TABS (Inside Container) */}
           <div className="px-4 md:px-6 pt-4">
             <nav className="flex flex-wrap gap-2">
-              {['ALL SYSTEMS', 'DEVELOPMENT', 'COMMUNICATION', 'ANALYTICS', 'SYSTEM'].map((tab) => (
+              {categories.map((tab) => (
                 <button 
                   key={tab}
                   onClick={() => setActiveCategory(tab)}
@@ -125,15 +134,15 @@ export default function Home() {
         <footer className="pt-8 pb-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-[9px] font-black text-white/10 tracking-[0.2em] border-t border-white/5 uppercase">
           <div className="flex gap-6">
             <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-terminal-green rounded-full shadow-[0_0_8px_rgba(74,222,128,0.3)]"></span>
+              <span className="w-1.5 h-1.5 bg-terminal-green rounded-full"></span>
               <span>MEM: 64K OK</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-terminal-green rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.3)]"></span>
+              <span className="w-1.5 h-1.5 bg-terminal-green rounded-full animate-pulse"></span>
               <span>CPU: 8%</span>
             </div>
           </div>
-          <div className="hover:text-white/20 transition-colors cursor-default">Retro.OS Build 2024.1</div>
+          <div>Retro.OS Build 2024.1</div>
         </footer>
       </div>
     </div>
