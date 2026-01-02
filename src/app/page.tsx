@@ -6,14 +6,18 @@ import { LinksPane } from "@/components/dashboard/LinksPane";
 import { TimersPane } from "@/components/dashboard/TimersPane";
 import { TodoPane } from "@/components/dashboard/TodoPane";
 import { NotesPane } from "@/components/dashboard/NotesPane";
+import { CustomizationMenu } from "@/components/dashboard/CustomizationMenu";
 import { Search } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useDashboardStore } from '@/store/useDashboardStore';
 
 export default function Home() {
   const [linksSearchTerm, setLinksSearchTerm] = useState('');
   const [isAddingLink, setIsAddingLink] = useState(false);
   const [isAddingTimer, setIsAddingTimer] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('ALL SYSTEMS');
+  const [isConfigOpen, setIsConfigOpen] = useState(false);
+  
+  const { activeCategory, setActiveCategory } = useDashboardStore();
   
   const [projects] = useLocalStorage<any[]>('bdeck-timers', []);
   const [todos] = useLocalStorage<any[]>('bdeck-todos', []);
@@ -24,32 +28,36 @@ export default function Home() {
   const categories = useMemo(() => {
     const base = ['ALL SYSTEMS', 'DEVELOPMENT', 'COMMUNICATION', 'ANALYTICS', 'SYSTEM'];
     const custom = links.map(l => l.category).filter(Boolean) as string[];
-    // Filter out duplicates and ensure 'ALL SYSTEMS' is first
-    const unique = Array.from(new Set([...base, ...custom]));
-    return unique;
+    return Array.from(new Set([...base, ...custom]));
   }, [links]);
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#d4d4d4] font-mono selection:bg-terminal-main selection:text-black antialiased overflow-x-hidden">
       <div className="max-w-[1400px] mx-auto p-4 md:p-6 space-y-6">
         
+        <CustomizationMenu isOpen={isConfigOpen} onClose={() => setIsConfigOpen(false)} />
+
         {/* COMBINED CONTAINER FOR HEADER AND LINKS */}
         <div className="border border-white/10 bg-white/[0.01] overflow-hidden shadow-[0_0_40px_-20px_rgba(0,0,0,1)]">
           
           {/* HEADER SECTION */}
           <header className="p-4 md:p-6 border-b border-white/10 bg-white/[0.01]">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div>
-                <div className="flex items-center gap-3 text-terminal-main">
+              <button 
+                onClick={() => setIsConfigOpen(true)}
+                className="text-left group transition-all"
+              >
+                <div className="flex items-center gap-3 text-terminal-main group-hover:text-white transition-colors">
                   <div className="grid grid-cols-3 gap-0.5">
                     {[...Array(9)].map((_, i) => (
-                      <div key={i} className={`w-0.5 h-0.5 rounded-full ${i === 4 ? 'bg-terminal-main animate-pulse' : 'bg-terminal-main/30'}`}></div>
+                      <div key={i} className={`w-0.5 h-0.5 rounded-full ${i === 4 ? 'bg-terminal-main group-hover:bg-white animate-pulse' : 'bg-terminal-main/30 group-hover:bg-white/30'}`}></div>
                     ))}
                   </div>
                   <h1 className="text-xl md:text-2xl font-black tracking-[0.2em] uppercase leading-none">Command Center</h1>
                 </div>
-                <p className="text-[10px] text-white/30 mt-2 font-bold tracking-widest">&gt; SELECT A SUBSYSTEM TO INITIALIZE...</p>
-              </div>
+                <p className="text-[10px] text-white/30 mt-2 font-bold tracking-widest group-hover:text-white/50 transition-colors">&gt; SELECT A SUBSYSTEM TO INITIALIZE...</p>
+              </button>
+              
               <div className="relative group w-full md:w-auto">
                 <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-terminal-main transition-colors" size={14} />
                 <input 
@@ -63,7 +71,7 @@ export default function Home() {
             </div>
           </header>
 
-          {/* NAVIGATION TABS (Inside Container) */}
+          {/* NAVIGATION TABS */}
           <div className="px-4 md:px-6 pt-4">
             <nav className="flex flex-wrap gap-2">
               {categories.map((tab) => (
@@ -78,7 +86,7 @@ export default function Home() {
             </nav>
           </div>
 
-          {/* APPS GRID (Inside Container) */}
+          {/* APPS GRID */}
           <section className="p-4 md:p-6 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-3">
             <LinksPane 
               isAdding={isAddingLink} 
@@ -91,54 +99,32 @@ export default function Home() {
 
         {/* MAIN DASHBOARD CONTENT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          
           <div className="lg:col-span-4 h-full">
-            <Pane 
-              title="Project Timers" 
-              badge={`TOTAL: ${projects.length}`}
-              label="SYS_CHRONO"
-            >
+            <Pane title="Project Timers" badge={`TOTAL: ${projects.length}`} label="SYS_CHRONO">
               <TimersPane isAdding={isAddingTimer} setIsAdding={setIsAddingTimer} />
             </Pane>
           </div>
-
           <div className="lg:col-span-4 h-full">
-            <Pane 
-              title="Mission Objectives" 
-              badge={`${pendingTodosCount} Pending`}
-              label="OBJ_PRIORITY"
-            >
+            <Pane title="Mission Objectives" badge={`${pendingTodosCount} Pending`} label="OBJ_PRIORITY">
               <TodoPane />
             </Pane>
           </div>
-
           <div className="lg:col-span-4 h-full">
-            <Pane 
-              title="Data Log" 
-              label="LOG_STREAM"
-              actions={
-                <div className="flex gap-1">
-                  <div className="w-2 h-2 rounded-full bg-terminal-red opacity-40"></div>
-                  <div className="w-2 h-2 rounded-full bg-terminal-main opacity-40"></div>
-                  <div className="w-2 h-2 rounded-full bg-terminal-green opacity-40"></div>
-                </div>
-              }
-            >
+            <Pane title="Data Log" label="LOG_STREAM" actions={<WindowControls />}>
               <NotesPane />
             </Pane>
           </div>
-
         </div>
 
         {/* FOOTER */}
         <footer className="pt-8 pb-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-[9px] font-black text-white/10 tracking-[0.2em] border-t border-white/5 uppercase">
           <div className="flex gap-6">
             <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-terminal-green rounded-full"></span>
+              <span className="w-1.5 h-1.5 bg-terminal-green rounded-full shadow-terminal"></span>
               <span>MEM: 64K OK</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-terminal-green rounded-full animate-pulse"></span>
+              <span className="w-1.5 h-1.5 bg-terminal-green rounded-full animate-pulse shadow-terminal"></span>
               <span>CPU: 8%</span>
             </div>
           </div>
@@ -148,3 +134,11 @@ export default function Home() {
     </div>
   );
 }
+
+const WindowControls = () => (
+  <div className="flex gap-1">
+    <div className="w-2 h-2 rounded-full bg-terminal-red opacity-40"></div>
+    <div className="w-2 h-2 rounded-full bg-terminal-main opacity-40"></div>
+    <div className="w-2 h-2 rounded-full bg-terminal-green opacity-40"></div>
+  </div>
+);
