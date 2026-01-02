@@ -1,10 +1,10 @@
 # Track Plan: Advanced Dashboard Interactivity
 
-## Phase 1: Environment and Search Setup
+## Phase 1: Environment and Search Setup [checkpoint: a4ae94b]
 - [x] Task: Install `dnd-kit` (29ee884) dependencies (`@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`).
 - [x] Task: Write tests for search (d02ce68) and filtering in `LinksPane`.
 - [x] Task: Implement search input (d02ce68) in the Links header and filter logic for link cards.
-- [ ] Task: Conductor - User Manual Verification 'Environment and Search Setup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Environment and Search Setup' (a4ae94b) (Protocol in workflow.md)
 
 ## Phase 2: CRUD Operations (Delete & Edit)
 - [ ] Task: Write tests for item deletion in `TodoPane`, `LinksPane`, and `TimersPane`.
