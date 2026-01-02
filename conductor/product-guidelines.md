@@ -5,8 +5,9 @@
 - **Clarity Over Personality:** Instructions and feedback should focus on technical precision and speed of comprehension.
 
 ## Visual Identity
-- **Brutalist Utility:** The interface will be raw and functional. Expect bold borders, clearly defined sections, and a complete absence of unnecessary decorative elements like gradients or soft shadows.
-- **Terminal Multi-Pane Layout:** The UI will emulate a terminal multiplexer (e.g., tmux) using a multi-pane grid system. Each tool (Timer, Todo, Notes) will reside in its own clearly bordered "pane".
+- **Retro-Terminal Command Center:** The interface features a deep dark aesthetic (#0a0a0a) with high-contrast amber (#ffb000) and green (#4ade80) terminal-inspired accents.
+- **High-Density Modular Grid:** Layout follows a modular structure where subsystems (Command Center, Links, Timers, Objectives) are encapsulated in distinct bordered containers with pulse indicators and status badges.
+- **Aesthetic Details:** Employs subtle scanlines, monospaced typography scaled for high information density, and glowing UI elements to emulate a legacy CRT terminal.
 
 ## Styling and Layout
 - **Tailwind CSS:** All styling will be implemented using Tailwind CSS utility classes to maintain a consistent, raw aesthetic and facilitate rapid layout adjustments.
