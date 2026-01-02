@@ -103,10 +103,10 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
           <Icon size={24} strokeWidth={1.5} />
         </div>
         <div className="flex flex-col items-center gap-0.5 w-full">
-          <span className="text-[9px] font-black tracking-widest text-white/60 group-hover:text-white uppercase truncate w-full text-center px-1">
+          <span className="text-[0.6rem] font-black tracking-widest text-white/60 group-hover:text-white uppercase truncate w-full text-center px-1">
             {link.title}
           </span>
-          <span className="text-[7px] text-white/10 font-bold uppercase tracking-tighter truncate w-full text-center">
+          <span className="text-[0.45rem] text-white/10 font-bold uppercase tracking-tighter truncate w-full text-center">
             {link.isPinned ? 'SYS_PRIORITY' : status}
           </span>
         </div>
@@ -245,8 +245,8 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
       >
         <Plus size={24} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform" />
         <div className="flex flex-col items-center">
-          <span className="text-[9px] font-black tracking-widest uppercase italic">Add App</span>
-          <span className="text-[7px] font-bold uppercase opacity-30">System</span>
+          <span className="text-[0.6rem] font-black tracking-widest uppercase italic">Add App</span>
+          <span className="text-[0.45rem] font-bold uppercase opacity-30">System</span>
         </div>
       </button>
 
@@ -257,29 +257,29 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
             <h3 className="text-terminal-main text-sm font-black tracking-[0.2em] uppercase leading-none">{editingId ? 'Modify Module' : 'Initialize Module'}</h3>
             <div className="space-y-4">
               <div className="flex flex-col gap-1.5">
-                <label className="text-[8px] font-black text-white/20 uppercase tracking-widest">Identifier</label>
+                <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Identifier</label>
                 <input 
                   type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)}
-                  placeholder="MODULE_NAME..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80"
+                  placeholder="MODULE_NAME..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80"
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label className="text-[8px] font-black text-white/20 uppercase tracking-widest">Protocol Path</label>
+                <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Protocol Path</label>
                 <input 
                   type="text" value={newUrl} onChange={e => setNewUrl(e.target.value)}
-                  placeholder="PROTOCOL_PATH..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80"
+                  placeholder="PROTOCOL_PATH..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80"
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label className="text-[8px] font-black text-white/20 uppercase tracking-widest">Category</label>
+                <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Category</label>
                 {isCustomCategory ? (
                   <div className="flex gap-2">
                     <input 
                       type="text" value={newCategory} onChange={e => setNewCategory(e.target.value)}
-                      placeholder="NEW_CAT..." className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-main uppercase tracking-widest text-white/80"
+                      placeholder="NEW_CAT..." className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main uppercase tracking-widest text-white/80"
                       autoFocus
                     />
-                    <button onClick={() => setIsCustomCategory(false)} className="text-[8px] font-bold text-white/20 hover:text-white uppercase tracking-tighter">Cancel</button>
+                    <button onClick={() => setIsCustomCategory(false)} className="text-[0.5rem] font-bold text-white/20 hover:text-white uppercase tracking-tighter">Cancel</button>
                   </div>
                 ) : (
                   <div className="flex gap-2">
@@ -293,7 +293,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                           setNewCategory(e.target.value);
                         }
                       }}
-                      className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[10px] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80 appearance-none cursor-pointer"
+                      className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80 appearance-none cursor-pointer"
                     >
                       {categories.map(cat => (
                         <option key={cat} value={cat} className="bg-[#111111]">{cat}</option>

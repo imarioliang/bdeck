@@ -59,7 +59,7 @@ export default function Home() {
                   </div>
                   <h1 className="text-xl md:text-2xl font-black tracking-[0.2em] uppercase leading-none">Command Center</h1>
                 </div>
-                <p className="text-[10px] text-white/30 mt-2 font-bold tracking-widest group-hover:text-white/50 transition-colors">&gt; SELECT A SUBSYSTEM TO INITIALIZE...</p>
+                <p className="text-[0.65rem] text-white/30 mt-2 font-bold tracking-widest group-hover:text-white/50 transition-colors">&gt; SELECT A SUBSYSTEM TO INITIALIZE...</p>
               </button>
               
               <div className="relative group w-full md:w-auto">
@@ -69,7 +69,7 @@ export default function Home() {
                   placeholder="SEARCH MODULES..."
                   value={linksSearchTerm}
                   onChange={(e) => setLinksSearchTerm(e.target.value)}
-                  className="bg-black/40 border border-white/10 px-4 pr-10 py-2 text-[10px] focus:outline-none focus:border-terminal-main/40 w-full md:w-64 transition-all uppercase tracking-widest placeholder:text-white/5"
+                  className="bg-black/40 border border-white/10 px-4 pr-10 py-2 text-[0.65rem] focus:outline-none focus:border-terminal-main/40 w-full md:w-64 transition-all uppercase tracking-widest placeholder:text-white/5"
                 />
               </div>
             </div>
@@ -82,7 +82,7 @@ export default function Home() {
                 <button 
                   key={tab}
                   onClick={() => setActiveCategory(tab)}
-                  className={`px-4 py-1 text-[9px] font-black border transition-all tracking-widest ${activeCategory === tab ? 'bg-terminal-main text-black border-terminal-main shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]' : 'border-white/5 text-white/20 hover:border-white/20 hover:text-white bg-white/[0.01]'}`}
+                  className={`px-4 py-1 text-[0.6rem] font-black border transition-all tracking-widest ${activeCategory === tab ? 'bg-terminal-main text-black border-terminal-main shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]' : 'border-white/5 text-white/20 hover:border-white/20 hover:text-white bg-white/[0.01]'}`}
                 >
                   {tab}
                 </button>
@@ -121,7 +121,7 @@ export default function Home() {
         </div>
 
         {/* FOOTER */}
-        <footer className="pt-8 pb-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-[9px] font-black text-white/10 tracking-[0.2em] border-t border-white/5 uppercase">
+        <footer className="pt-8 pb-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-[0.6rem] font-black text-white/10 tracking-[0.2em] border-t border-white/5 uppercase">
           <div className="flex gap-6">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-terminal-green rounded-full shadow-terminal"></span>

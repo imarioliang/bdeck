@@ -13,12 +13,19 @@ export default function ThemeWrapper({ children }: { children: React.ReactNode }
     setFocused(true);
   }, []);
 
+  useEffect(() => {
+    if (mounted) {
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.setAttribute('data-size', fontSize);
+    }
+  }, [mounted, theme, fontSize]);
+
   if (!mounted) {
     return null;
   }
 
   return (
-    <div data-theme={theme} data-size={fontSize} className="min-h-screen">
+    <div className="min-h-screen">
       {children}
     </div>
   );

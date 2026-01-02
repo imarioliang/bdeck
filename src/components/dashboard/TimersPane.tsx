@@ -26,7 +26,7 @@ interface ProjectTimer {
   name: string;
   time: number;
   isActive: boolean;
-  sessionStartTime: number; // The time value when the current session started
+  sessionStartTime: number;
 }
 
 interface TimersPaneProps {
@@ -43,8 +43,6 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime, w
   workLimit: number;
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: project.id });
-  
-  // A project is "over limit" if the current session has exceeded the work limit
   const isOverLimit = project.isActive && (project.time - project.sessionStartTime >= workLimit);
 
   const style = {
@@ -66,10 +64,10 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime, w
             <GripVertical size={12} />
           </div>
           <div className="flex items-center gap-2">
-            <span className={`w-1.5 h-1.5 rounded-full ${project.isActive ? (isOverLimit ? 'bg-terminal-red animate-ping shadow-[0_0_8px_rgba(248,113,113,0.8)]' : 'bg-terminal-main animate-pulse shadow-[0_0_5px_rgba(255,157,0,0.5)]') : 'bg-white/5'}`}></span>
+            <span className={`w-1.5 h-1.5 rounded-full ${project.isActive ? (isOverLimit ? 'bg-terminal-red animate-ping shadow-[0_0_8px_rgba(248,113,113,0.8)]' : 'bg-terminal-main animate-pulse shadow-[0_0_5px_rgba(255,176,0,0.5)]') : 'bg-white/5'}`}></span>
             <div className="flex flex-col">
-              <span className={`text-[9px] font-black uppercase tracking-wider truncate ${isOverLimit ? 'text-terminal-red' : 'text-white/70'}`}>{project.name}</span>
-              <span className={`text-[11px] font-black font-mono tracking-tighter ${project.isActive ? (isOverLimit ? 'text-terminal-red' : 'text-terminal-main') : 'text-white/20'}`}>
+              <span className={`text-[0.6rem] font-black uppercase tracking-wider truncate ${isOverLimit ? 'text-terminal-red' : 'text-white/70'}`}>{project.name}</span>
+              <span className={`text-[0.7rem] font-black font-mono tracking-tighter ${project.isActive ? (isOverLimit ? 'text-terminal-red' : 'text-terminal-main') : 'text-white/20'}`}>
                 {formatTime(project.time)}
               </span>
             </div>
@@ -103,6 +101,8 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
   
   const [workLimitMin, setWorkLimitMin] = useLocalStorage<number>('bdeck-work-limit-min', 25);
   const [restLimitMin, setRestLimitMin] = useLocalStorage<number>('bdeck-rest-limit-min', 5);
+  
+  const [newProjectName, setNewProjectName] = useState('');
 
   const intervalRefs = useRef<{ [key: string]: NodeJS.Timeout }>({});
   const restIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -129,7 +129,6 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
     } catch (e) { console.warn('Audio fail'); }
   };
 
-  // Work Timer Effect
   useEffect(() => {
     projects.forEach((project) => {
       if (project.isActive) {
@@ -167,7 +166,6 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
     };
   }, [projects.map(p => `${p.id}-${p.isActive}`).join(','), workLimitMin]);
 
-  // Rest Timer Effect
   useEffect(() => {
     if (restMode && restTime > 0) {
       if (!restIntervalRef.current) {
@@ -175,7 +173,6 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
           setRestTime(prev => {
             if (prev <= 1) {
               playBeep();
-              setRestMode(false);
               return 0;
             }
             return prev - 1;
@@ -203,7 +200,6 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
   };
 
   const toggleTimer = (id: string) => {
-    // If starting work, stop rest mode
     const project = projects.find(p => p.id === id);
     if (project && !project.isActive) {
       setRestMode(false);
@@ -251,9 +247,7 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
 
   return (
     <div className="space-y-4 h-full flex flex-col relative">
-      
       <div className="flex flex-col gap-3 border-b border-white/5 pb-4">
-        {/* REST TIMER BUTTON */}
         <button 
           onClick={restProtocol}
           className={`w-full py-2.5 border transition-all group flex items-center justify-center gap-2 ${restMode ? 'border-terminal-green bg-terminal-green/10 text-terminal-green animate-pulse' : 'border-terminal-red/20 hover:bg-terminal-red/5 text-terminal-red/60 hover:text-terminal-red'}`}
@@ -261,30 +255,29 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
           {restMode ? (
             <>
               <Coffee size={12} />
-              <span className="text-[9px] font-black tracking-[0.2em] uppercase">RESTING: {formatTime(restTime)}</span>
+              <span className="text-[0.6rem] font-black tracking-[0.2em] uppercase">RESTING: {formatTime(restTime)}</span>
             </>
           ) : (
             <>
               <RotateCcw size={10} className="group-hover:-rotate-90 transition-transform duration-500" />
-              <span className="text-[9px] font-black tracking-[0.2em] uppercase">REST TIMER</span>
+              <span className="text-[0.6rem] font-black tracking-[0.2em] uppercase">REST TIMER</span>
             </>
           )}
         </button>
 
-        {/* SUBTLE DURATIONS BELOW BUTTON */}
         <div className="flex justify-center items-center gap-10 px-4 opacity-40 hover:opacity-100 transition-opacity">
           <div className="flex flex-col items-center group/input cursor-pointer">
-            <span className="text-[5px] font-black text-white/10 uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors">W_INTERVAL</span>
+            <span className="text-[0.35rem] font-black text-white/20 uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors">W_INTERVAL</span>
             <input 
               type="number" value={workLimitMin} onChange={e => setWorkLimitMin(Math.max(1, Number(e.target.value)))}
-              className="w-10 bg-transparent border-none p-0 text-[10px] font-black focus:outline-none text-white/40 focus:text-terminal-main transition-colors text-center appearance-none"
+              className="w-10 bg-transparent border-none p-0 text-[0.65rem] font-black focus:outline-none text-white/40 focus:text-terminal-main transition-colors text-center appearance-none"
             />
           </div>
           <div className="flex flex-col items-center group/input cursor-pointer">
-            <span className="text-[5px] font-black text-white/10 uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors">R_INTERVAL</span>
+            <span className="text-[0.35rem] font-black text-white/20 uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors">R_INTERVAL</span>
             <input 
               type="number" value={restLimitMin} onChange={e => setRestLimitMin(Math.max(1, Number(e.target.value)))}
-              className="w-10 bg-transparent border-none p-0 text-[10px] font-black focus:outline-none text-white/40 focus:text-terminal-main transition-colors text-center appearance-none"
+              className="w-10 bg-transparent border-none p-0 text-[0.65rem] font-black focus:outline-none text-white/40 focus:text-terminal-main transition-colors text-center appearance-none"
             />
           </div>
         </div>
@@ -296,12 +289,12 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
             type="text" value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && addProject()}
             placeholder="PROJECT_ID..." 
-            className="w-full bg-black/60 border border-white/10 p-2.5 text-[10px] focus:outline-none focus:border-terminal-main transition-all uppercase tracking-widest text-white/80" 
+            className="w-full bg-black/60 border border-white/10 p-2.5 text-[0.65rem] focus:outline-none focus:border-terminal-main transition-all uppercase tracking-widest text-white/80" 
             autoFocus
           />
           <div className="flex gap-3 justify-end">
-            <button onClick={() => setIsAdding(false)} className="text-[9px] font-bold text-white/20 uppercase tracking-widest hover:text-white">Abort</button>
-            <button onClick={addProject} className="bg-terminal-main text-black px-4 py-1.5 text-[9px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)]">Execute</button>
+            <button onClick={() => setIsAdding(false)} className="text-[0.55rem] font-bold text-white/20 uppercase tracking-widest hover:text-white">Abort</button>
+            <button onClick={addProject} className="bg-terminal-main text-black px-4 py-1.5 text-[0.55rem] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)]">Execute</button>
           </div>
         </div>
       )}
@@ -338,7 +331,7 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
             className="w-full mt-4 flex items-center justify-center gap-2 py-3 border border-dashed border-white/5 hover:border-terminal-main/20 hover:bg-white/[0.01] transition-all text-white/5 hover:text-terminal-main group"
           >
             <Plus size={14} className="group-hover:rotate-90 transition-transform" />
-            <span className="text-[9px] font-black tracking-widest uppercase italic">New Project</span>
+            <span className="text-[0.6rem] font-black tracking-widest uppercase italic">New Project</span>
           </button>
         )}
       </div>

@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+/* Font Scaling - Applied to :root to scale rem units */
+:root[data-size='small'] {
+  font-size: 12px;
+}
+
+:root[data-size='standard'] {
+  font-size: 16px;
+}
+
+:root[data-size='large'] {
+  font-size: 20px;
+}
+
 :root {
   --background: #0a0a0a;
   --foreground: #d4d4d4;
@@ -8,6 +21,7 @@
   --terminal-red: #ff5f5f;
   --panel-bg: #111111;
   --border-color: #262626;
+  transition: font-size 0.2s ease-in-out;
 }
 
 [data-theme='amber'] {
@@ -22,26 +36,12 @@
   --terminal-main: #3b82f6;
 }
 
-/* Font Scaling */
-[data-size='small'] {
-  font-size: 9px;
-}
-
-[data-size='standard'] {
-  font-size: 11px;
-}
-
-[data-size='large'] {
-  font-size: 13px;
-}
-
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   text-transform: uppercase;
   line-height: 1.2;
-  transition: font-size 0.2s ease-in-out;
 }
 
 /* Brutalist Custom Scrollbar */
