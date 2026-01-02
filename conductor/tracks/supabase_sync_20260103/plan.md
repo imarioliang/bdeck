@@ -15,7 +15,7 @@
 ## Phase 2: Authentication UI & Logic
 - [x] Task: Create Auth Store Slice [9082b2b]
     -   Update `useDashboardStore` or create `useAuthStore` to manage `session`, `user`, and `authModalOpen` state.
-- [ ] Task: Create Auth Modal Component
+- [x] Task: Create Auth Modal Component [8d398d4]
     -   Create `src/components/auth/AuthModal.tsx`.
     -   Implement Email/Password Sign Up and Login forms.
     -   Handle loading and error states.
