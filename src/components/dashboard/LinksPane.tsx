@@ -8,9 +8,13 @@ interface Link {
   url: string;
 }
 
-export const LinksPane = () => {
+interface LinksPaneProps {
+  isAdding: boolean;
+  setIsAdding: (isAdding: boolean) => void;
+}
+
+export const LinksPane = ({ isAdding, setIsAdding }: LinksPaneProps) => {
   const [links, setLinks] = useLocalStorage<Link[]>('bdeck-links', []);
-  const [isAdding, setIsAdding] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const [newUrl, setNewUrl] = useState('');
 
@@ -28,53 +32,44 @@ export const LinksPane = () => {
   };
 
   return (
-    <div className="space-y-4 h-full flex flex-col pt-2">
-      <div className="mb-2">
-        {isAdding ? (
-          <div className="space-y-2 bg-gray-50 p-2 border-2 border-black">
-            <input 
-              type="text" 
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              placeholder="Title" 
-              className="w-full text-xs border-b-2 border-black focus:outline-none bg-transparent" 
-            />
-            <input 
-              type="text" 
-              value={newUrl}
-              onChange={(e) => setNewUrl(e.target.value)}
-              placeholder="URL (https://...)" 
-              className="w-full text-xs border-b-2 border-black focus:outline-none bg-transparent" 
-            />
-            <div className="flex gap-2 justify-end">
-              <button 
-                onClick={() => setIsAdding(false)}
-                className="text-[10px] font-bold uppercase underline"
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={addLink}
-                className="text-[10px] font-bold uppercase bg-black text-white px-2 py-0.5"
-              >
-                Save
-              </button>
-            </div>
+    <div className="h-full flex flex-col pt-2">
+      {isAdding && (
+        <div className="mb-4 space-y-2 bg-gray-50 p-2 border-2 border-black">
+          <input 
+            type="text" 
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+            placeholder="Title" 
+            className="w-full text-xs border-b-2 border-black focus:outline-none bg-transparent" 
+          />
+          <input 
+            type="text" 
+            value={newUrl}
+            onChange={(e) => setNewUrl(e.target.value)}
+            placeholder="URL (https://...)" 
+            className="w-full text-xs border-b-2 border-black focus:outline-none bg-transparent" 
+          />
+          <div className="flex gap-2 justify-end">
+            <button 
+              onClick={() => setIsAdding(false)}
+              className="text-[10px] font-bold uppercase underline"
+            >
+              Cancel
+            </button>
+            <button 
+              onClick={addLink}
+              className="text-[10px] font-bold uppercase bg-black text-white px-2 py-0.5"
+            >
+              Save
+            </button>
           </div>
-        ) : (
-          <button 
-            onClick={() => setIsAdding(true)}
-            className="w-full p-1 border-2 border-black text-xs font-bold uppercase hover:bg-gray-100"
-          >
-            Add Link
-          </button>
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
         {links.length === 0 && !isAdding && (
           <div className="p-2 border-2 border-dashed border-black bg-gray-50 mb-4">
-            <p className="text-xs italic text-gray-500">No links found. Add your first link above.</p>
+            <p className="text-xs italic text-gray-500">No links found. Add your first link using the '+' button.</p>
           </div>
         )}
         <div className="flex flex-wrap gap-4">
