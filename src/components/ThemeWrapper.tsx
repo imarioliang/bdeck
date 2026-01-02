@@ -14,7 +14,7 @@ export default function ThemeWrapper({ children }: { children: React.ReactNode }
   }, []);
 
   if (!mounted) {
-    return <div className="invisible">{children}</div>;
+    return null;
   }
 
   return (
