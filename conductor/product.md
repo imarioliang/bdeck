@@ -21,6 +21,10 @@ a web app that display frequenly visited site, with features
     - **Command Palette (KBAR):** Global action menu (Ctrl+K) for rapid navigation and system commands.
     - **Quick-Access Keys:** Dedicated shortcuts (p, n, t) for instant pane focusing and interaction.
     - **System Customization:** Personalized terminal themes (Amber, Green, Blue) and global text scaling (Small to Large) accessible via the Command Center logo.
+- **Data Persistence & Sync:**
+    - **Cloud Synchronization:** Seamlessly syncs Links, Todos, Timers, and Notes across devices via Supabase.
+    - **Offline First:** Fully functional offline with automatic synchronization when online.
+    - **User Authentication:** Secure Email/Password login to manage personal data.
 
 ## Design Philosophy
 - **Information-Dense Dashboard:** The UI will prioritize information density, displaying critical data, links, and tools at a glance to maximize utility and minimize navigation steps.
