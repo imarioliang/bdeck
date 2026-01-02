@@ -10,6 +10,7 @@ vi.mock('@/hooks/useLocalStorage', () => ({
 
 describe('LinksPane', () => {
   const mockSetLinks = vi.fn();
+  const mockSetIsAdding = vi.fn();
   const initialLinks = [
     { title: 'Google', url: 'https://google.com' },
   ];
@@ -20,17 +21,14 @@ describe('LinksPane', () => {
   });
 
   it('should render initial links', () => {
-    render(<LinksPane />);
-    expect(screen.getByText(/Google/i)).toBeDefined();
+    render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} />);
+    expect(screen.getAllByText(/Google/i).length).toBeGreaterThan(0);
   });
 
   it('should call setLinks when adding a new link', () => {
-    render(<LinksPane />);
+    render(<LinksPane isAdding={true} setIsAdding={mockSetIsAdding} />);
     
-    // Toggle form
-    const addButton = screen.getByText('Add Link');
-    fireEvent.click(addButton);
-
+    // Form should be visible because isAdding is true
     const titleInput = screen.getByPlaceholderText('Title');
     const urlInput = screen.getByPlaceholderText('URL (https://...)');
     const saveButton = screen.getByText('Save');
@@ -43,5 +41,8 @@ describe('LinksPane', () => {
       ...initialLinks,
       { title: 'GitHub', url: 'https://github.com' },
     ]);
+    
+    // Should verify setIsAdding(false) was called
+    expect(mockSetIsAdding).toHaveBeenCalledWith(false);
   });
 });
