@@ -26,10 +26,7 @@
 - [x] Task: Skin `NotesPane`.
 - [x] Task: Conductor - User Manual Verification 'Component Skinning (Part 2 - Content)' (Protocol in workflow.md)
 
-## Phase 4: UI Controls & Polish
+## Phase 4: UI Controls & Polish [checkpoint: 202db25]
 - [x] Task: Add Skin Selector to `CustomizationMenu`.
-    - [ ] Implement a toggle or radio group in the menu to switch between "Modern" and "Retro".
 - [x] Task: Final Visual Audit & Tweaks.
-    - [ ] Check contrast ratios in retro mode with all three color themes (Amber, Green, Blue).
-    - [ ] Ensure specific "glitch" or CRT effects (if simple) are applied correctly.
-- [ ] Task: Conductor - User Manual Verification 'UI Controls & Polish' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'UI Controls & Polish' (Protocol in workflow.md)

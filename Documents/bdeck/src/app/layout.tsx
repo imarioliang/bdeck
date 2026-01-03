@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, VT323 } from "next/font/google";
+import { Geist, Geist_Mono, VT323, Press_Start_2P } from "next/font/google";
 import "./globals.css";
 import ThemeWrapper from "@/components/ThemeWrapper";
 import { CommandPalette } from "@/components/dashboard/CommandPalette";
@@ -20,6 +20,12 @@ const vt323 = VT323({
   subsets: ["latin"],
 });
 
+const pressStart2P = Press_Start_2P({
+  weight: "400",
+  variable: "--font-press-start",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "Bdeck // COMMAND CENTER",
   description: "Retro-Terminal Dashboard for Power Users",
@@ -32,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${vt323.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${vt323.variable} ${pressStart2P.variable} antialiased`}>
         <ThemeWrapper>
           <CommandPalette>
             {children}

@@ -20,7 +20,8 @@ a web app that display frequenly visited site, with features
 - **Keyboard-Driven Navigation:** An omnibar-style interface or robust keyboard shortcuts to navigate the dashboard and launch links without leaving the keyboard.
     - **Command Palette (KBAR):** Global action menu (Ctrl+K) for rapid navigation and system commands.
     - **Quick-Access Keys:** Dedicated shortcuts (p, n, t) for instant pane focusing and interaction.
-    - **System Customization:** Personalized terminal themes (Amber, Green, Blue) and global text scaling (Small to Large) accessible via the Command Center logo.
+    - **System Customization:** Personalized terminal themes (Amber, Green, Blue) and global text scaling (Small to Large).
+    - **Interface Skins:** Toggle between 'Modern' (clean, refined) and 'Retro' (authentic terminal mockup style with high-contrast borders and monospace headers) aesthetics via the Command Center logo.
 - **Data Persistence & Sync:**
     - **Cloud Synchronization:** Seamlessly syncs Links, Todos, Timers, and Notes across devices via Supabase.
     - **Offline First:** Fully functional offline with automatic synchronization when online.

@@ -42,7 +42,7 @@
   --foreground: var(--terminal-main);
   --panel-bg: #000000;
   --border-color: var(--terminal-main);
-  --font-family-base: var(--font-vt323), monospace;
+  --font-family-base: var(--font-press-start), monospace;
 }
 
 body {
@@ -51,6 +51,11 @@ body {
   font-family: var(--font-family-base);
   text-transform: uppercase;
   line-height: 1.2;
+}
+
+[data-skin='retro'] body {
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Brutalist Custom Scrollbar */
