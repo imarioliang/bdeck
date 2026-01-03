@@ -19,21 +19,17 @@
     - [x] Add the "status line" mock elements (e.g., memory, PID placeholders) to the pane footer/header for visual flair.
 - [x] Task: Conductor - User Manual Verification 'Component Skinning (Part 1 - Layout & Headers)' (Protocol in workflow.md)
 
-## Phase 3: Component Skinning (Part 2 - Content)
+## Phase 3: Component Skinning (Part 2 - Content) [checkpoint: 9cbc6c0]
 - [x] Task: Skin `LinksPane` and `SortableLinkItem`.
-    - [ ] Apply retro hover effects and list markers (`>`) to link items.
 - [x] Task: Skin `TodoPane` and `TodoItem`.
-    - [ ] Style checkboxes and text inputs to match the terminal aesthetic (e.g., `[x]` vs `[ ]`).
 - [x] Task: Skin `TimersPane`.
-    - [ ] Update the digital clock font and button styles to look like terminal commands.
 - [x] Task: Skin `NotesPane`.
-    - [ ] Ensure the textarea mimics a terminal text editor (monospaced, caret style).
-- [ ] Task: Conductor - User Manual Verification 'Component Skinning (Part 2 - Content)' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Component Skinning (Part 2 - Content)' (Protocol in workflow.md)
 
 ## Phase 4: UI Controls & Polish
-- [ ] Task: Add Skin Selector to `CustomizationMenu`.
+- [x] Task: Add Skin Selector to `CustomizationMenu`.
     - [ ] Implement a toggle or radio group in the menu to switch between "Modern" and "Retro".
-- [ ] Task: Final Visual Audit & Tweaks.
+- [x] Task: Final Visual Audit & Tweaks.
     - [ ] Check contrast ratios in retro mode with all three color themes (Amber, Green, Blue).
     - [ ] Ensure specific "glitch" or CRT effects (if simple) are applied correctly.
 - [ ] Task: Conductor - User Manual Verification 'UI Controls & Polish' (Protocol in workflow.md)

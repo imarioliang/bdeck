@@ -1,9 +1,9 @@
 'use client';
 
-import { useDashboardStore, TerminalTheme, FontSize } from '@/store/useDashboardStore';
+import { useDashboardStore, TerminalTheme, FontSize, SkinType } from '@/store/useDashboardStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { supabase } from '@/utils/supabaseClient';
-import { X, Download, RotateCcw, Monitor, Type, User, LogIn, LogOut } from 'lucide-react';
+import { X, Download, RotateCcw, Monitor, Type, User, LogIn, LogOut, Layers } from 'lucide-react';
 
 interface CustomizationMenuProps {
   isOpen: boolean;
@@ -11,13 +11,18 @@ interface CustomizationMenuProps {
 }
 
 export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) => {
-  const { theme, fontSize, setTheme, setFontSize, resetAllData } = useDashboardStore();
+  const { theme, fontSize, skin, setTheme, setFontSize, setSkin, resetAllData } = useDashboardStore();
   const { user, setAuthModalOpen } = useAuthStore();
 
   const themes: { name: string; value: TerminalTheme; color: string }[] = [
     { name: 'Amber', value: 'amber', color: '#ffb000' },
     { name: 'Green', value: 'green', color: '#4ade80' },
     { name: 'Blue', value: 'blue', color: '#3b82f6' },
+  ];
+
+  const skins: { name: string; value: SkinType }[] = [
+    { name: 'Modern', value: 'modern' },
+    { name: 'Retro', value: 'retro' },
   ];
 
   const fontSizes: { name: string; value: FontSize }[] = [
@@ -111,6 +116,29 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
               >
                 <span className="text-[0.65rem] font-bold uppercase">{t.name}</span>
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: t.color }}></div>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* SKIN SELECTOR */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 text-white/40">
+            <Layers size={14} />
+            <span className="text-[0.65rem] font-black tracking-widest uppercase">Interface Skin</span>
+          </div>
+          <div className="flex gap-2">
+            {skins.map((s) => (
+              <button
+                key={s.value}
+                onClick={() => setSkin(s.value)}
+                className={`flex-1 py-2 border text-[0.6rem] font-black uppercase transition-all ${
+                  skin === s.value 
+                    ? 'border-terminal-main bg-terminal-main/10 text-terminal-main' 
+                    : 'border-white/5 bg-white/[0.02] text-white/40 hover:border-white/20'
+                }`}
+              >
+                {s.name}
               </button>
             ))}
           </div>
