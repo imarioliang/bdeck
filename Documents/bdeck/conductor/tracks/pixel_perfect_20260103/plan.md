@@ -6,13 +6,13 @@
 - [x] Task: Remove Redundant Counters in `DirectoriesSidebar.tsx`. (644081f)
 - [x] Task: Conductor - User Manual Verification 'De-cluttering & Global Cleanup' (Protocol in workflow.md) (e5a9ef0)
 
-## Phase 2: Task List Enhancements
+## Phase 2: Task List Enhancements [checkpoint: 9e18110]
 - [x] Task: Create Tests for Task List Scaling. (38d454d)
 - [x] Task: Refactor `TodoPane.tsx` for Retro Scaling. (38d454d)
     - [x] Increase font size for task text.
     - [x] Increase size of checkboxes and drag handles proportionally.
     - [x] Ensure vertical alignment remains centered.
-- [~] Task: Conductor - User Manual Verification 'Task List Enhancements' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Task List Enhancements' (Protocol in workflow.md) (674f794)
 
 ## Phase 3: Structural Constraints (Min/Max Heights)
 - [ ] Task: Create Tests for Height Constraints.
