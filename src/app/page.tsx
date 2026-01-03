@@ -9,6 +9,7 @@ import { NotesPane } from "@/components/dashboard/NotesPane";
 import { CustomizationMenu } from "@/components/dashboard/CustomizationMenu";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { SyncManager } from "@/components/sync/SyncManager";
+import { HeaderIndicators } from "@/components/dashboard/HeaderIndicators";
 import { Search } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useDashboardStore } from '@/store/useDashboardStore';
@@ -66,15 +67,19 @@ export default function Home() {
                 <p className="text-[0.65rem] text-white/30 mt-2 font-bold tracking-widest group-hover:text-white/50 transition-colors">&gt; SELECT A SUBSYSTEM TO INITIALIZE...</p>
               </button>
               
-              <div className="relative group w-full md:w-auto">
-                <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-terminal-main transition-colors" size={14} />
-                <input 
-                  type="text" 
-                  placeholder="SEARCH MODULES..."
-                  value={linksSearchTerm}
-                  onChange={(e) => setLinksSearchTerm(e.target.value)}
-                  className="bg-black/40 border border-white/10 px-4 pr-10 py-2 text-[0.65rem] focus:outline-none focus:border-terminal-main/40 w-full md:w-64 transition-all uppercase tracking-widest placeholder:text-white/5"
-                />
+              <div className="flex flex-1 items-center justify-center md:justify-end gap-6 w-full md:w-auto">
+                <HeaderIndicators />
+                
+                <div className="relative group w-full md:w-auto">
+                  <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-terminal-main transition-colors" size={14} />
+                  <input 
+                    type="text" 
+                    placeholder="SEARCH MODULES..."
+                    value={linksSearchTerm}
+                    onChange={(e) => setLinksSearchTerm(e.target.value)}
+                    className="bg-black/40 border border-white/10 px-4 pr-10 py-2 text-[0.65rem] focus:outline-none focus:border-terminal-main/40 w-full md:w-64 transition-all uppercase tracking-widest placeholder:text-white/5"
+                  />
+                </div>
               </div>
             </div>
           </header>
