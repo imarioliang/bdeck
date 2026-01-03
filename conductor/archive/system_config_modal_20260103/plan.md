@@ -8,6 +8,6 @@
 ## [checkpoint: d60c0ce]
 
 ## Phase 2: Verification
-- [ ] Task: Functional Regression Check
+- [~] Task: Functional Regression Check
     - Verify that all settings (Theme change, Text scaling, Export, Factory Reset) still work correctly within the new modal structure.
 - [ ] Task: Conductor - User Manual Verification 'System Config as Centered Modal' (Protocol in workflow.md)

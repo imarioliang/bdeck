@@ -26,4 +26,4 @@
 ## [checkpoint: ef8b073]
 
 ## Phase 3: Final Verification
-- [ ] Task: Conductor - User Manual Verification 'Small UX Improvements & Indicators' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Small UX Improvements & Indicators' (Protocol in workflow.md)
