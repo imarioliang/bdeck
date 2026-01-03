@@ -1,11 +1,11 @@
 # Track Plan: Retro Skin UI Improvement
 
 ## Phase 1: Typography & Global Aesthetic
-- [x] Task: Update Global Fonts. (88c177a)
-    - [ ] Import `Press Start 2P` from Next.js Google Fonts in `src/app/layout.tsx`.
-    - [ ] Update `src/app/globals.css` to use `Press Start 2P` for the `retro` skin.
-    - [ ] Add CSS to disable `antialiased` font smoothing specifically for `data-skin='retro'`.
-- [ ] Task: Conductor - User Manual Verification 'Typography & Global Aesthetic' (Protocol in workflow.md)
+- [x] Task: Update Global Fonts. (7994abd)
+    - [x] Import `Press Start 2P` from Next.js Google Fonts in `src/app/layout.tsx`.
+    - [x] Update `src/app/globals.css` to use `Press Start 2P` for the `retro` skin.
+    - [x] Add CSS to disable `antialiased` font smoothing specifically for `data-skin='retro'`.
+- [x] Task: Conductor - User Manual Verification 'Typography & Global Aesthetic' (Protocol in workflow.md) (7994abd)
 
 ## Phase 2: Links Pane Transformation (Grid to List)
 - [ ] Task: Refactor `LinksPane` for Skin-Based Layout.
