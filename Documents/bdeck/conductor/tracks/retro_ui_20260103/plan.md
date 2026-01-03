@@ -8,15 +8,15 @@
 - [x] Task: Conductor - User Manual Verification 'Typography & Global Aesthetic' (Protocol in workflow.md) (7994abd)
 
 ## Phase 2: Links Pane Transformation (Grid to List)
-- [ ] Task: Refactor `LinksPane` for Skin-Based Layout.
-    - [ ] Modify `src/components/dashboard/LinksPane.tsx` to switch from a grid to a list/table structure when in retro mode.
-    - [ ] Implement the `FILENAME` and `STATUS` column headers.
-- [ ] Task: Update `SortableLinkItem` for List Rendering.
-    - [ ] Update the component to render as a table row or a full-width list item when `isRetro` is true.
-    - [ ] Ensure drag-and-drop functionality persists in the list view.
-- [ ] Task: Update `LinksPane` Tests.
-    - [ ] Update `src/components/dashboard/LinksPane.test.tsx` to verify list-style rendering in retro mode.
-- [ ] Task: Conductor - User Manual Verification 'Links Pane Transformation' (Protocol in workflow.md)
+- [x] Task: Refactor `LinksPane` for Skin-Based Layout. (1c81495, 9ed3f15)
+    - [x] Modify `src/components/dashboard/LinksPane.tsx` to switch from a grid to a list/table structure when in retro mode.
+    - [x] Implement the `FILENAME` and `STATUS` column headers.
+- [x] Task: Update `SortableLinkItem` for List Rendering. (1c81495, 9ed3f15)
+    - [x] Update the component to render as a table row or a full-width list item when `isRetro` is true.
+    - [x] Ensure drag-and-drop functionality persists in the list view.
+- [x] Task: Update `LinksPane` Tests. (1c81495)
+    - [x] Update `src/components/dashboard/LinksPane.test.tsx` to verify list-style rendering in retro mode.
+- [x] Task: Conductor - User Manual Verification 'Links Pane Transformation' (Protocol in workflow.md) (9ed3f15)
 
 ## Phase 3: UI Refinements (Timers & Todo)
 - [ ] Task: Rename and Style Timers Rest Button.
