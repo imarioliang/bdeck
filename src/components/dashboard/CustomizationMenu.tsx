@@ -63,13 +63,13 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
         <section className="space-y-4 border-b border-white/5 pb-6">
             <div className="flex items-center gap-2 text-white/40">
                 <User size={14} />
-                <span className="text-[0.65rem] font-black tracking-widest uppercase">Operator Identity</span>
+                <span className="text-[0.65rem] font-black tracking-widest uppercase text-white/90">Operator Identity</span>
             </div>
             {user ? (
                 <div className="bg-white/[0.02] border border-white/5 p-4 flex flex-col gap-3">
                     <div className="flex items-center gap-2 text-terminal-main">
                         <div className="w-2 h-2 rounded-full bg-terminal-main animate-pulse"></div>
-                        <span className="text-[0.6rem] font-black uppercase truncate">{user.email}</span>
+                        <span className="text-[0.6rem] font-black uppercase truncate text-white/90">{user.email}</span>
                     </div>
                     <button 
                         onClick={handleLogout}
@@ -81,9 +81,8 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
                 </div>
             ) : (
                 <button 
-                    onClick={() => { onClose(); setAuthModalOpen(true); }}
-                    className="w-full py-3 border border-terminal-main/30 bg-terminal-main/5 hover:bg-terminal-main/10 text-terminal-main flex items-center justify-center gap-2 text-[0.65rem] font-black uppercase tracking-widest transition-all shadow-[0_0_15px_-5px_rgba(255,176,0,0.15)]"
-                >
+                                            onClick={() => { onClose(); setAuthModalOpen(true); }}
+                                            className="w-full py-3 border border-terminal-main/30 bg-terminal-main/5 hover:bg-terminal-main/10 text-terminal-main flex items-center justify-center gap-2 text-[0.65rem] font-black uppercase tracking-widest transition-all shadow-[0_0_15px_-5px_rgba(255,176,0,0.15)] text-white/90"                >
                     <LogIn size={14} />
                     Identify / Login
                 </button>

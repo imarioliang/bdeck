@@ -76,7 +76,7 @@ const SortableTodoItem = ({ todo, onToggle, onDelete, onUpdateText, onKeyDown, i
             onChange={(e) => onUpdateText(e.target.value)}
             onKeyDown={onKeyDown}
             placeholder="OBJECTIVE_INPUT..."
-            className={`bg-transparent focus:outline-none border-none p-0 text-[10px] font-black uppercase tracking-wider transition-all ${todo.done ? 'line-through text-white/10' : 'text-white/80'}`}
+            className={`bg-transparent focus:outline-none border-none p-0 text-[10px] font-black uppercase tracking-wider transition-all ${todo.done ? 'line-through text-white/30' : 'text-white/90'}`}}
           />
           <span className={`text-[7px] font-black tracking-widest ${todo.done ? 'text-terminal-green/30' : 'text-white/10'}`}>
             {todo.done ? 'STATUS: NOMINAL' : 'PRIORITY: STANDBY'}

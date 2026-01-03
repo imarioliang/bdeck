@@ -62,7 +62,7 @@ export default function Home() {
                   <AsciiLogo />
                   <div className="flex flex-col">
                     <h1 className="text-sm md:text-base font-black tracking-[0.3em] uppercase leading-none text-terminal-main group-hover:text-white transition-colors">Command Center</h1>
-                    <p className="text-[0.55rem] text-white/20 mt-1.5 font-bold tracking-widest group-hover:text-white/40 transition-colors uppercase">&gt; System_Config_v4.2</p>
+                    <p className="text-[0.55rem] text-white/40 mt-1.5 font-bold tracking-widest group-hover:text-white/60 transition-colors uppercase">&gt; System_Config_v4.2</p>
                   </div>
                 </div>
               </button>
@@ -105,11 +105,11 @@ export default function Home() {
                     autoFocus={isSearchExpanded}
                     value={linksSearchTerm}
                     onChange={(e) => setLinksSearchTerm(e.target.value)}
-                    className={`bg-black/40 border border-white/10 py-2 text-[0.65rem] focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest placeholder:text-white/5 ${
+                    className={`bg-black/40 border border-white/10 py-2 text-[0.65rem] focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest placeholder:text-white/20 ${
                       isSearchExpanded 
                         ? 'w-full pl-10 pr-4 opacity-100' 
                         : 'w-0 opacity-0 pointer-events-none'
-                    }`}
+                    }`}}
                   />
                   {isSearchExpanded && (
                     <button 

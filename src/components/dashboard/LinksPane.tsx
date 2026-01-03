@@ -103,7 +103,7 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
           <Icon size={18} strokeWidth={1.5} />
         </div>
         <div className="flex flex-col items-center gap-0.5 w-full px-1">
-          <span className="text-[0.6rem] font-black tracking-[0.15em] text-white/60 group-hover:text-white uppercase truncate w-full text-center">
+          <span className="text-[0.6rem] font-black tracking-[0.15em] text-white/90 group-hover:text-white uppercase truncate w-full text-center">
             {link.title}
           </span>
           <span className="text-[0.35rem] text-white/10 font-bold uppercase tracking-tighter truncate w-full text-center">

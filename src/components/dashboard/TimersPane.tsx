@@ -105,12 +105,7 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, onUpdateName,
                   className="bg-white/5 border-none p-0 text-[0.6rem] font-black uppercase tracking-wider focus:outline-none focus:ring-0 text-white w-full"
                 />
               ) : (
-                <span 
-                  onClick={() => setIsEditing(true)}
-                  className={`text-[0.6rem] font-black uppercase tracking-wider truncate cursor-text hover:text-terminal-main transition-colors ${isOverLimit ? 'text-terminal-red' : 'text-white/70'}`}
-                >
-                  {project.name}
-                </span>
+              <span className={`text-[0.6rem] font-black uppercase tracking-wider truncate ${isOverLimit ? 'text-terminal-red' : 'text-white/90'}`}>{project.name}</span>
               )}
               <span className={`text-[0.7rem] font-black font-mono tracking-tighter ${project.isActive ? (isOverLimit ? 'text-terminal-red' : 'text-terminal-main') : 'text-white/20'}`}>
                 {formatTime(project.time)}
