@@ -30,6 +30,7 @@ interface Link {
   url: string;
   category?: string;
   isPinned?: boolean;
+  tags?: string[];
 }
 
 interface LinksPaneProps {
@@ -83,45 +84,57 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
     opacity: isDragging ? 0.5 : 1,
   };
 
+  const categoryShorthand = useMemo(() => {
+    if (!link.category) return '.LNK';
+    const clean = link.category.replace(/[^a-zA-Z0-9]/g, '');
+    return `.${clean.substring(0, 3).toUpperCase()}`;
+  }, [link.category]);
+
+  const tagDisplay = useMemo(() => {
+    if (!link.tags || link.tags.length === 0) return '---';
+    const firstTwo = link.tags.slice(0, 2).join(' ');
+    return link.tags.length > 2 ? `${firstTwo}...` : firstTwo;
+  }, [link.tags]);
+
   if (isRetro) {
     return (
       <div 
         ref={setNodeRef}
         style={style}
-        className="relative group w-full flex items-center border border-terminal-main/20 -mt-[1px] first:mt-0 retro-hover-invert transition-colors cursor-pointer min-h-[32px]"
+        className="relative group w-full flex items-center border border-terminal-main/20 -mt-[1px] first:mt-0 retro-hover-invert transition-colors cursor-pointer min-h-[40px]"
       >
         <a 
           href={link.url} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="flex-1 flex items-center py-1.5 px-3 gap-0 min-w-0"
+          className="flex-1 flex items-center py-2 px-3 gap-0 min-w-0"
         >
-           <div className="w-[45%] flex items-center gap-2 pr-2 min-w-0">
-             <Icon size={12} className="text-terminal-main group-hover:text-black shrink-0" />
-             <span className="text-[10px] font-mono uppercase truncate text-terminal-main group-hover:text-black">{link.title}</span>
+           <div className="w-[45%] flex items-center gap-3 pr-2 min-w-0">
+             <Icon size={14} className="text-terminal-main group-hover:text-black shrink-0" />
+             <span className="text-xs font-mono uppercase truncate text-terminal-main group-hover:text-black font-black">{link.title}</span>
            </div>
 
-           <div className="w-[15%] text-[9px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right pr-4">
-             .EXE
+           <div className="w-[15%] text-[10px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right pr-4">
+             {categoryShorthand}
            </div>
 
-           <div className="w-[15%] text-[9px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right pr-4">
-             4KB
+           <div className="w-[15%] text-[10px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right pr-4">
+             {tagDisplay}
            </div>
 
-           <div className="flex-1 text-[9px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right">
+           <div className="flex-1 text-[10px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right font-bold">
              {link.isPinned ? '[PRIORITY]' : status}
            </div>
         </a>
 
         {/* LIST ACTIONS (RETRO) */}
         <div className="flex items-center gap-3 px-3 opacity-0 group-hover:opacity-100 transition-opacity h-full absolute right-0 border-l border-terminal-main/20">
-           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="text-[9px] text-terminal-main hover:bg-terminal-main hover:text-black px-1 border border-terminal-main/40 group-hover:text-black group-hover:border-black/40 group-hover:hover:bg-black group-hover:hover:text-terminal-main">
+           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="text-[10px] text-terminal-main hover:bg-terminal-main hover:text-black px-1 border border-terminal-main/40 group-hover:text-black group-hover:border-black/40 group-hover:hover:bg-black group-hover:hover:text-terminal-main">
              {link.isPinned ? 'UNPIN' : 'PIN'}
            </button>
-           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} className="text-[9px] text-terminal-main hover:bg-terminal-main hover:text-black px-1 border border-terminal-main/40 group-hover:text-black group-hover:border-black/40 group-hover:hover:bg-black group-hover:hover:text-terminal-main">EDIT</button>
-           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} className="text-[9px] text-terminal-red hover:bg-terminal-red hover:text-black px-1 border border-terminal-red/40 group-hover:text-black group-hover:border-black/40 group-hover:hover:bg-black group-hover:hover:text-terminal-red">DEL</button>
-           <div {...attributes} {...listeners} className="text-terminal-main/30 cursor-grab active:cursor-grabbing text-[9px]">
+           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} className="text-[10px] text-terminal-main hover:bg-terminal-main hover:text-black px-1 border border-terminal-main/40 group-hover:text-black group-hover:border-black/40 group-hover:hover:bg-black group-hover:hover:text-terminal-main">EDIT</button>
+           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} className="text-[10px] text-terminal-red hover:bg-terminal-red hover:text-black px-1 border border-terminal-red/40 group-hover:text-black group-hover:border-black/40 group-hover:hover:bg-black group-hover:hover:text-terminal-red">DEL</button>
+           <div {...attributes} {...listeners} className="text-terminal-main/30 cursor-grab active:cursor-grabbing text-[10px]">
             [::]
           </div>
         </div>
@@ -193,6 +206,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
   const [newTitle, setNewTitle] = useState('');
   const [newUrl, setNewUrl] = useState('');
   const [newCategory, setNewCategory] = useState('SYSTEM');
+  const [newTags, setNewTags] = useState('');
   const [isCustomCategory, setIsCustomCategory] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -209,12 +223,13 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
 
   // Migration logic
   useEffect(() => {
-    const hasMissingIds = links.some(l => !l.id || !l.category);
+    const hasMissingIds = links.some(l => !l.id || !l.category || !l.tags);
     if (hasMissingIds) {
       const sanitized = links.map((l, i) => ({
         ...l,
         id: l.id || `link-${i}-${Date.now()}`,
-        category: l.category || 'SYSTEM'
+        category: l.category || 'SYSTEM',
+        tags: l.tags || []
       }));
       setLinks(sanitized);
     }
@@ -233,7 +248,8 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
   const filteredLinks = useMemo(() => {
     return sortedLinks.filter(link => {
       const matchesSearch = link.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                           link.url.toLowerCase().includes(searchTerm.toLowerCase());
+                           link.url.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           (link.tags && link.tags.some(t => t.toLowerCase().includes(searchTerm.toLowerCase())));
       const matchesCategory = activeCategory === 'ALL SYSTEMS' || link.category === activeCategory;
       return matchesSearch && matchesCategory;
     });
@@ -245,15 +261,16 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
       if (!/^https?:\/\//i.test(formattedUrl)) formattedUrl = 'https://' + formattedUrl;
       
       const category = newCategory.trim().toUpperCase();
+      const tags = newTags.split(',').map(t => t.trim()).filter(Boolean);
 
       if (editingId) {
-        setLinks(prev => prev.map(l => l.id === editingId ? { ...l, title: newTitle.trim(), url: formattedUrl, category } : l));
+        setLinks(prev => prev.map(l => l.id === editingId ? { ...l, title: newTitle.trim(), url: formattedUrl, category, tags } : l));
         setEditingId(null);
       } else {
         const id = `link-${Date.now()}`;
-        setLinks(prev => [...prev, { id, title: newTitle.trim(), url: formattedUrl, category, isPinned: false }]);
+        setLinks(prev => [{ id, title: newTitle.trim(), url: formattedUrl, category, isPinned: false, tags }, ...prev]);
       }
-      setNewTitle(''); setNewUrl(''); setIsAdding(false); setIsCustomCategory(false);
+      setNewTitle(''); setNewUrl(''); setNewTags(''); setIsAdding(false); setIsCustomCategory(false);
     }
   };
 
@@ -261,6 +278,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
     const link = links.find(l => l.id === id);
     if (link) {
       setNewTitle(link.title); setNewUrl(link.url); setNewCategory(link.category || 'SYSTEM'); setEditingId(id); setIsAdding(true);
+      setNewTags(link.tags?.join(', ') || '');
     }
   };
 
@@ -282,7 +300,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
         {/* ADD APP BUTTON - TOP POSITION */}
         {isRetro && (
           <button 
-            onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
+            onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setNewTags(''); setIsAdding(true); setIsCustomCategory(false); }}
             className="w-full flex items-center py-1.5 px-3 gap-4 border-b border-dashed border-terminal-main/20 text-terminal-main/40 hover:bg-terminal-main/5 hover:text-terminal-main transition-all group"
           >
             <span className="text-xs font-mono">+</span>
@@ -347,6 +365,14 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                   type="text" value={newUrl} onChange={e => setNewUrl(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && addLink()}
                   placeholder="PROTOCOL_PATH..." className={`w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80 ${isRetro ? 'font-mono' : ''}`}
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Tags (comma separated)</label>
+                <input 
+                  type="text" value={newTags} onChange={e => setNewTags(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && addLink()}
+                  placeholder="TAGS (COMMA SEPARATED)..." className={`w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80 ${isRetro ? 'font-mono' : ''}`}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
