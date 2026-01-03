@@ -25,11 +25,10 @@
 - [x] Task: Scale Link Row Typography. (dc7d19f)
 - [x] Task: Conductor - User Manual Verification 'Visual Scaling & Polish' (Protocol in workflow.md) (5c6ece2)
 
-## Phase 5: Glitch Hover Animations
-- [ ] Task: Create Tests for Hover Animations.
-    - [ ] Verify animation trigger and keyframe existence in CSS.
-- [ ] Task: Implement Glitch Keyframes in `globals.css`.
-    - [ ] Define `shake` and `scale-glitch` animations.
-- [ ] Task: Apply Animations to Sidebar and Links.
-    - [ ] Update `DirectoriesSidebar.tsx` and `LinksPane.tsx` to trigger animations on hover.
-- [ ] Task: Conductor - User Manual Verification 'Glitch Hover Animations' (Protocol in workflow.md)
+## Phase 4: Glitch Hover Animations
+- [x] Task: Create Tests for Hover Animations. (9aad0c4)
+- [x] Task: Implement Glitch Keyframes in `globals.css`. (9aad0c4)
+    - [x] Define `shake` and `scale-glitch` animations.
+- [x] Task: Apply Animations to Sidebar and Links. (9aad0c4)
+    - [x] Update `DirectoriesSidebar.tsx` and `LinksPane.tsx` to trigger animations on hover.
+- [~] Task: Conductor - User Manual Verification 'Glitch Hover Animations' (Protocol in workflow.md)
