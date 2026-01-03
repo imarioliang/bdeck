@@ -15,7 +15,7 @@ import { Search } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useDashboardStore } from '@/store/useDashboardStore';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
-import { useSkin } from '@/hooks/useSkin';
+import { DirectoriesSidebar } from "@/components/dashboard/DirectoriesSidebar";
 
 export default function Home() {
   const [linksSearchTerm, setLinksSearchTerm] = useState('');
@@ -40,7 +40,9 @@ export default function Home() {
   const categories = useMemo(() => {
     const base = ['ALL SYSTEMS', 'DEVELOPMENT', 'COMMUNICATION', 'ANALYTICS', 'SYSTEM'];
     const custom = links.map(l => l.category).filter(Boolean) as string[];
-    return Array.from(new Set([...base, ...custom]));
+    const uniqueCategories = Array.from(new Set([...base, ...custom]));
+    // Remove 'ALL SYSTEMS' from the sidebar categories since it's implied or handled separately
+    return uniqueCategories.filter(c => c !== 'ALL SYSTEMS');
   }, [links]);
 
   return (
@@ -113,7 +115,7 @@ export default function Home() {
               <div className={`flex items-center justify-between gap-4 border-t pt-6 ${isRetro ? 'border-terminal-main/50' : 'border-white/5'}`}>
                 {!isSearchExpanded && (
                   <nav className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-left duration-300">
-                    {categories.map((tab) => (
+                    {['ALL SYSTEMS', ...categories].map((tab) => (
                       <button 
                         key={tab}
                         onClick={() => setActiveCategory(tab)}
@@ -170,15 +172,28 @@ export default function Home() {
             </header>
           )}
 
-          {/* APPS GRID */}
-          <section className={`p-4 md:p-6 ${isRetro ? 'flex flex-col' : 'grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3'}`}>
-            <LinksPane 
-              isAdding={isAddingLink} 
-              setIsAdding={setIsAddingLink} 
-              searchTerm={linksSearchTerm}
-              activeCategory={activeCategory}
-            />
-          </section>
+          {/* MAIN SECTION WITH SIDEBAR AND GRID */}
+          <div className={`flex flex-col md:flex-row h-full min-h-[400px]`}>
+            {isRetro && (
+              <aside className="w-full md:w-[250px] border-r border-terminal-main bg-black">
+                <DirectoriesSidebar 
+                  categories={['ALL SYSTEMS', ...categories]} 
+                  activeCategory={activeCategory} 
+                  setActiveCategory={setActiveCategory} 
+                />
+              </aside>
+            )}
+            
+            {/* APPS GRID */}
+            <section className={`flex-1 p-4 md:p-6 ${isRetro ? 'flex flex-col overflow-y-auto custom-scrollbar' : 'grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3'}`}>
+              <LinksPane 
+                isAdding={isAddingLink} 
+                setIsAdding={setIsAddingLink} 
+                searchTerm={linksSearchTerm}
+                activeCategory={activeCategory}
+              />
+            </section>
+          </div>
         </div>
 
         {/* MAIN DASHBOARD CONTENT */}
