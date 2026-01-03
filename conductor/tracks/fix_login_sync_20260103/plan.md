@@ -18,7 +18,7 @@
 ## [checkpoint: 66e1f28]
 
 ## Phase 3: Final Verification
-- [ ] Task: Full Suite Regression
+- [x] Task: Full Suite Regression [a62664a]
     - Run all automated tests to ensure no regressions in Link, Todo, or Timer functionality.
     - Perform a manual audit of the `SyncManager` state transitions.
 - [ ] Task: Conductor - User Manual Verification 'Fix Local Data Loss on Login' (Protocol in workflow.md)
