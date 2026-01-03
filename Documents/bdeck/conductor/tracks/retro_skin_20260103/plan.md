@@ -1,20 +1,20 @@
 # Track Plan: Retro Terminal Skin
 
-## Phase 1: Store & Global Styles Infrastructure
-- [~] Task: Update `DashboardStore` to support skin selection.
-    - [ ] Add `skin: 'modern' | 'retro'` to the store interface and initial state.
-    - [ ] Update `useDashboardStore` to persist the `skin` preference.
+## Phase 1: Store & Global Styles Infrastructure [checkpoint: b1c8e17]
+- [x] Task: Update `DashboardStore` to support skin selection.
+    - [x] Add `skin: 'modern' | 'retro'` to the store interface and initial state.
+    - [x] Update `useDashboardStore` to persist the `skin` preference.
 - [x] Task: Create global CSS variables for the Retro skin.
-    - [ ] Add `[data-skin='retro']` variables to `globals.css` (fonts, borders, colors).
-    - [ ] Import a retro web font (e.g., VT323 or similar) in the root layout.
+    - [x] Add `[data-skin='retro']` variables to `globals.css` (fonts, borders, colors).
+    - [x] Import a retro web font (e.g., VT323 or similar) in the root layout.
 - [x] Task: Update `ThemeWrapper` to apply the skin attribute.
-    - [ ] Modify `ThemeWrapper.tsx` to read the `skin` state and apply `data-skin="..."` to the `<html>` element.
-- [ ] Task: Conductor - User Manual Verification 'Store & Global Styles Infrastructure' (Protocol in workflow.md)
+    - [x] Modify `ThemeWrapper.tsx` to read the `skin` state and apply `data-skin="..."` to the `<html>` element.
+- [x] Task: Conductor - User Manual Verification 'Store & Global Styles Infrastructure' (Protocol in workflow.md)
 
 ## Phase 2: Component Skinning (Part 1 - Layout & Headers)
-- [ ] Task: Create a `SkinAware` container or utility.
+- [x] Task: Create a `SkinAware` container or utility.
     - [ ] Create a utility class or component that conditionally applies retro styles (borders, padding) based on the active skin.
-- [ ] Task: Update `Pane` components to support retro headers.
+- [x] Task: Update `Pane` components to support retro headers.
     - [ ] Modify `Pane.tsx` (or equivalent wrappers) to render `[ TITLE ]` style headers when in retro mode.
     - [ ] Add the "status line" mock elements (e.g., memory, PID placeholders) to the pane footer/header for visual flair.
 - [ ] Task: Conductor - User Manual Verification 'Component Skinning (Part 1 - Layout & Headers)' (Protocol in workflow.md)
