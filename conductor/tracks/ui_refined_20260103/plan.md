@@ -14,7 +14,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Header & Navigation' (Protocol in workflow.md)
 
 ## Phase 2: High-Density Grid (Compact Modules)
-- [ ] Task: Refactor SortableLinkItem for Compactness
+- [x] Task: Refactor SortableLinkItem for Compactness [a66b158]
     - Update `src/components/dashboard/LinksPane.tsx`.
     - Reduce internal padding, icon size, and font sizes within the link cards.
 - [ ] Task: Increase Grid Column Density
