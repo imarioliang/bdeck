@@ -109,7 +109,7 @@ export default function Home() {
                       isSearchExpanded 
                         ? 'w-full pl-10 pr-4 opacity-100' 
                         : 'w-0 opacity-0 pointer-events-none'
-                    }`}}
+                    }`}
                   />
                   {isSearchExpanded && (
                     <button 
