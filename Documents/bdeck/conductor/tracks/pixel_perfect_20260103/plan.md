@@ -29,7 +29,6 @@
 - [x] Task: Implement Border Snap Alignment. (dda743c, 2d7c423)
 - [x] Task: Conductor - User Manual Verification 'Spacing & Alignment' (Protocol in workflow.md) (874962d)
 
-## Phase 5: Final Audit & Stability
-- [~] Task: Final Visual Audit.
-    - [x] Audit all interactions (hover, toggle, filter) for "jumpy" layout shifts.
-- [~] Task: Conductor - User Manual Verification 'Final Audit & Stability' (Protocol in workflow.md)
+## Phase 5: Final Audit & Stability [checkpoint: 1560c49]
+- [x] Task: Final Visual Audit. (874962d, 1560c49)
+- [x] Task: Conductor - User Manual Verification 'Final Audit & Stability' (Protocol in workflow.md) (1560c49)
