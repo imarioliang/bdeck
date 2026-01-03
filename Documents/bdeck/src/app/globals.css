@@ -13,17 +13,17 @@
   font-size: 20px;
 }
 
-/* Retro skin specific scaling (Press Start 2P is bulky) */
+/* Retro skin specific scaling (Press Start 2P is bulky but compact spacing helps) */
 :root[data-skin='retro'][data-size='small'] {
-  font-size: 8px;
-}
-
-:root[data-skin='retro'][data-size='standard'] {
   font-size: 10px;
 }
 
+:root[data-skin='retro'][data-size='standard'] {
+  font-size: 12px;
+}
+
 :root[data-skin='retro'][data-size='large'] {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 :root {
