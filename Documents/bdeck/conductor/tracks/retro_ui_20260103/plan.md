@@ -7,7 +7,7 @@
     - [x] Add CSS to disable `antialiased` font smoothing specifically for `data-skin='retro'`.
 - [x] Task: Conductor - User Manual Verification 'Typography & Global Aesthetic' (Protocol in workflow.md) (7994abd)
 
-## Phase 2: Links Pane Transformation (Grid to List)
+## Phase 2: Links Pane Transformation (Grid to List) [checkpoint: a981be6]
 - [x] Task: Refactor `LinksPane` for Skin-Based Layout. (1c81495, 9ed3f15)
     - [x] Modify `src/components/dashboard/LinksPane.tsx` to switch from a grid to a list/table structure when in retro mode.
     - [x] Implement the `FILENAME` and `STATUS` column headers.
