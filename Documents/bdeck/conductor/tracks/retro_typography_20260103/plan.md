@@ -15,7 +15,7 @@
     - [x] Audit the root font sizes to ensure they still feel correct with the new spacing.
 - [x] Task: Conductor - User Manual Verification 'Spacing & Refinement' (Protocol in workflow.md) (a99c1ba)
 
-## Phase 3: Final Audit
-- [ ] Task: Final Visual Audit.
-    - [ ] Verify consistency across all panes (Links, Timers, Todo, Notes).
-- [ ] Task: Conductor - User Manual Verification 'Final Audit' (Protocol in workflow.md)
+## Phase 3: Final Audit [checkpoint: e5353d5]
+- [x] Task: Final Visual Audit. (e5353d5)
+    - [x] Verify consistency across all panes (Links, Timers, Todo, Notes).
+- [x] Task: Conductor - User Manual Verification 'Final Audit' (Protocol in workflow.md) (e5353d5)
