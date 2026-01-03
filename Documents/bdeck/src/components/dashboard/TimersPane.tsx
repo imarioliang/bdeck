@@ -33,9 +33,10 @@ interface ProjectTimer {
 interface TimersPaneProps {
   isAdding: boolean;
   setIsAdding: (isAdding: boolean) => void;
+  isEditing?: boolean;
 }
 
-const SortableTimerItem = ({ project, onToggle, onReset, onDelete, onUpdateName, formatTime, workLimit }: {
+const SortableTimerItem = ({ project, onToggle, onReset, onDelete, onUpdateName, formatTime, workLimit, isGlobalEditing }: {
   project: ProjectTimer;
   onToggle: () => void;
   onReset: () => void;
@@ -43,6 +44,7 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, onUpdateName,
   onUpdateName: (name: string) => void;
   formatTime: (seconds: number) => string;
   workLimit: number;
+  isGlobalEditing: boolean;
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(project.name);
@@ -81,11 +83,13 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, onUpdateName,
       <div 
         ref={setNodeRef}
         style={style}
-        className={`group flex items-center p-2 border font-mono ${isOverLimit ? 'border-terminal-red text-terminal-red animate-pulse' : 'border-terminal-main/20 text-terminal-main hover:border-terminal-main transition-colors'} mb-1 last:mb-0`}
+        className={`group flex items-center p-2.5 border font-mono ${isOverLimit ? 'border-terminal-red text-terminal-red animate-pulse' : 'border-terminal-main/20 text-terminal-main hover:border-terminal-main'} mb-1 last:mb-0 bg-black retro-hover-invert transition-all`}
       >
-        <div className="flex items-center gap-2 flex-1 overflow-hidden">
-          <span className="text-terminal-main font-bold">&gt;</span>
-          <div className="flex flex-col flex-1 overflow-hidden">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div {...attributes} {...listeners} className="text-terminal-main font-bold group-hover:text-black cursor-grab active:cursor-grabbing px-1">
+            &gt;
+          </div>
+          <div className="flex items-center gap-4 flex-1 min-w-0">
             {isEditing ? (
               <input
                 ref={inputRef}
@@ -100,28 +104,28 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, onUpdateName,
                     setIsEditing(false);
                   }
                 }}
-                className="bg-terminal-main/10 border-none p-0 text-[10px] font-mono uppercase focus:outline-none focus:ring-0 text-terminal-main w-full"
+                className="bg-terminal-main/10 border-none p-0 text-[10px] font-mono uppercase focus:outline-none focus:ring-0 text-terminal-main w-full font-black"
               />
             ) : (
-              <span className="text-[10px] uppercase truncate font-bold" onDoubleClick={() => setIsEditing(true)}>{project.name}</span>
+              <span className="text-[10px] uppercase font-black tracking-widest whitespace-nowrap overflow-hidden text-ellipsis text-terminal-main group-hover:text-black" onDoubleClick={() => setIsEditing(true)}>{project.name}</span>
             )}
-            <span className={`text-xs font-bold ${project.isActive ? 'text-terminal-main' : 'text-terminal-main/40'}`}>
+            <span className={`text-[10px] font-bold tracking-tight whitespace-nowrap ${project.isActive ? 'text-terminal-main group-hover:text-black' : 'text-terminal-main/40 group-hover:text-black/40'}`}>
               {formatTime(project.time)}
             </span>
           </div>
         </div>
         
-        <div className="flex items-center gap-2 ml-2">
-          <button onClick={onToggle} className="text-[10px] font-bold">
-            {project.isActive ? '[R]' : '[P]'}
-          </button>
-          <div {...attributes} {...listeners} className="text-terminal-main/30 cursor-grab active:cursor-grabbing text-[10px]">
-            [S]
-          </div>
-          <div className="hidden group-hover:flex items-center gap-1">
-            <button onClick={onReset} className="text-[9px] border border-terminal-main/30 px-1 hover:bg-terminal-main hover:text-black">CLR</button>
-            <button onClick={onDelete} className="text-[9px] border border-terminal-red/30 px-1 text-terminal-red hover:bg-terminal-red hover:text-black">DEL</button>
-          </div>
+        <div className="flex items-center gap-2 ml-4">
+          {isGlobalEditing ? (
+            <div className="flex items-center gap-1">
+              <button onClick={onReset} className="text-[9px] border px-1.5 py-1 transition-colors font-black uppercase">CLR</button>
+              <button onClick={onDelete} className="text-[9px] border px-1.5 py-1 text-terminal-red border-terminal-red/50 transition-colors font-black uppercase">DEL</button>
+            </div>
+          ) : (
+            <button onClick={onToggle} className="min-w-[100px] text-[9px] font-black border border-terminal-main/40 px-2 py-1.5 transition-all whitespace-nowrap text-center">
+              {project.isActive ? '▶ PLAYING' : 'II PAUSED'}
+            </button>
+          )}
         </div>
       </div>
     );
@@ -189,7 +193,7 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, onUpdateName,
   );
 };
 
-export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
+export const TimersPane = ({ isAdding, setIsAdding, isEditing = false }: TimersPaneProps) => {
   const [projects, setProjects] = useLocalStorage<ProjectTimer[]>('bdeck-timers', []);
   const [restMode, setRestMode] = useLocalStorage<boolean>('bdeck-rest-mode', false);
   const [restTime, setRestTime] = useLocalStorage<number>('bdeck-rest-time', 0);
@@ -351,35 +355,39 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
   return (
     <div className="space-y-4 h-full flex flex-col relative">
       <div className={`flex flex-col gap-3 ${isRetro ? 'border-b border-terminal-main pb-4' : 'border-b border-white/5 pb-4'}`}>
-        <button 
-          onClick={restProtocol}
-          className={`w-full py-2.5 border transition-all group flex items-center justify-center gap-2 ${
-            isRetro 
-              ? (restMode ? 'bg-terminal-main text-black border-terminal-main animate-pulse' : 'border-terminal-red text-terminal-red hover:bg-terminal-red hover:text-black')
-              : (restMode ? 'border-terminal-green bg-terminal-green/10 text-terminal-green animate-pulse' : 'border-terminal-red/20 hover:bg-terminal-red/5 text-terminal-red/60 hover:text-terminal-red')
-          }`}
-        >
-          {restMode ? (
-            <>
-              {!isRetro && <Coffee size={12} />}
-              <span className={`font-black uppercase ${isRetro ? 'text-xs' : 'text-[0.6rem] tracking-[0.2em]'}`}>RESTING: {formatTime(restTime)}</span>
-            </>
-          ) : (
-            <>
-              {!isRetro && <RotateCcw size={10} className="group-hover:-rotate-90 transition-transform duration-500" />}
-              <span className={`font-black uppercase ${isRetro ? 'text-xs' : 'text-[0.6rem] tracking-[0.2em]'}`}>{isRetro ? '[ INITIATE_REST_PROTOCOL ]' : '[ RESET_ALL_PROCESSES ]'}</span>
-            </>
-          )}
-        </button>
-
-        {isRetro ? (
+        <div className={isRetro ? "flex items-center gap-2" : "flex flex-col gap-3"}>
           <button 
-            onClick={() => setShowSettings(!showSettings)}
-            className="text-[9px] text-terminal-main/40 hover:text-terminal-main text-center"
+            onClick={restProtocol}
+            className={`flex-1 py-2.5 border transition-all group flex items-center justify-center gap-2 ${
+              isRetro 
+                ? (restMode ? 'bg-terminal-main text-black border-terminal-main animate-pulse' : 'border-terminal-red text-terminal-red hover:bg-terminal-red hover:text-black')
+                : (restMode ? 'border-terminal-green bg-terminal-green/10 text-terminal-green animate-pulse' : 'border-terminal-red/20 hover:bg-terminal-red/5 text-terminal-red/60 hover:text-terminal-red')
+            }`}
           >
-            [ {showSettings ? 'CLOSE_SETTINGS' : 'CONFIGURE_INTERVALS'} ]
+            {restMode ? (
+              <>
+                {!isRetro && <Coffee size={12} />}
+                <span className={`font-black uppercase ${isRetro ? 'text-[9px]' : 'text-[0.6rem] tracking-[0.2em]'}`}>RESTING: {formatTime(restTime)}</span>
+              </>
+            ) : (
+              <>
+                {!isRetro && <RotateCcw size={10} className="group-hover:-rotate-90 transition-transform duration-500" />}
+                <span className={`font-black uppercase ${isRetro ? 'text-[9px]' : 'text-[0.6rem] tracking-[0.2em]'}`}>{isRetro ? '[ INITIATE_REST ]' : '[ RESET_ALL_PROCESSES ]'}</span>
+              </>
+            )}
           </button>
-        ) : (
+
+          {isRetro && (
+            <button 
+              onClick={() => setShowSettings(!showSettings)}
+              className={`px-3 py-2.5 border transition-all font-black text-[9px] ${showSettings ? 'bg-terminal-main text-black border-terminal-main' : 'border-terminal-main/40 text-terminal-main/60 hover:border-terminal-main hover:text-terminal-main'}`}
+            >
+              [ MENU ]
+            </button>
+          )}
+        </div>
+
+        {!isRetro && (
           <div className="flex justify-center items-center gap-10 px-4 opacity-40 hover:opacity-100 transition-opacity">
             <div className="flex flex-col items-center group/input cursor-pointer">
               <span className="text-[0.35rem] text-white/20 font-black uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors">W_INTERVAL</span>
@@ -399,25 +407,25 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
         )}
 
         {isRetro && showSettings && (
-          <div className="grid grid-cols-2 gap-4 px-4 py-2 border border-terminal-main/20 bg-terminal-main/5">
-            <div className="flex flex-col items-center group/input">
-              <span className="text-[9px] text-terminal-main/50 font-black uppercase tracking-widest">WORK_INT</span>
-              <div className="flex items-center gap-1">
+          <div className="flex flex-col gap-6 px-4 py-6 border border-terminal-main/30 bg-terminal-main/5">
+            <div className="flex flex-col gap-3 group/input">
+              <span className="text-[10px] text-terminal-main/50 font-black uppercase tracking-widest">WORK_SESSION_DURATION</span>
+              <div className="flex items-center gap-4">
                 <input 
                   type="number" value={workLimitMin} onChange={e => setWorkLimitMin(Math.max(1, Number(e.target.value)))}
-                  className="w-10 bg-transparent border-none p-0 font-bold focus:outline-none text-center appearance-none text-terminal-main text-xs"
+                  className="w-32 bg-terminal-main/10 border border-terminal-main/40 px-4 py-3 font-bold focus:outline-none text-left appearance-none text-terminal-main text-xl"
                 />
-                <span className="text-[9px] text-terminal-main/30">MIN</span>
+                <span className="text-xs text-terminal-main/40 font-black tracking-widest">MINUTES</span>
               </div>
             </div>
-            <div className="flex flex-col items-center group/input">
-              <span className="text-[9px] text-terminal-main/50 font-black uppercase tracking-widest">REST_INT</span>
-              <div className="flex items-center gap-1">
+            <div className="flex flex-col gap-3 group/input">
+              <span className="text-[10px] text-terminal-main/50 font-black uppercase tracking-widest">REST_SESSION_DURATION</span>
+              <div className="flex items-center gap-4">
                 <input 
                   type="number" value={restLimitMin} onChange={e => setRestLimitMin(Math.max(1, Number(e.target.value)))}
-                  className="w-10 bg-transparent border-none p-0 font-bold focus:outline-none text-center appearance-none text-terminal-main text-xs"
+                  className="w-32 bg-terminal-main/10 border border-terminal-main/40 px-4 py-3 font-bold focus:outline-none text-left appearance-none text-terminal-main text-xl"
                 />
-                <span className="text-[9px] text-terminal-main/30">MIN</span>
+                <span className="text-xs text-terminal-main/40 font-black tracking-widest">MINUTES</span>
               </div>
             </div>
           </div>
@@ -461,6 +469,7 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
                   onDelete={() => setProjects(prev => prev.filter(p => p.id !== project.id))}
                   onUpdateName={(name) => updateTimerName(project.id, name)}
                   formatTime={formatTime}
+                  isGlobalEditing={isEditing}
                 />
               ))}
             </div>

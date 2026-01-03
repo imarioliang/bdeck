@@ -66,12 +66,103 @@ body {
   line-height: 1.2;
 }
 
-[data-skin='retro'] body, [data-skin='retro'] * {
+/* Retro Inversion Utilities */
+.retro-invert,
+.retro-invert * {
+  background-color: var(--terminal-main) !important;
+  color: #000000 !important;
+  border-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.retro-hover-invert {
+  transition: all 0.1s ease-in-out;
+}
+
+.retro-hover-invert:hover,
+.retro-hover-invert:hover * {
+  background-color: var(--terminal-main) !important;
+  color: #000000 !important;
+}
+
+/* Double Inversion: When hovering a button INSIDE an already inverted row, swap back to primary colors */
+.retro-hover-invert:hover button:hover {
+  background-color: #000000 !important;
+  color: var(--terminal-main) !important;
+  border-color: var(--terminal-main) !important;
+}
+
+/* Global Retro Styles - Lower specificity to allow overrides */
+[data-skin='retro'] body, 
+[data-skin='retro'] *:not(.retro-invert):not(.retro-invert *):not(.retro-hover-invert):not(.retro-hover-invert *) {
   -webkit-font-smoothing: none !important;
   -moz-osx-font-smoothing: grayscale !important;
   font-family: var(--font-press-start), cursive !important;
   letter-spacing: -0.05em;
   line-height: 1.4;
+  color: var(--terminal-main);
+}
+
+[data-skin='retro'] input,
+[data-skin='retro'] textarea,
+[data-skin='retro'] select {
+  font-family: var(--font-vt323), monospace !important;
+  letter-spacing: 0.05em !important;
+  color: var(--terminal-main) !important;
+}
+
+/* CRT Scanlines Utility */
+.scanline-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%
+  ),
+  linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 3px, 3px 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Brutalist Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #333;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+/* Custom Utilities */
+.text-terminal-main { color: var(--terminal-main); }
+.bg-terminal-main { background-color: var(--terminal-main); }
+.border-terminal-main { border-color: var(--terminal-main); }
+
+.text-terminal-green { color: var(--terminal-green); }
+.bg-terminal-green { background-color: var(--terminal-green); }
+
+.text-terminal-red { color: var(--terminal-red); }
+.bg-terminal-red { background-color: var(--terminal-red); }
+
+/* Glow Effects */
+.shadow-terminal {
+  box-shadow: 0 0 10px -2px var(--terminal-main);
 }
 
 [data-skin='retro'] input,

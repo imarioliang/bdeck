@@ -23,6 +23,7 @@ export default function Home() {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [isAddingLink, setIsAddingLink] = useState(false);
   const [isAddingTimer, setIsAddingTimer] = useState(false);
+  const [isEditingTimers, setIsEditingTimers] = useState(false);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   
   const { activeCategory, setActiveCategory } = useDashboardStore();
@@ -61,7 +62,7 @@ export default function Home() {
           {isRetro ? (
             <header className="flex flex-col">
               {/* Row 1: System Bar */}
-              <div className="flex justify-between items-center bg-terminal-main text-black px-3 py-1 font-bold text-[10px] tracking-widest">
+              <div className="flex justify-between items-center bg-terminal-main text-black px-3 py-1 font-bold text-[10px] tracking-widest retro-invert">
                 <span>[ COMMAND_CENTER_V1.0 ]</span>
                 <button 
                   onClick={() => setIsConfigOpen(true)} 
@@ -200,8 +201,20 @@ export default function Home() {
         {/* MAIN DASHBOARD CONTENT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <div id="pane-timers" className="lg:col-span-4 h-full">
-            <Pane title={isRetro ? "Timer Daemon" : "Project Timers"} badge={isRetro ? projects.length : `TOTAL: ${projects.length}`} label="SYS_CHRONO">
-              <TimersPane isAdding={isAddingTimer} setIsAdding={setIsAddingTimer} />
+            <Pane 
+              title={isRetro ? "Timer Daemon" : "Project Timers"} 
+              badge={isRetro ? projects.length : `TOTAL: ${projects.length}`} 
+              label="SYS_CHRONO"
+              actions={isRetro && (
+                <button 
+                  onClick={() => setIsEditingTimers(!isEditingTimers)}
+                  className={`text-[9px] px-1.5 py-0.5 border transition-all ${isEditingTimers ? 'bg-terminal-main text-black border-terminal-main' : 'border-terminal-main/40 text-terminal-main/60 hover:border-terminal-main hover:text-terminal-main'}`}
+                >
+                  [ {isEditingTimers ? 'FINISH' : 'MODIFY'} ]
+                </button>
+              )}
+            >
+              <TimersPane isAdding={isAddingTimer} setIsAdding={setIsAddingTimer} isEditing={isEditingTimers} />
             </Pane>
           </div>
           <div id="pane-todo" className="lg:col-span-4 h-full">
