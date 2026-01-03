@@ -27,7 +27,8 @@ export default function ThemeWrapper({ children }: { children: React.ReactNode }
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
+      {skin === 'retro' && <div className="scanline-overlay" />}
       {children}
     </div>
   );
