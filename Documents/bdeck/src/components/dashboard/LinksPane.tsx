@@ -102,28 +102,28 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
       <div 
         ref={setNodeRef}
         style={style}
-        className="relative group w-full flex items-center border border-terminal-main/20 -mt-[1px] first:mt-0 retro-hover-invert transition-colors cursor-pointer min-h-[40px]"
+        className="relative group w-full flex items-center border border-terminal-main/20 -mt-[1px] first:mt-0 retro-hover-invert transition-colors cursor-pointer min-h-[44px]"
       >
         <a 
           href={link.url} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="flex-1 flex items-center py-2 px-3 gap-0 min-w-0"
+          className="flex-1 flex items-center py-2.5 px-3 gap-0 min-w-0"
         >
            <div className="w-[45%] flex items-center gap-3 pr-2 min-w-0">
-             <Icon size={14} className="text-terminal-main group-hover:text-black shrink-0" />
-             <span className="text-xs font-mono uppercase truncate text-terminal-main group-hover:text-black font-black">{link.title}</span>
+             <Icon size={16} className="text-terminal-main group-hover:text-black shrink-0" />
+             <span className="text-[11px] font-mono uppercase truncate text-terminal-main group-hover:text-black font-black tracking-tighter">{link.title}</span>
            </div>
 
-           <div className="w-[15%] text-[10px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right pr-4">
+           <div className="w-[15%] text-[11px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right pr-4">
              {categoryShorthand}
            </div>
 
-           <div className="w-[15%] text-[10px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right pr-4">
+           <div className="w-[15%] text-[11px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right pr-4">
              {tagDisplay}
            </div>
 
-           <div className="flex-1 text-[10px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right font-bold">
+           <div className="flex-1 text-[11px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right font-bold">
              {link.isPinned ? '[PRIORITY]' : status}
            </div>
         </a>
