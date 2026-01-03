@@ -41,7 +41,7 @@ describe('Header Restructuring', () => {
     
     // Check for System Bar (Row 1)
     expect(screen.getByText(/COMMAND_CENTER_V1.0/i)).toBeDefined();
-    expect(screen.getByText(/CLOSE/i)).toBeDefined();
+    expect(screen.getByText(/MENU/i)).toBeDefined();
     
     // Check for Path Bar (Row 2)
     expect(screen.getByText(/PATH:/i)).toBeDefined();

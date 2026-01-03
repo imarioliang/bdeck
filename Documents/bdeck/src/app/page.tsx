@@ -60,29 +60,31 @@ export default function Home() {
               {/* Row 1: System Bar */}
               <div className="flex justify-between items-center bg-terminal-main text-black px-3 py-1 font-bold text-[10px] tracking-widest">
                 <span>[ COMMAND_CENTER_V1.0 ]</span>
-                <div className="flex gap-4">
-                  <span>_ MIN</span>
-                  <span>[] MAX</span>
-                  <span>X CLOSE</span>
-                </div>
+                <button 
+                  onClick={() => setIsConfigOpen(true)} 
+                  className="hover:bg-black hover:text-terminal-main px-2 py-0.5 transition-all border border-transparent hover:border-black uppercase font-black"
+                >
+                  [ MENU ]
+                </button>
               </div>
               
               {/* Row 2: Path Bar / Search */}
-              <div className="flex items-center gap-3 px-3 py-2 border-b border-terminal-main bg-black">
-                <span className="text-[10px] text-terminal-main font-bold whitespace-nowrap">PATH: C:\USERS\ADMIN\SHORTCUTS\</span>
-                <div className="flex-1 relative flex items-center">
-                  <span className="text-terminal-main text-xs animate-pulse mr-1">█</span>
+              <div className="flex items-center gap-0 px-3 py-1.5 border-b border-terminal-main bg-black group/path">
+                <span className="text-[10px] text-terminal-main font-bold whitespace-nowrap mr-2">PATH:</span>
+                <div className="flex-1 flex items-center bg-terminal-main/5 border border-terminal-main/20 px-2 py-0.5 group-focus-within/path:border-terminal-main/50 transition-all">
+                  <span className="text-terminal-main text-[10px] mr-2">C:\USERS\ADMIN\SEARCH\</span>
                   <input 
                     type="text" 
-                    placeholder="SEARCH_MODULES..."
+                    placeholder="INIT_QUERY..."
                     value={linksSearchTerm}
                     onChange={(e) => setLinksSearchTerm(e.target.value)}
-                    className="flex-1 bg-transparent border-none py-1 text-xs text-terminal-main placeholder:text-terminal-main/20 focus:outline-none uppercase tracking-widest"
+                    className="flex-1 bg-transparent border-none py-0.5 text-xs text-terminal-main placeholder:text-terminal-main/20 focus:outline-none uppercase tracking-widest font-mono"
                   />
+                  <span className="text-terminal-main text-xs animate-pulse ml-1">█</span>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 ml-4">
                   <HeaderIndicators />
-                  <button className="border border-terminal-main px-2 py-0.5 text-[10px] text-terminal-main hover:bg-terminal-main hover:text-black">↑ UP</button>
+                  <button className="border border-terminal-main px-2 py-0.5 text-[10px] text-terminal-main hover:bg-terminal-main hover:text-black transition-colors font-bold tracking-tighter">↑ UP</button>
                 </div>
               </div>
             </header>
