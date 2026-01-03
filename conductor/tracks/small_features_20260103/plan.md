@@ -20,7 +20,7 @@
     - Modify `src/components/dashboard/TimersPane.tsx` (`SortableTimerItem`) to support an editing state for the timer name.
     - Implement `onClick` to trigger edit mode.
     - Implement `onKeyDown` (Enter) and `onBlur` to commit changes to the store.
-- [ ] Task: Link Modal Keyboard Support
+- [x] Task: Link Modal Keyboard Support [b2d0d06]
     - Update the modal inputs in `src/components/dashboard/LinksPane.tsx` to trigger `addLink()` when the `Enter` key is pressed.
 - [ ] Task: Conductor - User Manual Verification 'UX Refinements' (Protocol in workflow.md)
 
