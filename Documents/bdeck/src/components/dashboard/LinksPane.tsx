@@ -88,7 +88,7 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
       <div 
         ref={setNodeRef}
         style={style}
-        className="relative group w-full flex items-center border border-terminal-main/20 -mt-[1px] first:mt-0 hover:bg-terminal-main hover:text-black transition-colors cursor-pointer min-h-[32px]"
+        className="relative group w-full flex items-center border border-terminal-main/20 -mt-[1px] first:mt-0 retro-hover-invert transition-colors cursor-pointer min-h-[32px]"
       >
         <a 
           href={link.url} 
@@ -96,23 +96,23 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
           rel="noopener noreferrer"
           className="flex-1 flex items-center py-1.5 px-3 gap-0"
         >
-           <div className="w-[50%] md:w-[60%] text-[10px] font-mono uppercase truncate text-terminal-main group-hover:text-black pr-2">
+           <div className="w-[50%] md:w-[60%] text-[10px] font-mono uppercase truncate text-terminal-main pr-2">
              {link.title}
            </div>
 
-           <div className="flex-1 text-[9px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60">
+           <div className="flex-1 text-[9px] font-mono uppercase truncate text-terminal-main/60">
              {link.isPinned ? '[PRIORITY]' : status}
            </div>
         </a>
 
         {/* LIST ACTIONS (RETRO) */}
-        <div className="flex items-center gap-3 px-3 opacity-0 group-hover:opacity-100 transition-opacity bg-black h-full absolute right-0 border-l border-terminal-main/20 group-hover:bg-terminal-main group-hover:border-black/20">
+        <div className="flex items-center gap-3 px-3 opacity-0 group-hover:opacity-100 transition-opacity h-full absolute right-0 border-l border-terminal-main/20">
            <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="text-[9px] text-terminal-main hover:bg-terminal-main hover:text-black px-1 border border-terminal-main/40 group-hover:text-black group-hover:border-black/40 group-hover:hover:bg-black group-hover:hover:text-terminal-main">
              {link.isPinned ? 'UNPIN' : 'PIN'}
            </button>
            <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} className="text-[9px] text-terminal-main hover:bg-terminal-main hover:text-black px-1 border border-terminal-main/40 group-hover:text-black group-hover:border-black/40 group-hover:hover:bg-black group-hover:hover:text-terminal-main">EDIT</button>
            <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} className="text-[9px] text-terminal-red hover:bg-terminal-red hover:text-black px-1 border border-terminal-red/40 group-hover:text-black group-hover:border-black/40 group-hover:hover:bg-black group-hover:hover:text-terminal-red">DEL</button>
-           <div {...attributes} {...listeners} className="text-terminal-main/30 cursor-grab active:cursor-grabbing text-[9px] group-hover:text-black/30">
+           <div {...attributes} {...listeners} className="text-terminal-main/30 cursor-grab active:cursor-grabbing text-[9px]">
             [::]
           </div>
         </div>

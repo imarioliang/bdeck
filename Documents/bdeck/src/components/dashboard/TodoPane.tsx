@@ -57,16 +57,16 @@ const SortableTodoItem = ({ todo, onToggle, onDelete, onUpdateText, onKeyDown, i
       <li 
         ref={setNodeRef}
         style={style}
-        className="flex items-center gap-2 group bg-black border-b border-terminal-main/20 py-2 pr-2 font-mono text-sm"
+        className="flex items-center gap-2 group bg-black border-b border-terminal-main/20 py-2 pr-2 font-mono text-sm retro-hover-invert transition-all"
       >
-        <span {...attributes} {...listeners} className="text-terminal-main/50 cursor-grab active:cursor-grabbing shrink-0 select-none">
+        <span {...attributes} {...listeners} className="text-terminal-main/50 cursor-grab active:cursor-grabbing shrink-0 select-none group-hover:text-black/30">
           ::
         </span>
         
         <div className="flex-1 flex items-center gap-3">
           <button 
             onClick={onToggle}
-            className={`flex-shrink-0 font-bold ${todo.done ? 'text-terminal-main' : 'text-terminal-main/50 hover:text-terminal-main'}`}
+            className={`flex-shrink-0 font-bold ${todo.done ? 'text-terminal-main group-hover:text-black' : 'text-terminal-main/50 hover:text-terminal-main group-hover:text-black/50 group-hover:hover:text-black'}`}
             title={todo.done ? "Mark as undone" : "Mark as done"}
           >
             [{todo.done ? 'x' : ' '}]
@@ -80,14 +80,14 @@ const SortableTodoItem = ({ todo, onToggle, onDelete, onUpdateText, onKeyDown, i
               onChange={(e) => onUpdateText(e.target.value)}
               onKeyDown={onKeyDown}
               placeholder="OBJECTIVE..."
-              className={`bg-transparent focus:outline-none border-none p-0 font-mono uppercase transition-all ${todo.done ? 'line-through text-terminal-main/40' : 'text-terminal-main'}}`}
+              className={`bg-transparent focus:outline-none border-none p-0 font-mono uppercase transition-all ${todo.done ? 'line-through text-terminal-main/40 group-hover:text-black/40' : 'text-terminal-main group-hover:text-black'}}`}
             />
           </div>
         </div>
   
         <button 
           onClick={onDelete}
-          className="opacity-0 group-hover:opacity-100 px-1 text-terminal-red hover:bg-terminal-red hover:text-black transition-all border border-terminal-red text-xs"
+          className="opacity-0 group-hover:opacity-100 px-1 text-terminal-red hover:bg-terminal-red hover:text-black transition-all border border-terminal-red text-xs group-hover:border-black/40 group-hover:text-black group-hover:hover:bg-black group-hover:hover:text-terminal-red"
           title="Delete"
         >
           DEL

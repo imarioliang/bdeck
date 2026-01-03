@@ -9,25 +9,24 @@ export const Pane = ({ title, label, children, actions, badge, className = "" }:
   if (isRetro) {
     return (
       <div className={`border border-terminal-main bg-black p-3 flex flex-col font-mono relative ${className}`}>
-        {/* Simplified Retro Header */}
-        <div className="flex flex-wrap justify-between items-center gap-2 mb-4 border-b border-terminal-main/30 pb-2">
+        {/* Mockup-accurate Retro Header */}
+        <div className="flex justify-between items-center mb-4 border-b border-terminal-main/30 pb-2">
           <div className="flex items-center gap-2">
-            <h2 className="text-xs text-terminal-main font-bold uppercase">
-              &gt; {title}
+            <h2 className="text-[10px] text-terminal-main font-black uppercase">
+              [ {title} ]
             </h2>
-            {badge !== undefined && (
-              <span className="text-[10px] text-terminal-main/60">
-                ({badge})
-              </span>
-            )}
           </div>
-          <div className="flex items-center gap-3 text-terminal-main/50 text-[10px] uppercase">
-            {label && <span>[{label}]</span>}
+          <div className="flex items-center gap-3">
+            {badge !== undefined && (
+              <div className="border border-terminal-main px-1 text-[9px] text-terminal-main font-bold">
+                {String(label).includes('OBJ') ? 'PEND' : 'PID'}: {badge}
+              </div>
+            )}
             {actions}
           </div>
         </div>
         
-        <div className="flex-1">
+        <div className="flex-1 relative">
            {children}
         </div>
 
