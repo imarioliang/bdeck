@@ -7,6 +7,7 @@ import { TimersPane } from "@/components/dashboard/TimersPane";
 import { TodoPane } from "@/components/dashboard/TodoPane";
 import { NotesPane } from "@/components/dashboard/NotesPane";
 import { CustomizationMenu } from "@/components/dashboard/CustomizationMenu";
+import { AsciiLogo } from "@/components/dashboard/AsciiLogo";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { SyncManager } from "@/components/sync/SyncManager";
 import { HeaderIndicators } from "@/components/dashboard/HeaderIndicators";
@@ -56,15 +57,13 @@ export default function Home() {
                 onClick={() => setIsConfigOpen(true)}
                 className="text-left group transition-all"
               >
-                <div className="flex items-center gap-3 text-terminal-main group-hover:text-white transition-colors">
-                  <div className="grid grid-cols-3 gap-0.5">
-                    {[...Array(9)].map((_, i) => (
-                      <div key={i} className={`w-0.5 h-0.5 rounded-full ${i === 4 ? 'bg-terminal-main group-hover:bg-white animate-pulse' : 'bg-terminal-main/30 group-hover:bg-white/30'}`}></div>
-                    ))}
+                <div className="flex items-center gap-4">
+                  <AsciiLogo />
+                  <div className="flex flex-col">
+                    <h1 className="text-sm md:text-base font-black tracking-[0.3em] uppercase leading-none text-terminal-main group-hover:text-white transition-colors">Command Center</h1>
+                    <p className="text-[0.55rem] text-white/20 mt-1.5 font-bold tracking-widest group-hover:text-white/40 transition-colors uppercase">&gt; System_Config_v4.2</p>
                   </div>
-                  <h1 className="text-xl md:text-2xl font-black tracking-[0.2em] uppercase leading-none">Command Center</h1>
                 </div>
-                <p className="text-[0.65rem] text-white/30 mt-2 font-bold tracking-widest group-hover:text-white/50 transition-colors">&gt; SELECT A SUBSYSTEM TO INITIALIZE...</p>
               </button>
               
               <div className="flex flex-1 items-center justify-center md:justify-end gap-6 w-full md:w-auto">
