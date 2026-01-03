@@ -12,7 +12,8 @@
     - Implement the Branch Indicator (displays `process.env.NODE_ENV` and a branch placeholder, visible only in dev).
 - [x] Task: Integrate Indicators into Header [9178855]
     - Update `src/app/page.tsx` to render `HeaderIndicators` in the header section near the title.
-- [ ] Task: Conductor - User Manual Verification 'Global Indicators' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Global Indicators' (Protocol in workflow.md)
+## [checkpoint: b1e1a35]
 
 ## Phase 2: UX Refinements (Timers & Links)
 - [ ] Task: Inline Timer Name Editing
