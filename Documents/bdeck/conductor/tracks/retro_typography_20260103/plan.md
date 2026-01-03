@@ -9,11 +9,11 @@
 - [x] Task: Conductor - User Manual Verification 'Glow & Scanlines' (Protocol in workflow.md) (1c8a453)
 
 ## Phase 2: Spacing & Refinement
-- [ ] Task: Refine Retro Font Spacing.
-    - [ ] Adjust `letter-spacing` and `line-height` for `Press Start 2P`.
-- [ ] Task: Update Global Font Scaling.
-    - [ ] Audit the root font sizes to ensure they still feel correct with the new spacing.
-- [ ] Task: Conductor - User Manual Verification 'Spacing & Refinement' (Protocol in workflow.md)
+- [x] Task: Refine Retro Font Spacing. (2b0e735)
+    - [x] Adjust `letter-spacing` and `line-height` for `Press Start 2P`.
+- [x] Task: Update Global Font Scaling. (51df94c)
+    - [x] Audit the root font sizes to ensure they still feel correct with the new spacing.
+- [~] Task: Conductor - User Manual Verification 'Spacing & Refinement' (Protocol in workflow.md)
 
 ## Phase 3: Final Audit
 - [ ] Task: Final Visual Audit.
