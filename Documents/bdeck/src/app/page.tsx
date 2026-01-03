@@ -177,7 +177,7 @@ export default function Home() {
           {/* MAIN SECTION WITH SIDEBAR AND GRID */}
           <div className={`flex flex-col md:flex-row h-full min-h-[400px]`}>
             {isRetro && (
-              <aside className="w-full md:w-[250px] border-r border-terminal-main bg-black">
+              <aside className="w-full md:w-[250px] border-r border-terminal-main bg-black max-h-[500px] overflow-y-auto custom-scrollbar" role="complementary">
                 <DirectoriesSidebar 
                   categories={['ALL SYSTEMS', ...categories]} 
                   activeCategory={activeCategory} 
@@ -187,7 +187,10 @@ export default function Home() {
             )}
             
             {/* APPS GRID */}
-            <section className={`flex-1 p-4 md:p-6 ${isRetro ? 'flex flex-col overflow-y-auto custom-scrollbar' : 'grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3'}`}>
+            <section 
+              aria-label="Apps Grid"
+              className={`flex-1 p-4 md:p-6 ${isRetro ? 'flex flex-col max-h-[500px] overflow-y-auto custom-scrollbar' : 'grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3'}`}
+            >
               <LinksPane 
                 isAdding={isAddingLink} 
                 setIsAdding={setIsAddingLink} 
@@ -229,19 +232,42 @@ export default function Home() {
           </div>
         </div>
 
-        {/* FOOTER */}
-        <footer className={`pt-8 pb-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-[0.6rem] font-black tracking-[0.2em] border-t transition-all uppercase ${isRetro ? 'border-terminal-main text-terminal-main' : 'border-white/5 text-white/10'}`}>
-          <div className="flex gap-6">
-            <div className="flex items-center gap-2">
-              <span className={`w-1.5 h-1.5 rounded-full ${isRetro ? 'bg-terminal-main shadow-[0_0_5px_var(--terminal-main)]' : 'bg-terminal-green shadow-terminal'}`}></span>
-              <span>MEM: 64K OK</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${isRetro ? 'bg-terminal-main shadow-[0_0_5px_var(--terminal-main)]' : 'bg-terminal-green shadow-terminal'}`}></span>
-              <span>CPU: 8%</span>
-            </div>
-          </div>
-          <div>Retro.OS Build 2024.1</div>
+        {/* FOOTER / STATUS BAR */}
+        <footer className={`flex flex-col sm:flex-row justify-between items-center transition-all uppercase font-bold ${
+          isRetro 
+            ? 'border border-terminal-main bg-black px-3 py-1 text-[9px] text-terminal-main' 
+            : 'pt-8 pb-4 border-t border-white/5 text-white/10 text-[0.6rem] tracking-[0.2em]'
+        }`}>
+          {isRetro ? (
+            <>
+              <div className="flex gap-6">
+                <div className="flex items-center gap-4">
+                  <span>MEM: 64K [OK]</span>
+                  <span>CPU: 8%</span>
+                  <span>UPTIME: 14:02:11</span>
+                </div>
+                <HeaderIndicators />
+              </div>
+              <div className="flex items-center gap-4">
+                <span>RETRO_OS_BUILD_2024.1</span>
+                <span className="animate-pulse">█</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex gap-6">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-terminal-green shadow-terminal"></span>
+                  <span>MEM: 64K OK</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full animate-pulse bg-terminal-green shadow-terminal"></span>
+                  <span>CPU: 8%</span>
+                </div>
+              </div>
+              <div>Retro.OS Build 2024.1</div>
+            </>
+          )}
         </footer>
       </div>
     </div>

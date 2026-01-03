@@ -8,7 +8,7 @@ export const Pane = ({ title, label, children, actions, badge, className = "" }:
 
   if (isRetro) {
     return (
-      <div className={`border border-terminal-main bg-black p-3 flex flex-col font-mono relative ${className}`}>
+      <div className={`border border-terminal-main bg-black p-3 flex flex-col font-mono relative min-h-[400px] ${className}`}>
         {/* Mockup-accurate Retro Header */}
         <div className="flex justify-between items-center mb-4 border-b border-terminal-main/30 pb-2">
           <div className="flex items-center gap-2">
