@@ -16,7 +16,7 @@
 ## [checkpoint: b1e1a35]
 
 ## Phase 2: UX Refinements (Timers & Links)
-- [ ] Task: Inline Timer Name Editing
+- [x] Task: Inline Timer Name Editing [e7185dd]
     - Modify `src/components/dashboard/TimersPane.tsx` (`SortableTimerItem`) to support an editing state for the timer name.
     - Implement `onClick` to trigger edit mode.
     - Implement `onKeyDown` (Enter) and `onBlur` to commit changes to the store.
