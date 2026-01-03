@@ -14,7 +14,13 @@
 - [x] Task: Implement Tag Display (SIZE). (f019cc1)
 - [~] Task: Conductor - User Manual Verification 'Dynamic Columns' (Protocol in workflow.md)
 
-## Phase 3: Visual Scaling & Polish
+## Phase 3: Tag Navigation in Sidebar
+- [x] Task: Create Tests for Tag Navigation. (0ef4207)
+- [x] Task: Update Sidebar for Tag Display. (0ef4207)
+- [x] Task: Implement Tag Filtering Logic. (0ef4207)
+- [~] Task: Conductor - User Manual Verification 'Tag Navigation' (Protocol in workflow.md)
+
+## Phase 4: Visual Scaling & Polish
 - [ ] Task: Create Tests for Visual Scaling.
     - [ ] Verify larger font classes are applied to link rows in Retro mode.
 - [ ] Task: Scale Link Row Typography.
