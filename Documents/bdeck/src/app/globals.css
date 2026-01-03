@@ -70,7 +70,6 @@ body {
   -webkit-font-smoothing: none !important;
   -moz-osx-font-smoothing: grayscale !important;
   font-family: var(--font-press-start), cursive !important;
-  text-shadow: 0 0 2px var(--terminal-main);
   letter-spacing: -0.05em;
   line-height: 1.4;
 }

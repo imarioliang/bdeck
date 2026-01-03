@@ -382,20 +382,26 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
           )}
         </button>
 
-        <div className={`flex justify-center items-center gap-10 px-4 transition-opacity ${isRetro ? 'text-terminal-main' : 'opacity-40 hover:opacity-100'}`}>
-          <div className="flex flex-col items-center group/input cursor-pointer">
-            <span className={`${isRetro ? 'text-[10px] text-terminal-main' : 'text-[0.35rem] text-white/20'} font-black uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors`}>{isRetro ? 'W_INT' : 'W_INTERVAL'}</span>
-            <input 
-              type="number" value={workLimitMin} onChange={e => setWorkLimitMin(Math.max(1, Number(e.target.value)))}
-              className={`w-10 bg-transparent border-none p-0 font-black focus:outline-none transition-colors text-center appearance-none ${isRetro ? 'text-terminal-main' : 'text-white/40 focus:text-terminal-main'} ${isRetro ? 'text-xs' : 'text-[0.65rem]'}`}
-            />
+        <div className={`grid grid-cols-2 gap-4 px-4 transition-opacity ${isRetro ? 'text-terminal-main' : 'opacity-40 hover:opacity-100'}`}>
+          <div className="flex flex-col items-center group/input">
+            <span className={`${isRetro ? 'text-[9px] text-terminal-main/50' : 'text-[0.35rem] text-white/20'} font-black uppercase tracking-widest`}>{isRetro ? 'WORK_INT' : 'W_INTERVAL'}</span>
+            <div className="flex items-center gap-1">
+              <input 
+                type="number" value={workLimitMin} onChange={e => setWorkLimitMin(Math.max(1, Number(e.target.value)))}
+                className={`w-10 bg-transparent border-none p-0 font-bold focus:outline-none text-center appearance-none ${isRetro ? 'text-terminal-main text-xs' : 'text-white/40 focus:text-terminal-main text-[0.65rem]'}`}
+              />
+              {isRetro && <span className="text-[9px] text-terminal-main/30">MIN</span>}
+            </div>
           </div>
-          <div className="flex flex-col items-center group/input cursor-pointer">
-            <span className={`${isRetro ? 'text-[10px] text-terminal-main' : 'text-[0.35rem] text-white/20'} font-black uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors`}>{isRetro ? 'R_INT' : 'R_INTERVAL'}</span>
-            <input 
-              type="number" value={restLimitMin} onChange={e => setRestLimitMin(Math.max(1, Number(e.target.value)))}
-              className={`w-10 bg-transparent border-none p-0 font-black focus:outline-none transition-colors text-center appearance-none ${isRetro ? 'text-terminal-main' : 'text-white/40 focus:text-terminal-main'} ${isRetro ? 'text-xs' : 'text-[0.65rem]'}`}
-            />
+          <div className="flex flex-col items-center group/input">
+            <span className={`${isRetro ? 'text-[9px] text-terminal-main/50' : 'text-[0.35rem] text-white/20'} font-black uppercase tracking-widest`}>{isRetro ? 'REST_INT' : 'R_INTERVAL'}</span>
+            <div className="flex items-center gap-1">
+              <input 
+                type="number" value={restLimitMin} onChange={e => setRestLimitMin(Math.max(1, Number(e.target.value)))}
+                className={`w-10 bg-transparent border-none p-0 font-bold focus:outline-none text-center appearance-none ${isRetro ? 'text-terminal-main text-xs' : 'text-white/40 focus:text-terminal-main text-[0.65rem]'}`}
+              />
+              {isRetro && <span className="text-[9px] text-terminal-main/30">MIN</span>}
+            </div>
           </div>
         </div>
       </div>

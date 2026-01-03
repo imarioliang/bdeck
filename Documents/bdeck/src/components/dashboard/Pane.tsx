@@ -8,26 +8,26 @@ export const Pane = ({ title, label, children, actions, badge, className = "" }:
 
   if (isRetro) {
     return (
-      <div className={`border border-terminal-main bg-black p-2 md:p-3 flex flex-col font-mono relative ${className}`}>
-        {/* Retro Header: [ TITLE ] PID: X */}
-        <div className="flex justify-between items-baseline mb-4 border-b border-terminal-main/50 border-dashed pb-1">
+      <div className={`border border-terminal-main bg-black p-3 flex flex-col font-mono relative ${className}`}>
+        {/* Simplified Retro Header */}
+        <div className="flex flex-wrap justify-between items-center gap-2 mb-4 border-b border-terminal-main/30 pb-2">
           <div className="flex items-center gap-2">
-            <h2 className="text-sm md:text-base text-terminal-main uppercase">
-              [ {title} ]
+            <h2 className="text-xs text-terminal-main font-bold uppercase">
+              &gt; {title}
             </h2>
             {badge !== undefined && (
-              <span className="bg-terminal-main text-black text-xs px-1">
-                PEND: {badge}
+              <span className="text-[10px] text-terminal-main/60">
+                ({badge})
               </span>
             )}
           </div>
-          <div className="flex items-center gap-4 text-terminal-main/70 text-xs">
-            {label && <span>[ {label} ]</span>}
-            {actions && <div className="flex items-center gap-2">{actions}</div>}
+          <div className="flex items-center gap-3 text-terminal-main/50 text-[10px] uppercase">
+            {label && <span>[{label}]</span>}
+            {actions}
           </div>
         </div>
         
-        <div className="flex-1 relative">
+        <div className="flex-1">
            {children}
         </div>
 
