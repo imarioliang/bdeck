@@ -4,7 +4,8 @@
 - [x] Task: Reproduction Test for Anonymous-to-Login Sync [b9b4acd]
     - Write a failing test in `src/components/sync/SyncManager.test.tsx` that simulates having local data as an anonymous user, logging in to an account with existing cloud data, and verifying that local data is NOT lost.
     - Confirm the test fails (Red phase).
-- [ ] Task: Conductor - User Manual Verification 'Diagnostic & Reproduction' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Diagnostic & Reproduction' (Protocol in workflow.md)
+## [checkpoint: 5c69641]
 
 ## Phase 2: Logic Refinement
 - [ ] Task: Fix SyncManager Merge Strategy
