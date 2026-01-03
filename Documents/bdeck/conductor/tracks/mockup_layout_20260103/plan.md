@@ -22,7 +22,7 @@
     - [x] Add utility for background color highlight and black text on hover.
 - [x] Task: Apply Hover Effects to Categories and Links. (e3bfb8c)
     - [x] Update `DirectoriesSidebar` and `LinksPane` components to use the new hover utility.
-- [~] Task: Conductor - User Manual Verification 'High-Contrast Hover Effects' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'High-Contrast Hover Effects' (Protocol in workflow.md) (3082bb2)
 
 ## Phase 4: Timer Daemon Refinement
 - [ ] Task: Create Tests for Condensed Timer Rows.
