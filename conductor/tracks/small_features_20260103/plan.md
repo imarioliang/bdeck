@@ -22,7 +22,8 @@
     - Implement `onKeyDown` (Enter) and `onBlur` to commit changes to the store.
 - [x] Task: Link Modal Keyboard Support [b2d0d06]
     - Update the modal inputs in `src/components/dashboard/LinksPane.tsx` to trigger `addLink()` when the `Enter` key is pressed.
-- [ ] Task: Conductor - User Manual Verification 'UX Refinements' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'UX Refinements' (Protocol in workflow.md)
+## [checkpoint: ef8b073]
 
 ## Phase 3: Final Verification
 - [ ] Task: Conductor - User Manual Verification 'Small UX Improvements & Indicators' (Protocol in workflow.md)
