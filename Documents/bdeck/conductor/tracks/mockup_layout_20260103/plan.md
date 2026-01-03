@@ -17,12 +17,12 @@
 - [x] Task: Conductor - User Manual Verification 'Directories Sidebar' (Protocol in workflow.md) (444534b)
 
 ## Phase 3: High-Contrast Hover Effects
-- [ ] Task: Create Tests for Hover Interactions.
-- [ ] Task: Implement Inverted Hover Styles in `src/app/globals.css`.
-    - [ ] Add utility for background color highlight and black text on hover.
-- [ ] Task: Apply Hover Effects to Categories and Links.
-    - [ ] Update `DirectoriesSidebar` and `LinksPane` components to use the new hover utility.
-- [ ] Task: Conductor - User Manual Verification 'High-Contrast Hover Effects' (Protocol in workflow.md)
+- [x] Task: Create Tests for Hover Interactions. (e3bfb8c)
+- [x] Task: Implement Inverted Hover Styles in `src/app/globals.css`. (e3bfb8c)
+    - [x] Add utility for background color highlight and black text on hover.
+- [x] Task: Apply Hover Effects to Categories and Links. (e3bfb8c)
+    - [x] Update `DirectoriesSidebar` and `LinksPane` components to use the new hover utility.
+- [~] Task: Conductor - User Manual Verification 'High-Contrast Hover Effects' (Protocol in workflow.md)
 
 ## Phase 4: Timer Daemon Refinement
 - [ ] Task: Create Tests for Condensed Timer Rows.
