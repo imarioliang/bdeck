@@ -18,7 +18,7 @@
     - [x] Update `src/components/dashboard/LinksPane.test.tsx` to verify list-style rendering in retro mode.
 - [x] Task: Conductor - User Manual Verification 'Links Pane Transformation' (Protocol in workflow.md) (9ed3f15)
 
-## Phase 3: UI Refinements (Timers & Todo)
+## Phase 3: UI Refinements (Timers & Todo) [checkpoint: ace579f]
 - [x] Task: Rename and Style Timers Rest Button. (d02e073)
     - [x] Update `src/components/dashboard/TimersPane.tsx` to change `[ RESET_ALL_PROCESSES ]` to `[ INITIATE_REST_PROTOCOL ]`.
     - [x] Ensure button styling aligns with the mockup's high-contrast, bordered look.
