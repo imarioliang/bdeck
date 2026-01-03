@@ -125,7 +125,7 @@ export default function Home() {
           </header>
 
           {/* APPS GRID */}
-          <section className="p-4 md:p-6 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-3">
+          <section className="p-4 md:p-6 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
             <LinksPane 
               isAdding={isAddingLink} 
               setIsAdding={setIsAddingLink} 
