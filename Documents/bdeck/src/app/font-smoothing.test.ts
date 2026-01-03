@@ -18,7 +18,7 @@ describe('Global Aesthetic - Font Smoothing', () => {
     const cssPath = path.resolve(process.cwd(), 'src/app/globals.css');
     const cssContent = fs.readFileSync(cssPath, 'utf8');
     
-    const hasPressStart = cssContent.includes(":root[data-skin='retro']") && 
+    const hasPressStart = cssContent.includes("[data-skin='retro']") && 
                           cssContent.includes("--font-family-base: var(--font-press-start)");
     
     expect(hasPressStart).toBe(true);

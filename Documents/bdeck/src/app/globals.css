@@ -13,6 +13,19 @@
   font-size: 20px;
 }
 
+/* Retro skin specific scaling (Press Start 2P is bulky) */
+:root[data-skin='retro'][data-size='small'] {
+  font-size: 8px;
+}
+
+:root[data-skin='retro'][data-size='standard'] {
+  font-size: 10px;
+}
+
+:root[data-skin='retro'][data-size='large'] {
+  font-size: 14px;
+}
+
 :root {
   --background: #0a0a0a;
   --foreground: #d4d4d4;
@@ -21,7 +34,7 @@
   --terminal-red: #ff5f5f;
   --panel-bg: #111111;
   --border-color: #262626;
-  --font-family-base: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-family-base: var(--font-vt323), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   transition: font-size 0.2s ease-in-out;
 }
 
@@ -37,12 +50,12 @@
   --terminal-main: #3b82f6;
 }
 
-:root[data-skin='retro'] {
+[data-skin='retro'] {
   --background: #000000;
   --foreground: var(--terminal-main);
   --panel-bg: #000000;
   --border-color: var(--terminal-main);
-  --font-family-base: var(--font-press-start), monospace;
+  --font-family-base: var(--font-press-start), cursive;
 }
 
 body {
@@ -53,9 +66,10 @@ body {
   line-height: 1.2;
 }
 
-[data-skin='retro'] body {
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: grayscale;
+[data-skin='retro'] body, [data-skin='retro'] * {
+  -webkit-font-smoothing: none !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  font-family: var(--font-press-start), cursive !important;
 }
 
 /* Brutalist Custom Scrollbar */
