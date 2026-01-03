@@ -4,7 +4,7 @@
 - [x] Task: Implement Sync Status Store [fbf6efe]
     - Update `useDashboardStore` to include `syncStatus` ('idle', 'syncing', 'error').
     - Write unit tests for store updates.
-- [ ] Task: Update SyncManager Status Reporting
+- [x] Task: Update SyncManager Status Reporting [bbc608d]
     - Modify `src/components/sync/SyncManager.tsx` to update the global `syncStatus` during push and pull operations.
 - [ ] Task: Create HeaderIndicators Component
     - Create `src/components/dashboard/HeaderIndicators.tsx`.
