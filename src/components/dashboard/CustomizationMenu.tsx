@@ -50,8 +50,11 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] flex justify-end">
-      <div className="w-80 h-full bg-[#111111] border-l border-white/10 p-8 flex flex-col gap-10 shadow-2xl animate-in slide-in-from-right duration-300">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4 animate-in fade-in zoom-in-95 duration-200" onClick={onClose}>
+      <div 
+        className="w-full max-w-lg bg-[#111111] border border-terminal-main/30 p-8 flex flex-col gap-10 shadow-[0_0_50px_-20px_rgba(255,157,0,0.2)]"
+        onClick={e => e.stopPropagation()}
+      >
         <div className="flex justify-between items-center border-b border-white/5 pb-4">
           <h2 className="text-terminal-main text-lg font-black tracking-widest uppercase">System Config</h2>
           <button onClick={onClose} className="text-white/20 hover:text-white transition-colors">
