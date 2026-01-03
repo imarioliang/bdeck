@@ -83,13 +83,13 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
     <div 
       ref={setNodeRef}
       style={style}
-      className="relative group aspect-square flex flex-col items-center justify-center border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-terminal-main/20 transition-all cursor-pointer overflow-hidden p-2"
+      className="relative group aspect-square flex flex-col items-center justify-center border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-terminal-main/20 transition-all cursor-pointer overflow-hidden p-1.5"
     >
       {/* FAVICON WATERMARK - REFINED */}
       {faviconUrl && (
         <div 
           className="absolute inset-0 opacity-[0.02] pointer-events-none transition-opacity group-hover:opacity-[0.05] bg-center bg-no-repeat grayscale invert brightness-0"
-          style={{ backgroundImage: `url(${faviconUrl})`, backgroundSize: '50%' }}
+          style={{ backgroundImage: `url(${faviconUrl})`, backgroundSize: '40%' }}
         />
       )}
 
@@ -97,16 +97,16 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
         href={link.url} 
         target="_blank" 
         rel="noopener noreferrer"
-        className="w-full h-full flex flex-col items-center justify-center gap-2 relative z-10"
+        className="w-full h-full flex flex-col items-center justify-center gap-1.5 relative z-10"
       >
         <div className="text-white/10 group-hover:text-terminal-main transition-colors">
-          <Icon size={24} strokeWidth={1.5} />
+          <Icon size={18} strokeWidth={1.5} />
         </div>
-        <div className="flex flex-col items-center gap-0.5 w-full">
-          <span className="text-[0.6rem] font-black tracking-widest text-white/60 group-hover:text-white uppercase truncate w-full text-center px-1">
+        <div className="flex flex-col items-center gap-0.5 w-full px-1">
+          <span className="text-[0.5rem] font-black tracking-[0.15em] text-white/60 group-hover:text-white uppercase truncate w-full text-center">
             {link.title}
           </span>
-          <span className="text-[0.45rem] text-white/10 font-bold uppercase tracking-tighter truncate w-full text-center">
+          <span className="text-[0.35rem] text-white/10 font-bold uppercase tracking-tighter truncate w-full text-center">
             {link.isPinned ? 'SYS_PRIORITY' : status}
           </span>
         </div>
@@ -241,12 +241,12 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
       {/* ADD APP BUTTON */}
       <button 
         onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
-        className="aspect-square flex flex-col items-center justify-center gap-2 border border-dashed border-white/5 hover:border-terminal-main/30 hover:bg-white/[0.01] transition-all text-white/10 hover:text-terminal-main group p-2"
+        className="aspect-square flex flex-col items-center justify-center gap-1.5 border border-dashed border-white/5 hover:border-terminal-main/30 hover:bg-white/[0.01] transition-all text-white/10 hover:text-terminal-main group p-1.5"
       >
-        <Plus size={24} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform" />
+        <Plus size={18} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform" />
         <div className="flex flex-col items-center">
-          <span className="text-[0.6rem] font-black tracking-widest uppercase italic">Add App</span>
-          <span className="text-[0.45rem] font-bold uppercase opacity-30">System</span>
+          <span className="text-[0.5rem] font-black tracking-widest uppercase italic">Add App</span>
+          <span className="text-[0.35rem] font-bold uppercase opacity-30">System</span>
         </div>
       </button>
 
