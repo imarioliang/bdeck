@@ -71,6 +71,15 @@ body {
   -moz-osx-font-smoothing: grayscale !important;
   font-family: var(--font-press-start), cursive !important;
   text-shadow: 0 0 5px var(--terminal-main);
+  letter-spacing: -0.05em;
+  line-height: 1.4;
+}
+
+[data-skin='retro'] input,
+[data-skin='retro'] textarea,
+[data-skin='retro'] select {
+  font-family: var(--font-vt323), monospace !important;
+  letter-spacing: 0.05em !important;
 }
 
 /* CRT Scanlines Utility */
