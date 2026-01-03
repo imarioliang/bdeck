@@ -26,11 +26,11 @@
 
 ## Phase 4: Timer Daemon Refinement
 - [x] Task: Create Tests for Condensed Timer Rows. (760775d)
-- [x] Task: Refactor `TimersPane.tsx`. (760775d)
+- [x] Task: Refactor `TimersPane.tsx`. (760775d, 64ad614)
     - [x] Condense timer rows into tight, single-line boxes.
     - [x] Move Work/Rest interval inputs to a dedicated settings footer or modal.
     - [x] Title the pane `[ TIMER_DAEMON ]`.
-- [~] Task: Conductor - User Manual Verification 'Timer Daemon Refinement' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Timer Daemon Refinement' (Protocol in workflow.md) (64ad614)
 
 ## Phase 5: Repositioning & Final Audit
 - [ ] Task: Update Global Layout Repositioning.
