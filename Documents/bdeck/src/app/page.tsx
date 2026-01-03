@@ -15,6 +15,7 @@ import { Search } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useDashboardStore } from '@/store/useDashboardStore';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { useSkin } from '@/hooks/useSkin';
 import { DirectoriesSidebar } from "@/components/dashboard/DirectoriesSidebar";
 
 export default function Home() {
