@@ -24,7 +24,8 @@ describe('syncEngine', () => {
 
   it('pushToCloud should not sync if no user', async () => {
     (useAuthStore.getState as any).mockReturnValue({ user: null });
-    await pushToCloud('links', []);
+    const { error } = await pushToCloud('links', []);
+    expect(error).toBeNull();
     expect(supabase.from).not.toHaveBeenCalled();
   });
 
@@ -34,8 +35,9 @@ describe('syncEngine', () => {
     (supabase.from as any).mockReturnValue({ upsert: mockUpsert });
 
     const data = [{ id: '1', title: 'Test' }];
-    await pushToCloud('links', data);
+    const { error } = await pushToCloud('links', data);
 
+    expect(error).toBeNull();
     expect(supabase.from).toHaveBeenCalledWith('links');
     expect(mockUpsert).toHaveBeenCalledWith(
         expect.arrayContaining([expect.objectContaining({ id: '1', user_id: 'user-1' })])
@@ -48,11 +50,12 @@ describe('syncEngine', () => {
     const mockSelect = vi.fn().mockReturnValue({ eq: mockEq });
     (supabase.from as any).mockReturnValue({ select: mockSelect });
 
-    const result = await fetchFromCloud('links');
+    const { data, error } = await fetchFromCloud('links');
 
+    expect(error).toBeNull();
     expect(supabase.from).toHaveBeenCalledWith('links');
     expect(mockSelect).toHaveBeenCalled();
     expect(mockEq).toHaveBeenCalledWith('user_id', 'user-1');
-    expect(result).toEqual([{ id: '1' }]);
+    expect(data).toEqual([{ id: '1' }]);
   });
 });

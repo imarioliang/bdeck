@@ -2,13 +2,14 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 import { SyncManager } from './SyncManager';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useDashboardStore } from '@/store/useDashboardStore';
 import * as syncEngine from '@/utils/syncEngine';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 // Mock syncEngine
 vi.mock('@/utils/syncEngine', () => ({
-  pushToCloud: vi.fn().mockResolvedValue({}),
-  fetchFromCloud: vi.fn().mockResolvedValue([]),
+  pushToCloud: vi.fn().mockResolvedValue({ error: null }),
+  fetchFromCloud: vi.fn().mockResolvedValue({ data: [], error: null }),
   mapLinkToLocal: vi.fn(),
   mapTodoToLocal: vi.fn(),
   mapTimerToLocal: vi.fn(),
@@ -30,6 +31,11 @@ vi.mock('@/store/useAuthStore', () => ({
   useAuthStore: vi.fn(),
 }));
 
+// Mock useDashboardStore
+vi.mock('@/store/useDashboardStore', () => ({
+  useDashboardStore: vi.fn(),
+}));
+
 // Mock useLocalStorage
 vi.mock('@/hooks/useLocalStorage', () => ({
   useLocalStorage: vi.fn(),
@@ -41,12 +47,17 @@ describe('SyncManager', () => {
   const setTimers = vi.fn();
   const setNotes = vi.fn();
   const setSession = vi.fn();
+  const setSyncStatus = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
     (useAuthStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       user: { id: 'test-user' },
       setSession,
+    });
+
+    (useDashboardStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+      setSyncStatus,
     });
 
     // Mock useLocalStorage calls
@@ -86,8 +97,8 @@ describe('SyncManager', () => {
     // 2. Setup: Cloud data also exists
     const cloudLinks = [{ id: 'cloud-1', title: 'Cloud Link' }];
     (syncEngine.fetchFromCloud as any).mockImplementation((table: string) => {
-        if (table === 'links') return Promise.resolve(cloudLinks);
-        return Promise.resolve([]);
+        if (table === 'links') return Promise.resolve({ data: cloudLinks, error: null });
+        return Promise.resolve({ data: [], error: null });
     });
 
     render(<SyncManager />);

@@ -66,7 +66,7 @@ export const mapNoteToLocal = (row: any) => row.content;
 
 export const pushToCloud = async (table: string, data: any) => {
   const user = useAuthStore.getState().user;
-  if (!user) return;
+  if (!user) return { error: null };
 
   let payload: any[] = [];
   
@@ -82,20 +82,24 @@ export const pushToCloud = async (table: string, data: any) => {
 
   if (payload.length > 0) {
      const { error } = await supabase.from(table).upsert(payload);
-     if (error) console.error(`Sync error ${table}:`, error);
+     if (error) {
+       console.error(`Sync error ${table}:`, error);
+       return { error };
+     }
   }
+  return { error: null };
 };
 
 export const fetchFromCloud = async (table: string) => {
   const user = useAuthStore.getState().user;
-  if (!user) return null;
+  if (!user) return { data: null, error: null };
 
   const { data, error } = await supabase.from(table).select('*').eq('user_id', user.id);
   
   if (error) {
     console.error(`Fetch error ${table}:`, error);
-    return null;
+    return { data: null, error };
   }
   
-  return data;
+  return { data, error: null };
 };
