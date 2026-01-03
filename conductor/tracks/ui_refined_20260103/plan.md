@@ -26,7 +26,7 @@
 - [x] Task: Global Typography Contrast Update [6c85a1b]
     - Audit all primary text components (headers, task text, note content).
     - Increase text color opacity/brightness to 90-100% across all themes.
-- [ ] Task: Background Contrast Audit
+- [x] Task: Background Contrast Audit [031d0cc]
     - Review background transparency in `Pane.tsx` and specific subsystem containers.
     - Ensure backgrounds are dark enough to provide high contrast against terminal-main text.
 - [ ] Task: Conductor - User Manual Verification 'Contrast & Readability Polish' (Protocol in workflow.md)
