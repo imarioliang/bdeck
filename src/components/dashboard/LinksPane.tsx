@@ -260,6 +260,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                 <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Identifier</label>
                 <input 
                   type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && addLink()}
                   placeholder="MODULE_NAME..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80"
                 />
               </div>
@@ -267,6 +268,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                 <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Protocol Path</label>
                 <input 
                   type="text" value={newUrl} onChange={e => setNewUrl(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && addLink()}
                   placeholder="PROTOCOL_PATH..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80"
                 />
               </div>
@@ -276,6 +278,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                   <div className="flex gap-2">
                     <input 
                       type="text" value={newCategory} onChange={e => setNewCategory(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && addLink()}
                       placeholder="NEW_CAT..." className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main uppercase tracking-widest text-white/80"
                       autoFocus
                     />
@@ -293,6 +296,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                           setNewCategory(e.target.value);
                         }
                       }}
+                      onKeyDown={e => e.key === 'Enter' && addLink()}
                       className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80 appearance-none cursor-pointer"
                     >
                       {categories.map(cat => (
