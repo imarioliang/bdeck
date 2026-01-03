@@ -23,7 +23,7 @@
 ## [checkpoint: e5b9caa]
 
 ## Phase 3: Contrast & Readability Polish
-- [ ] Task: Global Typography Contrast Update
+- [x] Task: Global Typography Contrast Update [6c85a1b]
     - Audit all primary text components (headers, task text, note content).
     - Increase text color opacity/brightness to 90-100% across all themes.
 - [ ] Task: Background Contrast Audit
