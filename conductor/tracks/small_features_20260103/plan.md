@@ -6,7 +6,7 @@
     - Write unit tests for store updates.
 - [x] Task: Update SyncManager Status Reporting [bbc608d]
     - Modify `src/components/sync/SyncManager.tsx` to update the global `syncStatus` during push and pull operations.
-- [ ] Task: Create HeaderIndicators Component
+- [x] Task: Create HeaderIndicators Component [ba40752]
     - Create `src/components/dashboard/HeaderIndicators.tsx`.
     - Implement the Sync Indicator (icon + text, pulsing animation for 'syncing').
     - Implement the Branch Indicator (displays `process.env.NODE_ENV` and a branch placeholder, visible only in dev).
