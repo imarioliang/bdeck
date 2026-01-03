@@ -27,9 +27,9 @@
 - [x] Task: Standardize Dashboard Gutters. (dda743c, 2d7c423)
 - [x] Task: Standardize Internal Padding. (dda743c, 2d7c423)
 - [x] Task: Implement Border Snap Alignment. (dda743c, 2d7c423)
-- [~] Task: Conductor - User Manual Verification 'Spacing & Alignment' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Spacing & Alignment' (Protocol in workflow.md) (874962d)
 
 ## Phase 5: Final Audit & Stability
-- [ ] Task: Final Visual Audit.
-    - [ ] Audit all interactions (hover, toggle, filter) for "jumpy" layout shifts.
-- [ ] Task: Conductor - User Manual Verification 'Final Audit & Stability' (Protocol in workflow.md)
+- [~] Task: Final Visual Audit.
+    - [x] Audit all interactions (hover, toggle, filter) for "jumpy" layout shifts.
+- [~] Task: Conductor - User Manual Verification 'Final Audit & Stability' (Protocol in workflow.md)
