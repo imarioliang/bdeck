@@ -4,13 +4,12 @@ import React from 'react';
 
 export const AsciiLogo = () => {
   return (
-    <pre className="text-[0.4rem] md:text-[0.5rem] leading-[1.1] font-bold text-terminal-main select-none group-hover:text-white transition-colors duration-300">
+    <pre className="text-[0.35rem] md:text-[0.45rem] leading-[1.1] font-black text-terminal-main select-none group-hover:text-white transition-colors duration-300">
 {`
- ____  ____  _____ ____ _  __
-| __ )|  _ \| ____/ ___| |/ /
-|  _ \| | | |  _| | |   | ' /
-| |_) | |_| | |___| |___| . \
-|____/|____/|_____|\____|_|_\\
+   ___  ___  ____ ____ _  __
+  / _ )/ _ \/ __/ __/| |/ /
+ / _  / // / _// /__ | ' < 
+/____/____/___/\___/|_|_\\
 `}
     </pre>
   );
