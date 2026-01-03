@@ -10,36 +10,59 @@ vi.mock('@/hooks/useSkin', () => ({
 
 describe('DirectoriesSidebar', () => {
   const mockSetActiveCategory = vi.fn();
-  const categories = ['ALL SYSTEMS', 'DEVELOPMENT', 'SYSTEM'];
+  const mockSetActiveTag = vi.fn();
+  const categories = ['SYSTEM', 'DEVELOPMENT'];
+  const tags = ['work', 'personal'];
 
   beforeEach(() => {
     vi.mocked(useSkin).mockReturnValue('retro');
     vi.clearAllMocks();
   });
 
-  it('should render all categories', () => {
-    render(<DirectoriesSidebar categories={categories} activeCategory="ALL SYSTEMS" setActiveCategory={mockSetActiveCategory} />);
+  it('should render all categories and tags', () => {
+    render(<DirectoriesSidebar 
+      categories={categories} 
+      activeCategory="SYSTEM" 
+      setActiveCategory={mockSetActiveCategory} 
+      tags={tags}
+      activeTag={null}
+      setActiveTag={mockSetActiveTag}
+    />);
     
-    expect(screen.getByText('ALL SYSTEMS')).toBeDefined();
-    expect(screen.getByText('DEVELOPMENT')).toBeDefined();
     expect(screen.getByText('SYSTEM')).toBeDefined();
+    expect(screen.getByText('DEVELOPMENT')).toBeDefined();
+    expect(screen.getByText('work')).toBeDefined();
+    expect(screen.getByText('personal')).toBeDefined();
   });
 
-  it('should call setActiveCategory when a category is clicked', () => {
-    render(<DirectoriesSidebar categories={categories} activeCategory="ALL SYSTEMS" setActiveCategory={mockSetActiveCategory} />);
+  it('should call setActiveTag when a tag is clicked', () => {
+    render(<DirectoriesSidebar 
+      categories={categories} 
+      activeCategory="SYSTEM" 
+      setActiveCategory={mockSetActiveCategory} 
+      tags={tags}
+      activeTag={null}
+      setActiveTag={mockSetActiveTag}
+    />);
     
-    const devCategory = screen.getByText('DEVELOPMENT');
-    fireEvent.click(devCategory);
+    const workTag = screen.getByText('work');
+    fireEvent.click(workTag);
     
-    expect(mockSetActiveCategory).toHaveBeenCalledWith('DEVELOPMENT');
+    expect(mockSetActiveTag).toHaveBeenCalledWith('work');
   });
 
   it('should apply active styling to the current category', () => {
-    const { container } = render(<DirectoriesSidebar categories={categories} activeCategory="DEVELOPMENT" setActiveCategory={mockSetActiveCategory} />);
+    render(<DirectoriesSidebar 
+      categories={categories} 
+      activeCategory="DEVELOPMENT" 
+      setActiveCategory={mockSetActiveCategory} 
+      tags={tags}
+      activeTag={null}
+      setActiveTag={mockSetActiveTag}
+    />);
     
-    // Check if the active category has the expected active class (to be defined in implementation)
-    // We expect an inverted style or similar for active items
+    // Check if the active category has the expected active class
     const activeItem = screen.getByText('DEVELOPMENT').closest('button');
-    expect(activeItem?.className).toContain('bg-terminal-main');
+    expect(activeItem?.className).toContain('retro-invert');
   });
 });

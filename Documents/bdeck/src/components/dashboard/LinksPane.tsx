@@ -5,6 +5,7 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Pencil, Trash2, GripHorizontal, Pin, Mail, Calendar, Music, HardDrive, BarChart3, Code, Plus, ShieldCheck } from 'lucide-react';
 import { getFaviconUrl } from '@/utils/favicon';
 import { useSkin } from '@/hooks/useSkin';
+import { useDashboardStore } from '@/store/useDashboardStore';
 import {
   DndContext,
   closestCenter,
@@ -211,6 +212,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
+  const { activeTag } = useDashboardStore();
   const skin = useSkin();
   const isRetro = skin === 'retro';
 
@@ -241,7 +243,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
       const bPinned = b.isPinned ?? false;
       if (aPinned && !bPinned) return -1;
       if (!aPinned && bPinned) return 1;
-      return 0;
+      return a.title.localeCompare(b.title, undefined, { numeric: true, sensitivity: 'base' });
     });
   }, [links]);
 
@@ -250,10 +252,14 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
       const matchesSearch = link.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                            link.url.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            (link.tags && link.tags.some(t => t.toLowerCase().includes(searchTerm.toLowerCase())));
-      const matchesCategory = activeCategory === 'ALL SYSTEMS' || link.category === activeCategory;
+      
+      const matchesCategory = activeTag 
+        ? (link.tags && link.tags.includes(activeTag))
+        : (activeCategory === 'ALL SYSTEMS' || link.category === activeCategory);
+
       return matchesSearch && matchesCategory;
     });
-  }, [sortedLinks, searchTerm, activeCategory]);
+  }, [sortedLinks, searchTerm, activeCategory, activeTag]);
 
   const addLink = () => {
     if (newTitle.trim() && newUrl.trim()) {
@@ -292,7 +298,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
           <div className="flex w-full border-b border-terminal-main py-1.5 px-3 bg-terminal-main text-black sticky top-0 z-10 font-black retro-invert">
              <div className="w-[45%] text-[9px] uppercase tracking-widest">FILENAME</div>
              <div className="w-[15%] text-[9px] uppercase tracking-widest text-right pr-4">EXT</div>
-             <div className="w-[15%] text-[9px] uppercase tracking-widest text-right pr-4">SIZE</div>
+             <div className="w-[15%] text-[9px] uppercase tracking-widest text-right pr-4">TAGS</div>
              <div className="flex-1 text-[9px] uppercase tracking-widest text-right">STATUS</div>
           </div>
         )}

@@ -26,7 +26,7 @@ export default function Home() {
   const [isEditingTimers, setIsEditingTimers] = useState(false);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   
-  const { activeCategory, setActiveCategory } = useDashboardStore();
+  const { activeCategory, setActiveCategory, activeTag, setActiveTag } = useDashboardStore();
   const skin = useSkin();
   const isRetro = skin === 'retro';
   
@@ -40,11 +40,30 @@ export default function Home() {
   const pendingTodosCount = useMemo(() => todos.filter(t => !t.done).length, [todos]);
 
   const categories = useMemo(() => {
-    const base = ['ALL SYSTEMS', 'DEVELOPMENT', 'COMMUNICATION', 'ANALYTICS', 'SYSTEM'];
+    const baseOrder = ['SYSTEM', 'DEVELOPMENT', 'COMMUNICATION', 'ANALYTICS'];
     const custom = links.map(l => l.category).filter(Boolean) as string[];
-    const uniqueCategories = Array.from(new Set([...base, ...custom]));
-    // Remove 'ALL SYSTEMS' from the sidebar categories since it's implied or handled separately
-    return uniqueCategories.filter(c => c !== 'ALL SYSTEMS');
+    const unique = Array.from(new Set(custom)).filter(c => c !== 'ALL SYSTEMS');
+    
+    return unique.sort((a, b) => {
+      const aIdx = baseOrder.indexOf(a);
+      const bIdx = baseOrder.indexOf(b);
+      
+      // If both are in baseOrder, sort by baseOrder
+      if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
+      // If only one is in baseOrder, it comes first
+      if (aIdx !== -1) return -1;
+      if (bIdx !== -1) return 1;
+      
+      // Otherwise, natural alphabetical sort
+      return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+    });
+  }, [links]);
+
+  const allTags = useMemo(() => {
+    const tags = links.flatMap(l => l.tags || []);
+    return Array.from(new Set(tags)).sort((a, b) => 
+      a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
+    );
   }, [links]);
 
   return (
@@ -173,6 +192,9 @@ export default function Home() {
                 categories={['ALL SYSTEMS', ...categories]} 
                 activeCategory={activeCategory} 
                 setActiveCategory={setActiveCategory} 
+                tags={allTags}
+                activeTag={activeTag}
+                setActiveTag={setActiveTag}
               />
             </aside>
           )}
