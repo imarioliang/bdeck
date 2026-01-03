@@ -1,6 +1,6 @@
 # Track Plan: Retro Skin UI Improvement
 
-## Phase 1: Typography & Global Aesthetic
+## Phase 1: Typography & Global Aesthetic [checkpoint: 5e5de3c]
 - [x] Task: Update Global Fonts. (7994abd)
     - [x] Import `Press Start 2P` from Next.js Google Fonts in `src/app/layout.tsx`.
     - [x] Update `src/app/globals.css` to use `Press Start 2P` for the `retro` skin.
