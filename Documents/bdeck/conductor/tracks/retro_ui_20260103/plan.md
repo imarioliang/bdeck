@@ -29,8 +29,8 @@
 - [x] Task: Conductor - User Manual Verification 'UI Refinements' (Protocol in workflow.md) (d02e073)
 
 ## Phase 4: Final Visual Audit
-- [ ] Task: Mobile Responsiveness Check.
-    - [ ] Verify that the new Links list layout doesn't break on narrow screens.
-- [ ] Task: Final Contrast & Alignment Tweak.
-    - [ ] Audit all retro elements against the mockup for alignment and high-contrast consistency.
-- [ ] Task: Conductor - User Manual Verification 'Final Visual Audit' (Protocol in workflow.md)
+- [x] Task: Mobile Responsiveness Check. (9ed3f15)
+    - [x] Verify that the new Links list layout doesn't break on narrow screens.
+- [x] Task: Final Contrast & Alignment Tweak. (9ed3f15)
+    - [x] Audit all retro elements against the mockup for alignment and high-contrast consistency.
+- [x] Task: Conductor - User Manual Verification 'Final Visual Audit' (Protocol in workflow.md) (9ed3f15)
