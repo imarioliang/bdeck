@@ -196,11 +196,11 @@ export const TodoPane = () => {
     <div className="h-full flex flex-col gap-4">
       {/* ADD INPUT BAR */}
       <div className="relative group">
-        <div className={`absolute left-3 top-1/2 -translate-y-1/2 ${isRetro ? 'text-terminal-main font-mono' : 'text-white/10 font-black text-xs'}`}>{isRetro ? '>' : '+'}</div>
+        <div className={`absolute left-3 top-1/2 -translate-y-1/2 ${isRetro ? 'text-terminal-main font-mono text-sm' : 'text-white/10 font-black text-xs'}`}>{isRetro ? '>' : '+'}</div>
         <input 
           type="text"
-          placeholder={isRetro ? "ADD_TASK..." : "NEW MISSION OBJECTIVE..."}
-          className={`w-full px-8 py-2.5 transition-all uppercase focus:outline-none ${isRetro ? 'bg-black border border-terminal-main text-terminal-main font-mono text-sm placeholder:text-terminal-main/30' : 'bg-white/[0.02] border border-white/5 text-[9px] font-black focus:border-terminal-main/20 placeholder:text-white/5 tracking-[0.1em]'}`}
+          placeholder={isRetro ? "ADD_OBJECTIVE..." : "NEW MISSION OBJECTIVE..."}
+          className={`w-full px-8 py-2.5 transition-all uppercase focus:outline-none ${isRetro ? 'bg-black border border-terminal-main text-terminal-main font-mono text-xs placeholder:text-terminal-main/30 pr-12' : 'bg-white/[0.02] border border-white/5 text-[9px] font-black focus:border-terminal-main/20 placeholder:text-white/5 tracking-[0.1em]'}`}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && e.currentTarget.value.trim()) {
               const id = `todo-${Date.now()}`;
@@ -210,7 +210,11 @@ export const TodoPane = () => {
             }
           }}
         />
-        {!isRetro && <CornerDownLeft className="absolute right-3 top-1/2 -translate-y-1/2 text-white/5 group-focus-within:text-terminal-main/40 transition-colors" size={12} />}
+        {isRetro ? (
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-terminal-main/50 font-mono text-[10px] select-none">[ENT]</div>
+        ) : (
+          <CornerDownLeft className="absolute right-3 top-1/2 -translate-y-1/2 text-white/5 group-focus-within:text-terminal-main/40 transition-colors" size={12} />
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto pr-1 custom-scrollbar">

@@ -36,7 +36,9 @@ describe('TodoPane', () => {
     render(<TodoPane />);
     
     // Check for retro input placeholder
-    expect(screen.getByPlaceholderText('ADD_TASK...')).toBeDefined();
+    expect(screen.getByPlaceholderText('ADD_OBJECTIVE...')).toBeDefined();
+    // Check for [ENT] indicator
+    expect(screen.getByText('[ENT]')).toBeDefined();
     // Check for retro checkbox style
     expect(screen.getByText('[ ]')).toBeDefined();
     expect(screen.getByText('::')).toBeDefined(); // Grip handle

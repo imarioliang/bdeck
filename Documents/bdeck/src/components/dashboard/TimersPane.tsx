@@ -377,7 +377,7 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
           ) : (
             <>
               {!isRetro && <RotateCcw size={10} className="group-hover:-rotate-90 transition-transform duration-500" />}
-              <span className={`font-black uppercase ${isRetro ? 'text-xs' : 'text-[0.6rem] tracking-[0.2em]'}`}>[ RESET_ALL_PROCESSES ]</span>
+              <span className={`font-black uppercase ${isRetro ? 'text-xs' : 'text-[0.6rem] tracking-[0.2em]'}`}>{isRetro ? '[ INITIATE_REST_PROTOCOL ]' : '[ RESET_ALL_PROCESSES ]'}</span>
             </>
           )}
         </button>
