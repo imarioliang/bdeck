@@ -94,13 +94,22 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
           href={link.url} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="flex-1 flex items-center py-1.5 px-3 gap-0"
+          className="flex-1 flex items-center py-1.5 px-3 gap-0 min-w-0"
         >
-           <div className="w-[50%] md:w-[60%] text-[10px] font-mono uppercase truncate text-terminal-main pr-2">
-             {link.title}
+           <div className="w-[45%] flex items-center gap-2 pr-2 min-w-0">
+             <Icon size={12} className="text-terminal-main group-hover:text-black shrink-0" />
+             <span className="text-[10px] font-mono uppercase truncate text-terminal-main group-hover:text-black">{link.title}</span>
            </div>
 
-           <div className="flex-1 text-[9px] font-mono uppercase truncate text-terminal-main/60">
+           <div className="w-[15%] text-[9px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right pr-4">
+             .EXE
+           </div>
+
+           <div className="w-[15%] text-[9px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right pr-4">
+             4KB
+           </div>
+
+           <div className="flex-1 text-[9px] font-mono uppercase truncate text-terminal-main/60 group-hover:text-black/60 text-right">
              {link.isPinned ? '[PRIORITY]' : status}
            </div>
         </a>
@@ -263,8 +272,10 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
       <div className={`w-full ${isRetro ? 'flex flex-col' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-px bg-white/5 border border-white/5'}`}>
         {isRetro && (
           <div className="flex w-full border border-terminal-main/40 py-1.5 px-3 bg-terminal-main/5 mb-0 font-bold">
-             <div className="w-[50%] md:w-[60%] text-[9px] text-terminal-main uppercase tracking-widest">FILENAME</div>
-             <div className="flex-1 text-[9px] text-terminal-main uppercase tracking-widest">STATUS</div>
+             <div className="w-[45%] text-[9px] text-terminal-main uppercase tracking-widest">FILENAME</div>
+             <div className="w-[15%] text-[9px] text-terminal-main uppercase tracking-widest text-right pr-4">EXT</div>
+             <div className="w-[15%] text-[9px] text-terminal-main uppercase tracking-widest text-right pr-4">SIZE</div>
+             <div className="flex-1 text-[9px] text-terminal-main uppercase tracking-widest text-right">STATUS</div>
           </div>
         )}
         

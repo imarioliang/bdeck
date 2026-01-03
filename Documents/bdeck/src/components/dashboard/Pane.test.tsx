@@ -28,7 +28,9 @@ describe('Pane', () => {
     
     // Check for retro header format
     expect(screen.getByText('[ Test Pane ]')).toBeDefined();
-    // Check for retro status line
-    expect(screen.getByText('MEM: 64K')).toBeDefined();
+    
+    // Check for min-height constraint
+    const pane = screen.getByText(/Test Pane/i).closest('.border-terminal-main');
+    expect(pane?.className).toContain('min-h-[400px]');
   });
 });

@@ -42,6 +42,8 @@ describe('LinksPane', () => {
     expect(screen.getByText('Google')).toBeDefined();
     expect(screen.getByText('GitHub')).toBeDefined();
     expect(screen.getByText('FILENAME')).toBeDefined();
+    expect(screen.getByText('EXT')).toBeDefined();
+    expect(screen.getByText('SIZE')).toBeDefined();
     expect(screen.getByText('STATUS')).toBeDefined();
     expect(screen.getByText('[ADD_NEW_MODULE]')).toBeDefined();
   });

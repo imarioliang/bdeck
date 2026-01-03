@@ -21,24 +21,24 @@ export const DirectoriesSidebar = ({ categories, activeCategory, setActiveCatego
         <span className="text-[10px] text-terminal-main font-bold tracking-widest">[ DIRECTORIES ]</span>
       </div>
       
-      <div className="flex-1 overflow-y-auto p-2 space-y-1">
-        <div className="flex items-center gap-2 px-2 py-1 bg-terminal-main/10 border-b border-terminal-main/30 mb-2">
+      <div className="flex-1 overflow-y-auto p-1 space-y-0.5">
+        <div className="flex items-center gap-2 px-2 py-1 bg-terminal-main/10 mb-1">
            <FolderOpen size={14} className="text-terminal-main" />
-           <span className="text-xs text-terminal-main font-bold">[ ROOT ]</span>
+           <span className="text-[10px] text-terminal-main font-bold">[ ROOT ]</span>
         </div>
 
         {categories.map((category) => (
           <button
             key={category}
             onClick={() => setActiveCategory(category)}
-            className={`w-full flex items-center gap-3 px-4 py-1.5 transition-all group relative ${
+            className={`w-full flex items-center gap-2 px-2 py-1 transition-all group relative ${
               activeCategory === category 
                 ? 'retro-invert font-black' 
-                : 'text-terminal-main/60 retro-hover-invert hover:font-bold'
+                : 'text-terminal-main/60 retro-hover-invert'
             }`}
           >
             <Folder size={12} className={activeCategory === category ? 'text-black' : 'text-terminal-main/40 group-hover:text-black'} />
-            <span className="text-[10px] uppercase tracking-widest truncate">{category}</span>
+            <span className="text-[9px] uppercase tracking-wider truncate">{category}</span>
           </button>
         ))}
       </div>
