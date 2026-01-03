@@ -1,0 +1,8 @@
+{
+  "track_id": "refine_layout_20260102",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-02T02:02:40Z",
+  "updated_at": "2026-01-02T02:02:40Z",
+  "description": "all add button should at top of it container, links panel full width, no max heigh for all panel"
+}

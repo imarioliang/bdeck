@@ -1,0 +1,44 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono, VT323 } from "next/font/google";
+import "./globals.css";
+import ThemeWrapper from "@/components/ThemeWrapper";
+import { CommandPalette } from "@/components/dashboard/CommandPalette";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const vt323 = VT323({
+  weight: "400",
+  variable: "--font-vt323",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Bdeck // COMMAND CENTER",
+  description: "Retro-Terminal Dashboard for Power Users",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable} ${vt323.variable} antialiased`}>
+        <ThemeWrapper>
+          <CommandPalette>
+            {children}
+          </CommandPalette>
+        </ThemeWrapper>
+      </body>
+    </html>
+  );
+}

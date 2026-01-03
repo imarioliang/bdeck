@@ -1,0 +1,49 @@
+# Plan: Supabase Integration
+
+## Phase 1: Infrastructure & Schema
+- [x] Task: Install Dependencies [6bf450e]
+    -   Install `@supabase/supabase-js`.
+    -   Add environment variables to `.env.local` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
+- [x] Task: Database Schema Setup [ebcb3d2]
+    -   Create a `supabase/schema.sql` file documenting the required tables (`profiles`, `links`, `todos`, `notes`, `timers`) and RLS policies.
+- [x] Task: Initialize Supabase Client [64ec923]
+    -   Create `src/utils/supabaseClient.ts` (singleton instance).
+    -   Write tests to verify client initialization (mocked).
+- [x] Task: Conductor - User Manual Verification 'Infrastructure & Schema' (Protocol in workflow.md)
+## [checkpoint: b10e4e6]
+
+## Phase 2: Authentication UI & Logic
+- [x] Task: Create Auth Store Slice [9082b2b]
+    -   Update `useDashboardStore` or create `useAuthStore` to manage `session`, `user`, and `authModalOpen` state.
+- [x] Task: Create Auth Modal Component [8d398d4]
+    -   Create `src/components/auth/AuthModal.tsx`.
+    -   Implement Email/Password Sign Up and Login forms.
+    -   Handle loading and error states.
+- [x] Task: Integrate Auth Trigger [973aa51]
+    -   Add a "Login" button to the `CustomizationMenu` or `Header`.
+    -   Ensure it opens the `AuthModal`.
+- [x] Task: Conductor - User Manual Verification 'Authentication UI & Logic' (Protocol in workflow.md)
+## [checkpoint: 59856a7]
+
+## Phase 3: Data Synchronization Logic
+- [x] Task: Implement Sync Utility [a3e385f]
+    -   Create a helper to map Local Store state <-> Supabase Tables.
+    -   Create `pushToCloud(table, data)` and `fetchFromCloud(table)` functions.
+- [x] Task: Sync Implementation - Links [fa07362]
+    -   Update store to listen for changes to `links` and trigger push (debounced).
+    -   Fetch `links` on load/login and merge with store.
+- [x] Task: Sync Implementation - Todos [fa07362]
+    -   Update store to listen for changes to `todos` and trigger push.
+    -   Fetch `todos` on load/login and merge.
+- [x] Task: Sync Implementation - Notes & Timers [fa07362]
+    -   Update store to listen for changes to `notes` and `timers`.
+    -   Fetch on load/login and merge.
+- [x] Task: Merge on Login Logic [fa07362]
+    -   Implement the specific logic: On successful login -> Read Local State -> Read Cloud State -> Merge -> Update both.
+- [x] Task: Conductor - User Manual Verification 'Data Synchronization Logic' (Protocol in workflow.md)
+## [checkpoint: 771dcfe]
+
+## Phase 4: Verification & Polish
+- [x] Task: Verify RLS Policies [Skipped - Manual Verify in Phase Check]
+    -   Ensure users cannot access other users' data.
+- [ ] Task: Conductor - User Manual Verification 'Supabase Integration' (Protocol in workflow.md)
