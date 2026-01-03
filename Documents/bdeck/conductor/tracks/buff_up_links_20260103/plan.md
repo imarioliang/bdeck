@@ -20,10 +20,10 @@
 - [x] Task: Implement Tag Filtering Logic. (0ef4207)
 - [x] Task: Conductor - User Manual Verification 'Tag Navigation' (Protocol in workflow.md) (724e791)
 
-## Phase 4: Visual Scaling & Polish
+## Phase 4: Visual Scaling & Polish [checkpoint: bfeb231]
 - [x] Task: Create Tests for Visual Scaling. (dc7d19f)
 - [x] Task: Scale Link Row Typography. (dc7d19f)
-- [~] Task: Conductor - User Manual Verification 'Visual Scaling & Polish' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Visual Scaling & Polish' (Protocol in workflow.md) (5c6ece2)
 
 ## Phase 5: Glitch Hover Animations
 - [ ] Task: Create Tests for Hover Animations.
