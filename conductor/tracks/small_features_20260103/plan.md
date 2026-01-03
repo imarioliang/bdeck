@@ -10,7 +10,7 @@
     - Create `src/components/dashboard/HeaderIndicators.tsx`.
     - Implement the Sync Indicator (icon + text, pulsing animation for 'syncing').
     - Implement the Branch Indicator (displays `process.env.NODE_ENV` and a branch placeholder, visible only in dev).
-- [ ] Task: Integrate Indicators into Header
+- [x] Task: Integrate Indicators into Header [9178855]
     - Update `src/app/page.tsx` to render `HeaderIndicators` in the header section near the title.
 - [ ] Task: Conductor - User Manual Verification 'Global Indicators' (Protocol in workflow.md)
 
