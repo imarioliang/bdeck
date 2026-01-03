@@ -15,13 +15,12 @@
 - [x] Task: Conductor - User Manual Verification 'Task List Enhancements' (Protocol in workflow.md) (674f794)
 
 ## Phase 3: Structural Constraints (Min/Max Heights)
-- [ ] Task: Create Tests for Height Constraints.
-    - [ ] Verify `max-height` on top section and `min-height` on bottom panes.
-- [ ] Task: Implement Max-Height and Scrolling for Top Section.
-    - [ ] Wrap `DirectoriesSidebar` and `LinksPane` containers in a `max-h-[500px]` div with `overflow-y-auto`.
-- [ ] Task: Implement Min-Height for Bottom Panes.
-    - [ ] Update `Pane.tsx` to accept or enforce a `min-h-[400px]` class in Retro mode for the main dashboard grid.
-- [ ] Task: Conductor - User Manual Verification 'Structural Constraints' (Protocol in workflow.md)
+- [x] Task: Create Tests for Height Constraints. (dda743c)
+- [x] Task: Implement Max-Height and Scrolling for Top Section. (dda743c)
+    - [x] Wrap `DirectoriesSidebar` and `LinksPane` containers in a `max-h-[500px]` div with `overflow-y-auto`.
+- [x] Task: Implement Min-Height for Bottom Panes. (dda743c)
+    - [x] Update `Pane.tsx` to accept or enforce a `min-h-[400px]` class in Retro mode for the main dashboard grid.
+- [~] Task: Conductor - User Manual Verification 'Structural Constraints' (Protocol in workflow.md)
 
 ## Phase 4: Spacing & Alignment Standardization
 - [ ] Task: Create Tests for Spacing and Alignment.
