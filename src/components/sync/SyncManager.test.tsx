@@ -62,6 +62,29 @@ describe('SyncManager', () => {
     });
   });
 
+  it('should push local data to cloud even if cloud data exists (Merge on Login)', async () => {
+    // 1. Setup: Local data exists
+    const localLinks = [{ id: 'local-1', title: 'Local Link' }];
+    (useLocalStorage as unknown as ReturnType<typeof vi.fn>).mockImplementation((key) => {
+      if (key === 'bdeck-links') return [localLinks, setLinks];
+      return [[], vi.fn()];
+    });
+
+    // 2. Setup: Cloud data also exists
+    const cloudLinks = [{ id: 'cloud-1', title: 'Cloud Link' }];
+    (syncEngine.fetchFromCloud as any).mockImplementation((table: string) => {
+        if (table === 'links') return Promise.resolve(cloudLinks);
+        return Promise.resolve([]);
+    });
+
+    render(<SyncManager />);
+
+    // 3. Verification: pushToCloud should be called with local data
+    await waitFor(() => {
+        expect(syncEngine.pushToCloud).toHaveBeenCalledWith('links', expect.arrayContaining(localLinks));
+    });
+  });
+
   // Testing the debounce and push logic is hard with just mocks without firing effects.
   // We trust the component logic. This test ensures it connects to the engine.
 });
