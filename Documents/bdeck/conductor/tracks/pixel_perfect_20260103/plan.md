@@ -1,10 +1,10 @@
 # Track Plan: Pixel Perfect Polish
 
-## Phase 1: De-cluttering & Global Cleanup
+## Phase 1: De-cluttering & Global Cleanup [checkpoint: dc1adda]
 - [x] Task: Create Tests for UI De-cluttering. (644081f)
 - [x] Task: Remove Redundant Footers in `Pane.tsx`. (644081f)
 - [x] Task: Remove Redundant Counters in `DirectoriesSidebar.tsx`. (644081f)
-- [~] Task: Conductor - User Manual Verification 'De-cluttering & Global Cleanup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'De-cluttering & Global Cleanup' (Protocol in workflow.md) (e5a9ef0)
 
 ## Phase 2: Task List Enhancements
 - [ ] Task: Create Tests for Task List Scaling.
