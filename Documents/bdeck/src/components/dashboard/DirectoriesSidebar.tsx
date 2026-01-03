@@ -34,7 +34,7 @@ export const DirectoriesSidebar = ({ categories, activeCategory, setActiveCatego
           <button
             key={category}
             onClick={() => setActiveCategory(category)}
-            className={`w-full flex items-center gap-2 px-4 py-1 transition-all group relative ${
+            className={`w-full flex items-center gap-2 px-4 py-1 transition-all group relative retro-glitch-hover ${
               activeCategory === category && !activeTag
                 ? 'retro-invert font-black' 
                 : 'text-terminal-main/60 retro-hover-invert'
@@ -54,7 +54,7 @@ export const DirectoriesSidebar = ({ categories, activeCategory, setActiveCatego
 
             <button
               onClick={() => setActiveTag?.(null)}
-              className={`w-full flex items-center gap-2 px-4 py-1 transition-all group relative ${
+              className={`w-full flex items-center gap-2 px-4 py-1 transition-all group relative retro-glitch-hover ${
                 !activeTag 
                   ? 'retro-invert font-black' 
                   : 'text-terminal-main/60 retro-hover-invert'
@@ -68,7 +68,7 @@ export const DirectoriesSidebar = ({ categories, activeCategory, setActiveCatego
               <button
                 key={tag}
                 onClick={() => setActiveTag?.(activeTag === tag ? null : tag)}
-                className={`w-full flex items-center gap-2 px-4 py-1 transition-all group relative ${
+                className={`w-full flex items-center gap-2 px-4 py-1 transition-all group relative retro-glitch-hover ${
                   activeTag === tag 
                     ? 'retro-invert font-black' 
                     : 'text-terminal-main/60 retro-hover-invert'

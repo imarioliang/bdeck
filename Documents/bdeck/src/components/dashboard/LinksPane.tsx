@@ -102,7 +102,7 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
       <div 
         ref={setNodeRef}
         style={style}
-        className="relative group w-full flex items-center border border-terminal-main/20 -mt-[1px] first:mt-0 retro-hover-invert transition-colors cursor-pointer min-h-[44px]"
+        className="relative group w-full flex items-center border border-terminal-main/20 -mt-[1px] first:mt-0 retro-hover-invert retro-glitch-hover transition-colors cursor-pointer min-h-[44px]"
       >
         <a 
           href={link.url} 
