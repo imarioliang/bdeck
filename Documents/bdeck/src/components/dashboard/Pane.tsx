@@ -29,12 +29,6 @@ export const Pane = ({ title, label, children, actions, badge, className = "" }:
         <div className="flex-1 relative">
            {children}
         </div>
-
-        {/* Retro Status Footer (Mock) */}
-        <div className="mt-2 border-t border-terminal-main/30 border-dotted pt-1 flex justify-between text-[10px] text-terminal-main/50">
-           <span>MEM: 64K</span>
-           <span>stat: OK</span>
-        </div>
       </div>
     );
   }

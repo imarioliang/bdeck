@@ -33,18 +33,14 @@ export const DirectoriesSidebar = ({ categories, activeCategory, setActiveCatego
             onClick={() => setActiveCategory(category)}
             className={`w-full flex items-center gap-3 px-4 py-1.5 transition-all group relative ${
               activeCategory === category 
-                ? 'bg-terminal-main text-black font-black' 
-                : 'text-terminal-main/60 hover:bg-terminal-main hover:text-black hover:font-bold'
+                ? 'retro-invert font-black' 
+                : 'text-terminal-main/60 retro-hover-invert hover:font-bold'
             }`}
           >
             <Folder size={12} className={activeCategory === category ? 'text-black' : 'text-terminal-main/40 group-hover:text-black'} />
             <span className="text-[10px] uppercase tracking-widest truncate">{category}</span>
           </button>
         ))}
-      </div>
-
-      <div className="border-t border-terminal-main/30 px-3 py-1 text-center">
-         <span className="text-[8px] text-terminal-main/40 uppercase tracking-tighter">{categories.length} DIRS FOUND</span>
       </div>
     </div>
   );
