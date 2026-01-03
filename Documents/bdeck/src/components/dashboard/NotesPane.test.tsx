@@ -1,0 +1,43 @@
+import { render, screen, fireEvent } from '@testing-library/react';
+import { NotesPane } from './NotesPane';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useSkin } from '@/hooks/useSkin';
+import { vi } from 'vitest';
+
+// Mock useLocalStorage
+vi.mock('@/hooks/useLocalStorage', () => ({
+  useLocalStorage: vi.fn((key, initial) => [initial, vi.fn()]),
+}));
+
+// Mock useSkin
+vi.mock('@/hooks/useSkin', () => ({
+  useSkin: vi.fn(),
+}));
+
+describe('NotesPane', () => {
+  const mockSetNote = vi.fn();
+
+  beforeEach(() => {
+    vi.mocked(useLocalStorage).mockReturnValue(['', mockSetNote]);
+    vi.mocked(useSkin).mockReturnValue('modern');
+    vi.clearAllMocks();
+  });
+
+  it('should render initial empty state', () => {
+    render(<NotesPane />);
+    expect(screen.getByPlaceholderText(/> AWAITING SYSTEM LOG INPUT.../i)).toBeDefined();
+  });
+
+  it('should render retro style when skin is retro', () => {
+    vi.mocked(useSkin).mockReturnValue('retro');
+    render(<NotesPane />);
+    expect(screen.getByPlaceholderText(/> AWAITING_LOG_INPUT.../i)).toBeDefined();
+  });
+
+  it('should call setNote when typing', () => {
+    render(<NotesPane />);
+    const textarea = screen.getByRole('textbox');
+    fireEvent.change(textarea, { target: { value: 'New note content' } });
+    expect(mockSetNote).toHaveBeenCalledWith('New note content');
+  });
+});

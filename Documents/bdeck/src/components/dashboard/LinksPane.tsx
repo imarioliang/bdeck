@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Pencil, Trash2, GripHorizontal, Pin, Mail, Calendar, Music, HardDrive, BarChart3, Code, Plus, ShieldCheck } from 'lucide-react';
 import { getFaviconUrl } from '@/utils/favicon';
+import { useSkin } from '@/hooks/useSkin';
 import {
   DndContext,
   closestCenter,
@@ -67,6 +68,8 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
   isReorderable: boolean;
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: link.id, disabled: !isReorderable });
+  const skin = useSkin();
+  const isRetro = skin === 'retro';
 
   const Icon = getIcon(link.title);
   const status = getStatusText(link.title);
@@ -79,6 +82,56 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
     opacity: isDragging ? 0.5 : 1,
   };
 
+  if (isRetro) {
+    return (
+      <div 
+        ref={setNodeRef}
+        style={style}
+        className="relative group aspect-square flex flex-col items-center justify-center border border-terminal-main bg-black hover:bg-terminal-main hover:text-black transition-colors cursor-pointer p-1 overflow-hidden"
+      >
+        <a 
+          href={link.url} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="w-full h-full flex flex-col items-center justify-center gap-1 relative z-10"
+        >
+           <div className="text-sm font-bold opacity-0 group-hover:opacity-100 absolute top-1 right-1 transition-opacity">
+              &gt;
+           </div>
+           
+           {/* Retro Icon Replacement: ASCII or Simplified */}
+           <div className="text-xl font-mono text-terminal-main group-hover:text-black mb-1">
+             {link.title.substring(0, 2).toUpperCase()}
+           </div>
+
+           <div className="flex flex-col items-center w-full px-1">
+            <span className="text-xs font-mono uppercase truncate w-full text-center text-terminal-main group-hover:text-black">
+              {link.title}
+            </span>
+             <span className="text-[10px] uppercase truncate w-full text-center text-terminal-main/60 group-hover:text-black/60">
+               {link.isPinned ? '[PRIORITY]' : status}
+             </span>
+           </div>
+        </a>
+
+        {/* OVERLAY ACTIONS (RETRO) */}
+        <div className="absolute inset-0 bg-black/90 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20 border border-terminal-main">
+          <div className="flex gap-2">
+             <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} className="text-terminal-main hover:bg-terminal-main hover:text-black px-1 border border-terminal-main text-xs">EDIT</button>
+             <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} className="text-terminal-red hover:bg-terminal-red hover:text-black px-1 border border-terminal-red text-xs">DEL</button>
+          </div>
+          <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="text-terminal-main hover:bg-terminal-main hover:text-black px-1 border border-terminal-main text-xs w-full text-center max-w-[80%]">
+             {link.isPinned ? 'UNPIN' : 'PIN'}
+          </button>
+           <div {...attributes} {...listeners} className="text-terminal-main/50 cursor-grab active:cursor-grabbing text-xs">
+            [DRAG]
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Modern Default
   return (
     <div 
       ref={setNodeRef}
@@ -146,6 +199,8 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
+  const skin = useSkin();
+  const isRetro = skin === 'retro';
 
   // Extraction of categories from existing links
   const categories = useMemo(() => {
@@ -239,21 +294,31 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
       </DndContext>
 
       {/* ADD APP BUTTON */}
-      <button 
-        onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
-        className="aspect-square flex flex-col items-center justify-center gap-1.5 border border-dashed border-white/5 hover:border-terminal-main/30 hover:bg-white/[0.01] transition-all text-white/10 hover:text-terminal-main group p-1.5"
-      >
-        <Plus size={18} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform" />
-        <div className="flex flex-col items-center">
-          <span className="text-[0.5rem] font-black tracking-widest uppercase italic">Add App</span>
-          <span className="text-[0.35rem] font-bold uppercase opacity-30">System</span>
-        </div>
-      </button>
+      {isRetro ? (
+        <button 
+          onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
+          className="aspect-square flex flex-col items-center justify-center gap-1.5 border border-dashed border-terminal-main/50 text-terminal-main/50 hover:bg-terminal-main hover:text-black hover:border-terminal-main transition-all group p-1"
+        >
+          <span className="text-2xl font-mono">+</span>
+          <span className="text-xs font-mono uppercase">[ADD]</span>
+        </button>
+      ) : (
+        <button 
+          onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
+          className="aspect-square flex flex-col items-center justify-center gap-1.5 border border-dashed border-white/5 hover:border-terminal-main/30 hover:bg-white/[0.01] transition-all text-white/10 hover:text-terminal-main group p-1.5"
+        >
+          <Plus size={18} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform" />
+          <div className="flex flex-col items-center">
+            <span className="text-[0.5rem] font-black tracking-widest uppercase italic">Add App</span>
+            <span className="text-[0.35rem] font-bold uppercase opacity-30">System</span>
+          </div>
+        </button>
+      )}
 
       {/* MODAL FORM */}
       {isAdding && (
         <div className="fixed inset-0 bg-[#0a0a0a]/95 backdrop-blur-md z-[100] flex items-center justify-center p-4">
-          <div className="bg-[#111111] border border-terminal-main/30 p-8 w-full max-w-sm space-y-6 shadow-[0_0_50px_-20px_rgba(255,157,0,0.2)]">
+          <div className={`bg-[#111111] border ${isRetro ? 'border-terminal-main' : 'border-terminal-main/30'} p-8 w-full max-w-sm space-y-6 shadow-[0_0_50px_-20px_rgba(255,157,0,0.2)]`}>
             <h3 className="text-terminal-main text-sm font-black tracking-[0.2em] uppercase leading-none">{editingId ? 'Modify Module' : 'Initialize Module'}</h3>
             <div className="space-y-4">
               <div className="flex flex-col gap-1.5">
@@ -261,7 +326,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                 <input 
                   type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && addLink()}
-                  placeholder="MODULE_NAME..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80"
+                  placeholder="MODULE_NAME..." className={`w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80 ${isRetro ? 'font-mono' : ''}`}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -269,7 +334,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                 <input 
                   type="text" value={newUrl} onChange={e => setNewUrl(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && addLink()}
-                  placeholder="PROTOCOL_PATH..." className="w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80"
+                  placeholder="PROTOCOL_PATH..." className={`w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80 ${isRetro ? 'font-mono' : ''}`}
                 />
               </div>
               <div className="flex flex-col gap-1.5">

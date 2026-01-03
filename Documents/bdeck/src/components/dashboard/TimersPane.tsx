@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Trash2, GripVertical, Play, Pause, Square, RotateCcw, Plus, Coffee } from 'lucide-react';
+import { useSkin } from '@/hooks/useSkin';
 import {
   DndContext,
   closestCenter,
@@ -46,6 +47,9 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, onUpdateName,
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(project.name);
   const inputRef = useRef<HTMLInputElement>(null);
+  const skin = useSkin();
+  const isRetro = skin === 'retro';
+  
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: project.id, disabled: isEditing });
   const isOverLimit = project.isActive && (project.time - project.sessionStartTime >= workLimit);
 
@@ -71,6 +75,68 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, onUpdateName,
     zIndex: isDragging ? 50 : 0,
     opacity: isDragging ? 0.5 : 1,
   };
+
+  if (isRetro) {
+    return (
+      <div 
+        ref={setNodeRef}
+        style={style}
+        className={`group flex flex-col p-2 border font-mono ${isOverLimit ? 'border-terminal-red text-terminal-red animate-pulse' : 'border-terminal-main/20 text-terminal-main hover:border-terminal-main transition-colors'}`}
+      >
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2 flex-1 overflow-hidden">
+            {!isEditing && (
+              <div {...attributes} {...listeners} className="text-terminal-main/30 cursor-grab active:cursor-grabbing shrink-0 text-[10px]">
+                ::
+              </div>
+            )}
+            <div className="flex flex-col flex-1 overflow-hidden">
+              <div className="flex items-center gap-1">
+                <span className="text-xs">{project.isActive ? '[R]' : '[P]'}</span>
+                {isEditing ? (
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={editValue}
+                    onChange={(e) => setEditValue(e.target.value)}
+                    onBlur={handleSave}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleSave();
+                      if (e.key === 'Escape') {
+                        setEditValue(project.name);
+                        setIsEditing(false);
+                      }
+                    }}
+                    className="bg-terminal-main/10 border-none p-0 text-xs font-mono uppercase focus:outline-none focus:ring-0 text-terminal-main w-full"
+                  />
+                ) : (
+                  <span className="text-xs uppercase truncate" onDoubleClick={() => setIsEditing(true)}>{project.name}</span>
+                )}
+              </div>
+              <span className={`text-base font-bold ${project.isActive ? 'text-terminal-main' : 'text-terminal-main/40'}`}>
+                {formatTime(project.time)}
+              </span>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-1 ml-2">
+            <button 
+              onClick={onToggle}
+              className={`px-1.5 border ${project.isActive ? 'bg-terminal-main text-black border-terminal-main' : 'border-terminal-main/40 text-terminal-main hover:border-terminal-main'} text-[10px] transition-all`}
+            >
+              {project.isActive ? 'PAUSE' : 'START'}
+            </button>
+            <button onClick={onReset} className="px-1.5 border border-terminal-main/20 text-terminal-main/40 hover:border-terminal-main hover:text-terminal-main text-[10px] transition-all">
+              CLR
+            </button>
+            <button onClick={onDelete} className="px-1.5 border border-terminal-red/50 text-terminal-red/50 hover:bg-terminal-red hover:text-black hover:border-terminal-red text-[10px] transition-all">
+              DEL
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div 
@@ -143,6 +209,9 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
   const [restLimitMin, setRestLimitMin] = useLocalStorage<number>('bdeck-rest-limit-min', 5);
   
   const [newProjectName, setNewProjectName] = useState('');
+
+  const skin = useSkin();
+  const isRetro = skin === 'retro';
 
   const intervalRefs = useRef<{ [key: string]: NodeJS.Timeout }>({});
   const restIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -291,54 +360,58 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
 
   return (
     <div className="space-y-4 h-full flex flex-col relative">
-      <div className="flex flex-col gap-3 border-b border-white/5 pb-4">
+      <div className={`flex flex-col gap-3 ${isRetro ? 'border-b border-terminal-main pb-4' : 'border-b border-white/5 pb-4'}`}>
         <button 
           onClick={restProtocol}
-          className={`w-full py-2.5 border transition-all group flex items-center justify-center gap-2 ${restMode ? 'border-terminal-green bg-terminal-green/10 text-terminal-green animate-pulse' : 'border-terminal-red/20 hover:bg-terminal-red/5 text-terminal-red/60 hover:text-terminal-red'}`}
+          className={`w-full py-2.5 border transition-all group flex items-center justify-center gap-2 ${
+            isRetro 
+              ? (restMode ? 'bg-terminal-main text-black border-terminal-main animate-pulse' : 'border-terminal-red text-terminal-red hover:bg-terminal-red hover:text-black')
+              : (restMode ? 'border-terminal-green bg-terminal-green/10 text-terminal-green animate-pulse' : 'border-terminal-red/20 hover:bg-terminal-red/5 text-terminal-red/60 hover:text-terminal-red')
+          }`}
         >
           {restMode ? (
             <>
-              <Coffee size={12} />
-              <span className="text-[0.6rem] font-black tracking-[0.2em] uppercase">RESTING: {formatTime(restTime)}</span>
+              {!isRetro && <Coffee size={12} />}
+              <span className={`font-black uppercase ${isRetro ? 'text-xs' : 'text-[0.6rem] tracking-[0.2em]'}`}>RESTING: {formatTime(restTime)}</span>
             </>
           ) : (
             <>
-              <RotateCcw size={10} className="group-hover:-rotate-90 transition-transform duration-500" />
-              <span className="text-[0.6rem] font-black tracking-[0.2em] uppercase">REST TIMER</span>
+              {!isRetro && <RotateCcw size={10} className="group-hover:-rotate-90 transition-transform duration-500" />}
+              <span className={`font-black uppercase ${isRetro ? 'text-xs' : 'text-[0.6rem] tracking-[0.2em]'}`}>[ RESET_ALL_PROCESSES ]</span>
             </>
           )}
         </button>
 
-        <div className="flex justify-center items-center gap-10 px-4 opacity-40 hover:opacity-100 transition-opacity">
+        <div className={`flex justify-center items-center gap-10 px-4 transition-opacity ${isRetro ? 'text-terminal-main' : 'opacity-40 hover:opacity-100'}`}>
           <div className="flex flex-col items-center group/input cursor-pointer">
-            <span className="text-[0.35rem] font-black text-white/20 uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors">W_INTERVAL</span>
+            <span className={`${isRetro ? 'text-[10px] text-terminal-main' : 'text-[0.35rem] text-white/20'} font-black uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors`}>{isRetro ? 'W_INT' : 'W_INTERVAL'}</span>
             <input 
               type="number" value={workLimitMin} onChange={e => setWorkLimitMin(Math.max(1, Number(e.target.value)))}
-              className="w-10 bg-transparent border-none p-0 text-[0.65rem] font-black focus:outline-none text-white/40 focus:text-terminal-main transition-colors text-center appearance-none"
+              className={`w-10 bg-transparent border-none p-0 font-black focus:outline-none transition-colors text-center appearance-none ${isRetro ? 'text-terminal-main' : 'text-white/40 focus:text-terminal-main'} ${isRetro ? 'text-xs' : 'text-[0.65rem]'}`}
             />
           </div>
           <div className="flex flex-col items-center group/input cursor-pointer">
-            <span className="text-[0.35rem] font-black text-white/20 uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors">R_INTERVAL</span>
+            <span className={`${isRetro ? 'text-[10px] text-terminal-main' : 'text-[0.35rem] text-white/20'} font-black uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors`}>{isRetro ? 'R_INT' : 'R_INTERVAL'}</span>
             <input 
               type="number" value={restLimitMin} onChange={e => setRestLimitMin(Math.max(1, Number(e.target.value)))}
-              className="w-10 bg-transparent border-none p-0 text-[0.65rem] font-black focus:outline-none text-white/40 focus:text-terminal-main transition-colors text-center appearance-none"
+              className={`w-10 bg-transparent border-none p-0 font-black focus:outline-none transition-colors text-center appearance-none ${isRetro ? 'text-terminal-main' : 'text-white/40 focus:text-terminal-main'} ${isRetro ? 'text-xs' : 'text-[0.65rem]'}`}
             />
           </div>
         </div>
       </div>
 
       {isAdding && (
-        <div className="p-3 border border-terminal-main/30 bg-terminal-main/5 space-y-3">
+        <div className={`p-3 border ${isRetro ? 'border-terminal-main bg-black' : 'border-terminal-main/30 bg-terminal-main/5'} space-y-3`}>
           <input 
             type="text" value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && addProject()}
             placeholder="PROJECT_ID..." 
-            className="w-full bg-black/60 border border-white/10 p-2.5 text-[0.65rem] focus:outline-none focus:border-terminal-main transition-all uppercase tracking-widest text-white/80" 
+            className={`w-full bg-black border p-2.5 focus:outline-none transition-all uppercase tracking-widest ${isRetro ? 'border-terminal-main text-terminal-main text-xs font-mono' : 'border-white/10 text-[0.65rem] text-white/80 focus:border-terminal-main'}`} 
             autoFocus
           />
           <div className="flex gap-3 justify-end">
-            <button onClick={() => setIsAdding(false)} className="text-[0.55rem] font-bold text-white/20 uppercase tracking-widest hover:text-white">Abort</button>
-            <button onClick={addProject} className="bg-terminal-main text-black px-4 py-1.5 text-[0.55rem] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)]">Execute</button>
+            <button onClick={() => setIsAdding(false)} className={`${isRetro ? 'text-xs text-terminal-main/50' : 'text-[0.55rem] text-white/20'} font-bold uppercase tracking-widest hover:text-white`}>Abort</button>
+            <button onClick={addProject} className={`bg-terminal-main text-black px-4 py-1.5 font-black uppercase tracking-widest hover:bg-white transition-all ${isRetro ? 'text-xs' : 'text-[0.55rem] shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)]'}`}>Execute</button>
           </div>
         </div>
       )}
@@ -373,10 +446,20 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
         {!isAdding && (
           <button 
             onClick={() => setIsAdding(true)}
-            className="w-full mt-4 flex items-center justify-center gap-2 py-3 border border-dashed border-white/5 hover:border-terminal-main/20 hover:bg-white/[0.01] transition-all text-white/5 hover:text-terminal-main group"
+            className={`w-full mt-4 flex items-center justify-center gap-2 py-3 border border-dashed transition-all group ${
+              isRetro 
+                ? 'border-terminal-main text-terminal-main hover:bg-terminal-main hover:text-black font-mono' 
+                : 'border-white/5 text-white/5 hover:border-terminal-main/20 hover:bg-white/[0.01] hover:text-terminal-main'
+            }`}
           >
-            <Plus size={14} className="group-hover:rotate-90 transition-transform" />
-            <span className="text-[0.6rem] font-black tracking-widest uppercase italic">New Project</span>
+            {isRetro ? (
+               <span className="text-xs font-black uppercase tracking-widest">[ INIT_NEW_TIMER ]</span>
+            ) : (
+              <>
+                <Plus size={14} className="group-hover:rotate-90 transition-transform" />
+                <span className="text-[0.6rem] font-black tracking-widest uppercase italic">New Project</span>
+              </>
+            )}
           </button>
         )}
       </div>

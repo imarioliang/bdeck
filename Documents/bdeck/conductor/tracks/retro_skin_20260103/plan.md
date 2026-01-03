@@ -11,22 +11,22 @@
     - [x] Modify `ThemeWrapper.tsx` to read the `skin` state and apply `data-skin="..."` to the `<html>` element.
 - [x] Task: Conductor - User Manual Verification 'Store & Global Styles Infrastructure' (Protocol in workflow.md)
 
-## Phase 2: Component Skinning (Part 1 - Layout & Headers)
+## Phase 2: Component Skinning (Part 1 - Layout & Headers) [checkpoint: 09640ae]
 - [x] Task: Create a `SkinAware` container or utility.
-    - [ ] Create a utility class or component that conditionally applies retro styles (borders, padding) based on the active skin.
+    - [x] Create a utility class or component that conditionally applies retro styles (borders, padding) based on the active skin.
 - [x] Task: Update `Pane` components to support retro headers.
-    - [ ] Modify `Pane.tsx` (or equivalent wrappers) to render `[ TITLE ]` style headers when in retro mode.
-    - [ ] Add the "status line" mock elements (e.g., memory, PID placeholders) to the pane footer/header for visual flair.
-- [ ] Task: Conductor - User Manual Verification 'Component Skinning (Part 1 - Layout & Headers)' (Protocol in workflow.md)
+    - [x] Modify `Pane.tsx` (or equivalent wrappers) to render `[ TITLE ]` style headers when in retro mode.
+    - [x] Add the "status line" mock elements (e.g., memory, PID placeholders) to the pane footer/header for visual flair.
+- [x] Task: Conductor - User Manual Verification 'Component Skinning (Part 1 - Layout & Headers)' (Protocol in workflow.md)
 
 ## Phase 3: Component Skinning (Part 2 - Content)
-- [ ] Task: Skin `LinksPane` and `SortableLinkItem`.
+- [x] Task: Skin `LinksPane` and `SortableLinkItem`.
     - [ ] Apply retro hover effects and list markers (`>`) to link items.
-- [ ] Task: Skin `TodoPane` and `TodoItem`.
+- [x] Task: Skin `TodoPane` and `TodoItem`.
     - [ ] Style checkboxes and text inputs to match the terminal aesthetic (e.g., `[x]` vs `[ ]`).
-- [ ] Task: Skin `TimersPane`.
+- [x] Task: Skin `TimersPane`.
     - [ ] Update the digital clock font and button styles to look like terminal commands.
-- [ ] Task: Skin `NotesPane`.
+- [x] Task: Skin `NotesPane`.
     - [ ] Ensure the textarea mimics a terminal text editor (monospaced, caret style).
 - [ ] Task: Conductor - User Manual Verification 'Component Skinning (Part 2 - Content)' (Protocol in workflow.md)
 

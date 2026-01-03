@@ -1,11 +1,17 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { TimersPane } from './TimersPane';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useSkin } from '@/hooks/useSkin';
 import { vi } from 'vitest';
 
 // Mock useLocalStorage
 vi.mock('@/hooks/useLocalStorage', () => ({
   useLocalStorage: vi.fn((key, initial) => [initial, vi.fn()]),
+}));
+
+// Mock useSkin
+vi.mock('@/hooks/useSkin', () => ({
+  useSkin: vi.fn(),
 }));
 
 describe('TimersPane', () => {
@@ -25,6 +31,7 @@ describe('TimersPane', () => {
       if (key === 'bdeck-rest-time') return [0, mockSetRestTime];
       return [initial, vi.fn()];
     });
+    vi.mocked(useSkin).mockReturnValue('modern');
     vi.clearAllMocks();
     vi.useFakeTimers();
   });
@@ -37,6 +44,18 @@ describe('TimersPane', () => {
     render(<TimersPane isAdding={false} setIsAdding={mockSetIsAdding} />);
     expect(screen.getByText(/Project 1/i)).toBeDefined();
     expect(screen.getByText('00:00:00')).toBeDefined();
+  });
+
+  it('should render retro style when skin is retro', () => {
+    vi.mocked(useSkin).mockReturnValue('retro');
+    render(<TimersPane isAdding={false} setIsAdding={mockSetIsAdding} />);
+    
+    // Check for retro "RESET_ALL_PROCESSES" text on rest button
+    expect(screen.getByText('[ RESET_ALL_PROCESSES ]')).toBeDefined();
+    // Check for retro project indicators
+    expect(screen.getByText('[P]')).toBeDefined(); // Pending/Paused
+    // Check for retro "New Project" button text
+    expect(screen.getByText('[ INIT_NEW_TIMER ]')).toBeDefined();
   });
 
   it('should call setProjects when adding a new project', () => {
@@ -56,14 +75,15 @@ describe('TimersPane', () => {
 
   it('should call setProjects when deleting a project', () => {
     render(<TimersPane isAdding={false} setIsAdding={mockSetIsAdding} />);
-    const deleteButton = screen.getByTitle(/Delete/i);
+    const deleteButton = screen.getAllByRole('button').find(b => b.textContent === 'DEL' || b.getAttribute('title') === 'Delete');
+    if (!deleteButton) throw new Error('Delete button not found');
     fireEvent.click(deleteButton);
     expect(mockSetProjects).toHaveBeenCalled();
   });
 
-  it('should toggle rest mode when clicking the REST TIMER button', () => {
+  it('should toggle rest mode when clicking the rest button', () => {
     render(<TimersPane isAdding={false} setIsAdding={mockSetIsAdding} />);
-    const restButton = screen.getByRole('button', { name: /REST TIMER/i });
+    const restButton = screen.getByRole('button', { name: /REST TIMER|RESET_ALL_PROCESSES/i });
     fireEvent.click(restButton);
     expect(mockSetRestMode).toHaveBeenCalled();
   });

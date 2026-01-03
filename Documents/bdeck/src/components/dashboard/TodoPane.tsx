@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Trash2, GripVertical, CheckSquare, Square, CornerDownLeft } from 'lucide-react';
+import { useSkin } from '@/hooks/useSkin';
 import {
   DndContext,
   closestCenter,
@@ -38,6 +39,8 @@ const SortableTodoItem = ({ todo, onToggle, onDelete, onUpdateText, onKeyDown, i
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: todo.id });
+  const skin = useSkin();
+  const isRetro = skin === 'retro';
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -49,6 +52,51 @@ const SortableTodoItem = ({ todo, onToggle, onDelete, onUpdateText, onKeyDown, i
 
   useEffect(() => { if (isFocused && inputRef.current) inputRef.current.focus(); }, [isFocused]);
 
+  if (isRetro) {
+    return (
+      <li 
+        ref={setNodeRef}
+        style={style}
+        className="flex items-center gap-2 group bg-black border-b border-terminal-main/20 py-2 pr-2 font-mono text-sm"
+      >
+        <span {...attributes} {...listeners} className="text-terminal-main/50 cursor-grab active:cursor-grabbing shrink-0 select-none">
+          ::
+        </span>
+        
+        <div className="flex-1 flex items-center gap-3">
+          <button 
+            onClick={onToggle}
+            className={`flex-shrink-0 font-bold ${todo.done ? 'text-terminal-main' : 'text-terminal-main/50 hover:text-terminal-main'}`}
+            title={todo.done ? "Mark as undone" : "Mark as done"}
+          >
+            [{todo.done ? 'x' : ' '}]
+          </button>
+          
+          <div className="flex flex-col flex-1 gap-0">
+            <input
+              ref={inputRef}
+              type="text"
+              value={todo.text}
+              onChange={(e) => onUpdateText(e.target.value)}
+              onKeyDown={onKeyDown}
+              placeholder="OBJECTIVE..."
+              className={`bg-transparent focus:outline-none border-none p-0 font-mono uppercase transition-all ${todo.done ? 'line-through text-terminal-main/40' : 'text-terminal-main'}}`}
+            />
+          </div>
+        </div>
+  
+        <button 
+          onClick={onDelete}
+          className="opacity-0 group-hover:opacity-100 px-1 text-terminal-red hover:bg-terminal-red hover:text-black transition-all border border-terminal-red text-xs"
+          title="Delete"
+        >
+          DEL
+        </button>
+      </li>
+    );
+  }
+
+  // Modern Default
   return (
     <li 
       ref={setNodeRef}
@@ -100,6 +148,8 @@ export const TodoPane = () => {
   const [focusedId, setFocusedId] = useState<string | null>(null);
 
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
+  const skin = useSkin();
+  const isRetro = skin === 'retro';
 
   const sortedTodos = useMemo(() => {
     return [...todos].sort((a, b) => {
@@ -146,11 +196,11 @@ export const TodoPane = () => {
     <div className="h-full flex flex-col gap-4">
       {/* ADD INPUT BAR */}
       <div className="relative group">
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-white/10 font-black text-xs">+</div>
+        <div className={`absolute left-3 top-1/2 -translate-y-1/2 ${isRetro ? 'text-terminal-main font-mono' : 'text-white/10 font-black text-xs'}`}>{isRetro ? '>' : '+'}</div>
         <input 
           type="text"
-          placeholder="NEW MISSION OBJECTIVE..."
-          className="w-full bg-white/[0.02] border border-white/5 px-8 py-2.5 text-[9px] font-black focus:outline-none focus:border-terminal-main/20 transition-all placeholder:text-white/5 tracking-[0.1em] uppercase"
+          placeholder={isRetro ? "ADD_TASK..." : "NEW MISSION OBJECTIVE..."}
+          className={`w-full px-8 py-2.5 transition-all uppercase focus:outline-none ${isRetro ? 'bg-black border border-terminal-main text-terminal-main font-mono text-sm placeholder:text-terminal-main/30' : 'bg-white/[0.02] border border-white/5 text-[9px] font-black focus:border-terminal-main/20 placeholder:text-white/5 tracking-[0.1em]'}`}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && e.currentTarget.value.trim()) {
               const id = `todo-${Date.now()}`;
@@ -160,7 +210,7 @@ export const TodoPane = () => {
             }
           }}
         />
-        <CornerDownLeft className="absolute right-3 top-1/2 -translate-y-1/2 text-white/5 group-focus-within:text-terminal-main/40 transition-colors" size={12} />
+        {!isRetro && <CornerDownLeft className="absolute right-3 top-1/2 -translate-y-1/2 text-white/5 group-focus-within:text-terminal-main/40 transition-colors" size={12} />}
       </div>
 
       <div className="flex-1 overflow-y-auto pr-1 custom-scrollbar">
