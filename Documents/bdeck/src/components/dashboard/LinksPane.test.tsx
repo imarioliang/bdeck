@@ -38,10 +38,12 @@ describe('LinksPane', () => {
     vi.mocked(useSkin).mockReturnValue('retro');
     render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="" activeCategory="ALL SYSTEMS" />);
     
-    // In retro mode, we show first 2 chars of title
-    expect(screen.getByText('GO')).toBeDefined(); // GOogle
-    expect(screen.getByText('GI')).toBeDefined(); // GIthub
-    expect(screen.getByText('[ADD]')).toBeDefined(); // Retro add button
+    // In retro mode, we show full titles in a list
+    expect(screen.getByText('Google')).toBeDefined();
+    expect(screen.getByText('GitHub')).toBeDefined();
+    expect(screen.getByText('FILENAME')).toBeDefined();
+    expect(screen.getByText('STATUS')).toBeDefined();
+    expect(screen.getByText('[ADD_NEW_MODULE]')).toBeDefined();
   });
 
   it('should call setLinks when adding a new link', () => {

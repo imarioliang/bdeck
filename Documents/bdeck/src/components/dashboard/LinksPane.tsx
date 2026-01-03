@@ -18,6 +18,7 @@ import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
   rectSortingStrategy,
   useSortable,
 } from '@dnd-kit/sortable';
@@ -87,44 +88,32 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
       <div 
         ref={setNodeRef}
         style={style}
-        className="relative group aspect-square flex flex-col items-center justify-center border border-terminal-main bg-black hover:bg-terminal-main hover:text-black transition-colors cursor-pointer p-1 overflow-hidden"
+        className="relative group w-full flex items-center border-b border-terminal-main/30 last:border-b-0 hover:bg-terminal-main/10 transition-colors cursor-pointer min-h-[40px]"
       >
         <a 
           href={link.url} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="w-full h-full flex flex-col items-center justify-center gap-1 relative z-10"
+          className="flex-1 flex items-center py-2 px-3 gap-4"
         >
-           <div className="text-sm font-bold opacity-0 group-hover:opacity-100 absolute top-1 right-1 transition-opacity">
-              &gt;
-           </div>
-           
-           {/* Retro Icon Replacement: ASCII or Simplified */}
-           <div className="text-xl font-mono text-terminal-main group-hover:text-black mb-1">
-             {link.title.substring(0, 2).toUpperCase()}
+           <div className="w-[60%] text-xs font-mono uppercase truncate text-terminal-main">
+             {link.title}
            </div>
 
-           <div className="flex flex-col items-center w-full px-1">
-            <span className="text-xs font-mono uppercase truncate w-full text-center text-terminal-main group-hover:text-black">
-              {link.title}
-            </span>
-             <span className="text-[10px] uppercase truncate w-full text-center text-terminal-main/60 group-hover:text-black/60">
-               {link.isPinned ? '[PRIORITY]' : status}
-             </span>
+           <div className="flex-1 text-[10px] font-mono uppercase truncate text-terminal-main/60">
+             {link.isPinned ? '[PRIORITY]' : status}
            </div>
         </a>
 
-        {/* OVERLAY ACTIONS (RETRO) */}
-        <div className="absolute inset-0 bg-black/90 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20 border border-terminal-main">
-          <div className="flex gap-2">
-             <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} className="text-terminal-main hover:bg-terminal-main hover:text-black px-1 border border-terminal-main text-xs">EDIT</button>
-             <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} className="text-terminal-red hover:bg-terminal-red hover:text-black px-1 border border-terminal-red text-xs">DEL</button>
-          </div>
-          <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="text-terminal-main hover:bg-terminal-main hover:text-black px-1 border border-terminal-main text-xs w-full text-center max-w-[80%]">
+        {/* LIST ACTIONS (RETRO) */}
+        <div className="flex items-center gap-2 px-3 opacity-0 group-hover:opacity-100 transition-opacity">
+           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="text-[10px] text-terminal-main hover:underline">
              {link.isPinned ? 'UNPIN' : 'PIN'}
-          </button>
-           <div {...attributes} {...listeners} className="text-terminal-main/50 cursor-grab active:cursor-grabbing text-xs">
-            [DRAG]
+           </button>
+           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} className="text-[10px] text-terminal-main hover:underline">EDIT</button>
+           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} className="text-[10px] text-terminal-red hover:underline">DEL</button>
+           <div {...attributes} {...listeners} className="text-terminal-main/30 cursor-grab active:cursor-grabbing text-[10px] ml-1">
+            [::]
           </div>
         </div>
       </div>
@@ -271,49 +260,58 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
 
   return (
     <>
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(e) => {
-        const { active, over } = e;
-        if (over && active.id !== over.id) {
-          const oldIndex = links.findIndex(l => l.id === active.id);
-          const newIndex = links.findIndex(l => l.id === over.id);
-          setLinks(arrayMove(links, oldIndex, newIndex));
-        }
-      }}>
-        <SortableContext items={filteredLinks.map(l => l.id)} strategy={rectSortingStrategy}>
-          {filteredLinks.map(link => (
-            <SortableLinkItem 
-              key={link.id} 
-              link={link} 
-              onEdit={() => startEditing(link.id)} 
-              onDelete={() => deleteLink(link.id)} 
-              onTogglePin={() => togglePin(link.id)}
-              isReorderable={searchTerm === ''}
-            />
-          ))}
-        </SortableContext>
-      </DndContext>
-
-      {/* ADD APP BUTTON */}
-      {isRetro ? (
-        <button 
-          onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
-          className="aspect-square flex flex-col items-center justify-center gap-1.5 border border-dashed border-terminal-main/50 text-terminal-main/50 hover:bg-terminal-main hover:text-black hover:border-terminal-main transition-all group p-1"
-        >
-          <span className="text-2xl font-mono">+</span>
-          <span className="text-xs font-mono uppercase">[ADD]</span>
-        </button>
-      ) : (
-        <button 
-          onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
-          className="aspect-square flex flex-col items-center justify-center gap-1.5 border border-dashed border-white/5 hover:border-terminal-main/30 hover:bg-white/[0.01] transition-all text-white/10 hover:text-terminal-main group p-1.5"
-        >
-          <Plus size={18} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform" />
-          <div className="flex flex-col items-center">
-            <span className="text-[0.5rem] font-black tracking-widest uppercase italic">Add App</span>
-            <span className="text-[0.35rem] font-bold uppercase opacity-30">System</span>
+      <div className={`w-full ${isRetro ? 'flex flex-col' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-px bg-white/5 border border-white/5'}`}>
+        {isRetro && (
+          <div className="flex w-full border-b border-terminal-main py-1 px-3 bg-terminal-main/5 mb-1">
+             <div className="w-[60%] text-[10px] font-black text-terminal-main/50 uppercase tracking-widest">FILENAME</div>
+             <div className="flex-1 text-[10px] font-black text-terminal-main/50 uppercase tracking-widest">STATUS</div>
           </div>
-        </button>
-      )}
+        )}
+        
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(e) => {
+          const { active, over } = e;
+          if (over && active.id !== over.id) {
+            const oldIndex = links.findIndex(l => l.id === active.id);
+            const newIndex = links.findIndex(l => l.id === over.id);
+            setLinks(arrayMove(links, oldIndex, newIndex));
+          }
+        }}>
+          <SortableContext items={filteredLinks.map(l => l.id)} strategy={isRetro ? verticalListSortingStrategy : rectSortingStrategy}>
+            {filteredLinks.map(link => (
+              <SortableLinkItem 
+                key={link.id} 
+                link={link} 
+                onEdit={() => startEditing(link.id)} 
+                onDelete={() => deleteLink(link.id)} 
+                onTogglePin={() => togglePin(link.id)}
+                isReorderable={searchTerm === ''}
+              />
+            ))}
+          </SortableContext>
+        </DndContext>
+
+        {/* ADD APP BUTTON */}
+        {isRetro ? (
+          <button 
+            onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
+            className="w-full flex items-center py-2 px-3 gap-4 border border-dashed border-terminal-main/30 text-terminal-main/50 hover:bg-terminal-main/10 transition-all group mt-2"
+          >
+            <span className="text-sm font-mono">+</span>
+            <span className="text-[10px] font-mono uppercase">[ADD_NEW_MODULE]</span>
+          </button>
+        ) : (
+          <button 
+            onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
+            className="aspect-square flex flex-col items-center justify-center gap-1.5 border border-dashed border-white/5 hover:border-terminal-main/30 hover:bg-white/[0.01] transition-all text-white/10 hover:text-terminal-main group p-1.5"
+          >
+            <Plus size={18} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform" />
+            <div className="flex flex-col items-center">
+              <span className="text-[0.5rem] font-black tracking-widest uppercase italic">Add App</span>
+              <span className="text-[0.35rem] font-bold uppercase opacity-30">System</span>
+            </div>
+          </button>
+        )}
+      </div>
 
       {/* MODAL FORM */}
       {isAdding && (
