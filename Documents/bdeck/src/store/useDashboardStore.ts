@@ -34,8 +34,8 @@ export const useDashboardStore = create<DashboardState>()(
       setTheme: (theme) => set({ theme }),
       setFontSize: (fontSize) => set({ fontSize }),
       setSkin: (skin) => set({ skin }),
-      setActiveCategory: (activeCategory) => set({ activeCategory, activeTag: null }),
-      setActiveTag: (activeTag) => set({ activeTag, activeCategory: 'ALL SYSTEMS' }),
+      setActiveCategory: (activeCategory) => set({ activeCategory }),
+      setActiveTag: (activeTag) => set({ activeTag }),
       setSyncStatus: (syncStatus) => set({ syncStatus }),
       resetAllData: () => {
         window.localStorage.clear();

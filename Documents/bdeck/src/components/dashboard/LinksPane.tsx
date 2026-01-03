@@ -253,11 +253,10 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                            link.url.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            (link.tags && link.tags.some(t => t.toLowerCase().includes(searchTerm.toLowerCase())));
       
-      const matchesCategory = activeTag 
-        ? (link.tags && link.tags.includes(activeTag))
-        : (activeCategory === 'ALL SYSTEMS' || link.category === activeCategory);
+      const matchesCategory = activeCategory === 'ALL SYSTEMS' || link.category === activeCategory;
+      const matchesTag = !activeTag || (link.tags && link.tags.includes(activeTag));
 
-      return matchesSearch && matchesCategory;
+      return matchesSearch && matchesCategory && matchesTag;
     });
   }, [sortedLinks, searchTerm, activeCategory, activeTag]);
 

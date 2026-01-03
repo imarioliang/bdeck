@@ -52,10 +52,22 @@ export const DirectoriesSidebar = ({ categories, activeCategory, setActiveCatego
                <span className="text-[10px] text-terminal-main font-bold">[ TAGS ]</span>
             </div>
 
+            <button
+              onClick={() => setActiveTag?.(null)}
+              className={`w-full flex items-center gap-2 px-4 py-1 transition-all group relative ${
+                !activeTag 
+                  ? 'retro-invert font-black' 
+                  : 'text-terminal-main/60 retro-hover-invert'
+              }`}
+            >
+              <Hash size={10} className={!activeTag ? 'text-black' : 'text-terminal-main/40 group-hover:text-black'} />
+              <span className="text-[9px] uppercase tracking-wider truncate">ALL_TAGS</span>
+            </button>
+
             {tags.map((tag) => (
               <button
                 key={tag}
-                onClick={() => setActiveTag?.(tag)}
+                onClick={() => setActiveTag?.(activeTag === tag ? null : tag)}
                 className={`w-full flex items-center gap-2 px-4 py-1 transition-all group relative ${
                   activeTag === tag 
                     ? 'retro-invert font-black' 
