@@ -55,85 +55,118 @@ export default function Home() {
         <div className={`overflow-hidden transition-all ${isRetro ? 'border border-terminal-main bg-black' : 'border border-white/10 bg-white/[0.01] shadow-[0_0_40px_-20px_rgba(0,0,0,1)]'}`}>
           
           {/* HEADER SECTION */}
-          <header className={`p-4 md:p-6 transition-all ${isRetro ? 'border-b border-terminal-main bg-black space-y-4' : 'border-b border-white/10 bg-white/[0.01] space-y-6'}`}>
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <button 
-                onClick={() => setIsConfigOpen(true)}
-                className="text-left group transition-all"
-              >
-                <div className="flex items-center gap-4">
-                  <AsciiLogo />
-                  <div className="flex flex-col">
-                    <h1 className="text-sm md:text-base font-black tracking-[0.3em] uppercase leading-none text-terminal-main group-hover:text-white transition-colors">Command Center</h1>
-                    <p className={`text-[0.55rem] mt-1.5 font-bold tracking-widest group-hover:text-white/60 transition-colors uppercase ${isRetro ? 'text-terminal-main/60' : 'text-white/40'}`}>&gt; System_Config_v4.2</p>
-                  </div>
+          {isRetro ? (
+            <header className="flex flex-col">
+              {/* Row 1: System Bar */}
+              <div className="flex justify-between items-center bg-terminal-main text-black px-3 py-1 font-bold text-[10px] tracking-widest">
+                <span>[ COMMAND_CENTER_V1.0 ]</span>
+                <div className="flex gap-4">
+                  <span>_ MIN</span>
+                  <span>[] MAX</span>
+                  <span>X CLOSE</span>
                 </div>
-              </button>
-              
-              <div className="flex items-center gap-6">
-                <HeaderIndicators />
               </div>
-            </div>
-
-            {/* UNIFIED NAV & SEARCH ROW */}
-            <div className={`flex items-center justify-between gap-4 border-t pt-6 ${isRetro ? 'border-terminal-main/50' : 'border-white/5'}`}>
-              {!isSearchExpanded && (
-                <nav className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-left duration-300">
-                  {categories.map((tab) => (
-                    <button 
-                      key={tab}
-                      onClick={() => setActiveCategory(tab)}
-                      className={`px-4 py-1 text-[0.6rem] font-black border transition-all tracking-widest ${
-                        activeCategory === tab 
-                          ? (isRetro ? 'bg-terminal-main text-black border-terminal-main' : 'bg-terminal-main text-black border-terminal-main shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]') 
-                          : (isRetro ? 'border-terminal-main/30 text-terminal-main/40 hover:border-terminal-main/60 hover:text-terminal-main bg-black' : 'border-white/5 text-white/20 hover:border-white/20 hover:text-white bg-white/[0.01]')
-                      }`}
-                    >
-                      {tab}
-                    </button>
-                  ))}
-                </nav>
-              )}
-
-              <div className={`flex items-center justify-end transition-all duration-300 ${isSearchExpanded ? 'flex-1' : 'w-10'}`}>
-                <div className={`relative group w-full flex items-center justify-end`}>
-                  <button 
-                    onClick={() => {
-                      setIsSearchExpanded(!isSearchExpanded);
-                      if (isSearchExpanded) setLinksSearchTerm('');
-                    }}
-                    className={`p-2 transition-colors ${isRetro ? 'text-terminal-main/40 hover:text-terminal-main' : 'text-white/20 hover:text-terminal-main'} ${isSearchExpanded ? 'absolute left-0 z-10' : ''}`}
-                  >
-                    <Search size={16} />
-                  </button>
+              
+              {/* Row 2: Path Bar / Search */}
+              <div className="flex items-center gap-3 px-3 py-2 border-b border-terminal-main bg-black">
+                <span className="text-[10px] text-terminal-main font-bold whitespace-nowrap">PATH: C:\USERS\ADMIN\SHORTCUTS\</span>
+                <div className="flex-1 relative flex items-center">
+                  <span className="text-terminal-main text-xs animate-pulse mr-1">█</span>
                   <input 
                     type="text" 
                     placeholder="SEARCH_MODULES..."
-                    autoFocus={isSearchExpanded}
                     value={linksSearchTerm}
                     onChange={(e) => setLinksSearchTerm(e.target.value)}
-                    className={`transition-all uppercase tracking-widest ${
-                      isRetro 
-                        ? 'bg-black border border-terminal-main/50 py-2 text-xs text-terminal-main placeholder:text-terminal-main/20' 
-                        : 'bg-black/40 border border-white/10 py-2 text-[0.65rem] placeholder:text-white/20'
-                    } focus:outline-none focus:border-terminal-main/40 ${
-                      isSearchExpanded 
-                        ? 'w-full pl-10 pr-4 opacity-100' 
-                        : 'w-0 opacity-0 pointer-events-none'
-                    }`}
+                    className="flex-1 bg-transparent border-none py-1 text-xs text-terminal-main placeholder:text-terminal-main/20 focus:outline-none uppercase tracking-widest"
                   />
-                  {isSearchExpanded && (
-                    <button 
-                      onClick={() => { setIsSearchExpanded(false); setLinksSearchTerm(''); }}
-                      className="absolute right-3 text-white/10 hover:text-terminal-red transition-colors"
-                    >
-                      <div className="text-[10px] font-black">ESC</div>
-                    </button>
-                  )}
+                </div>
+                <div className="flex items-center gap-4">
+                  <HeaderIndicators />
+                  <button className="border border-terminal-main px-2 py-0.5 text-[10px] text-terminal-main hover:bg-terminal-main hover:text-black">↑ UP</button>
                 </div>
               </div>
-            </div>
-          </header>
+            </header>
+          ) : (
+            <header className={`p-4 md:p-6 transition-all ${isRetro ? 'border-b border-terminal-main bg-black space-y-4' : 'border-b border-white/10 bg-white/[0.01] space-y-6'}`}>
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <button 
+                  onClick={() => setIsConfigOpen(true)}
+                  className="text-left group transition-all"
+                >
+                  <div className="flex items-center gap-4">
+                    <AsciiLogo />
+                    <div className="flex flex-col">
+                      <h1 className="text-sm md:text-base font-black tracking-[0.3em] uppercase leading-none text-terminal-main group-hover:text-white transition-colors">Command Center</h1>
+                      <p className={`text-[0.55rem] mt-1.5 font-bold tracking-widest group-hover:text-white/60 transition-colors uppercase ${isRetro ? 'text-terminal-main/60' : 'text-white/40'}`}>&gt; System_Config_v4.2</p>
+                    </div>
+                  </div>
+                </button>
+                
+                <div className="flex items-center gap-6">
+                  <HeaderIndicators />
+                </div>
+              </div>
+
+              {/* UNIFIED NAV & SEARCH ROW */}
+              <div className={`flex items-center justify-between gap-4 border-t pt-6 ${isRetro ? 'border-terminal-main/50' : 'border-white/5'}`}>
+                {!isSearchExpanded && (
+                  <nav className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-left duration-300">
+                    {categories.map((tab) => (
+                      <button 
+                        key={tab}
+                        onClick={() => setActiveCategory(tab)}
+                        className={`px-4 py-1 text-[0.6rem] font-black border transition-all tracking-widest ${
+                          activeCategory === tab 
+                            ? (isRetro ? 'bg-terminal-main text-black border-terminal-main' : 'bg-terminal-main text-black border-terminal-main shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]') 
+                            : (isRetro ? 'border-terminal-main/30 text-terminal-main/40 hover:border-terminal-main/60 hover:text-terminal-main bg-black' : 'border-white/5 text-white/20 hover:border-white/20 hover:text-white bg-white/[0.01]')
+                        }`}
+                      >
+                        {tab}
+                      </button>
+                    ))}
+                  </nav>
+                )}
+
+                <div className={`flex items-center justify-end transition-all duration-300 ${isSearchExpanded ? 'flex-1' : 'w-10'}`}>
+                  <div className={`relative group w-full flex items-center justify-end`}>
+                    <button 
+                      onClick={() => {
+                        setIsSearchExpanded(!isSearchExpanded);
+                        if (isSearchExpanded) setLinksSearchTerm('');
+                      }}
+                      className={`p-2 transition-colors ${isRetro ? 'text-terminal-main/40 hover:text-terminal-main' : 'text-white/20 hover:text-terminal-main'} ${isSearchExpanded ? 'absolute left-0 z-10' : ''}`}
+                    >
+                      <Search size={16} />
+                    </button>
+                    <input 
+                      type="text" 
+                      placeholder="SEARCH_MODULES..."
+                      autoFocus={isSearchExpanded}
+                      value={linksSearchTerm}
+                      onChange={(e) => setLinksSearchTerm(e.target.value)}
+                      className={`transition-all uppercase tracking-widest ${
+                        isRetro 
+                          ? 'bg-black border border-terminal-main/50 py-2 text-xs text-terminal-main placeholder:text-terminal-main/20' 
+                          : 'bg-black/40 border border-white/10 py-2 text-[0.65rem] placeholder:text-white/20'
+                      } focus:outline-none focus:border-terminal-main/40 ${
+                        isSearchExpanded 
+                          ? 'w-full pl-10 pr-4 opacity-100' 
+                          : 'w-0 opacity-0 pointer-events-none'
+                      }`}
+                    />
+                    {isSearchExpanded && (
+                      <button 
+                        onClick={() => { setIsSearchExpanded(false); setLinksSearchTerm(''); }}
+                        className="absolute right-3 text-white/10 hover:text-terminal-red transition-colors"
+                      >
+                        <div className="text-[10px] font-black">ESC</div>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </header>
+          )}
 
           {/* APPS GRID */}
           <section className={`p-4 md:p-6 ${isRetro ? 'flex flex-col' : 'grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3'}`}>
