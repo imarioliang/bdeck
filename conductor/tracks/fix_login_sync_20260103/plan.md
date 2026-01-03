@@ -12,7 +12,7 @@
     - Update `src/components/sync/SyncManager.tsx` to prioritize pushing anonymous local data to the cloud before performing the initial pull during a login event.
     - Ensure the logic distinguishes between "Anonymous -> User" (Merge) and "User A -> User B" (Wipe).
     - Verify that the reproduction test passes (Green phase).
-- [ ] Task: Verify User Switch Integrity
+- [x] Task: Verify User Switch Integrity [854ccb5]
     - Ensure that logging out and logging in as a different user still correctly triggers a wipe of the previous user's local cache.
 - [ ] Task: Conductor - User Manual Verification 'Logic Refinement' (Protocol in workflow.md)
 
