@@ -14,7 +14,8 @@
     - Verify that the reproduction test passes (Green phase).
 - [x] Task: Verify User Switch Integrity [854ccb5]
     - Ensure that logging out and logging in as a different user still correctly triggers a wipe of the previous user's local cache.
-- [ ] Task: Conductor - User Manual Verification 'Logic Refinement' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Logic Refinement' (Protocol in workflow.md)
+## [checkpoint: 66e1f28]
 
 ## Phase 3: Final Verification
 - [ ] Task: Full Suite Regression
