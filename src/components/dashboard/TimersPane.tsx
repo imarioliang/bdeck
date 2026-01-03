@@ -34,16 +34,36 @@ interface TimersPaneProps {
   setIsAdding: (isAdding: boolean) => void;
 }
 
-const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime, workLimit }: {
+const SortableTimerItem = ({ project, onToggle, onReset, onDelete, onUpdateName, formatTime, workLimit }: {
   project: ProjectTimer;
   onToggle: () => void;
   onReset: () => void;
   onDelete: () => void;
+  onUpdateName: (name: string) => void;
   formatTime: (seconds: number) => string;
   workLimit: number;
 }) => {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: project.id });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState(project.name);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: project.id, disabled: isEditing });
   const isOverLimit = project.isActive && (project.time - project.sessionStartTime >= workLimit);
+
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [isEditing]);
+
+  const handleSave = () => {
+    if (editValue.trim() && editValue !== project.name) {
+      onUpdateName(editValue.trim());
+    } else {
+      setEditValue(project.name);
+    }
+    setIsEditing(false);
+  };
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -59,14 +79,39 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime, w
       className={`group flex flex-col p-2.5 border transition-all gap-2 ${isOverLimit ? 'border-terminal-red/50 bg-terminal-red/5 animate-pulse' : 'border-white/5 bg-white/[0.01] hover:bg-white/[0.02]'}`}
     >
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-3 overflow-hidden">
-          <div {...attributes} {...listeners} className="text-white/5 group-hover:text-white/20 cursor-grab active:cursor-grabbing">
-            <GripVertical size={12} />
-          </div>
-          <div className="flex items-center gap-2">
-            <span className={`w-1.5 h-1.5 rounded-full ${project.isActive ? (isOverLimit ? 'bg-terminal-red animate-ping shadow-[0_0_8px_rgba(248,113,113,0.8)]' : 'bg-terminal-main animate-pulse shadow-[0_0_5px_rgba(255,176,0,0.5)]') : 'bg-white/5'}`}></span>
-            <div className="flex flex-col">
-              <span className={`text-[0.6rem] font-black uppercase tracking-wider truncate ${isOverLimit ? 'text-terminal-red' : 'text-white/70'}`}>{project.name}</span>
+        <div className="flex items-center gap-3 overflow-hidden flex-1">
+          {!isEditing && (
+            <div {...attributes} {...listeners} className="text-white/5 group-hover:text-white/20 cursor-grab active:cursor-grabbing shrink-0">
+              <GripVertical size={12} />
+            </div>
+          )}
+          <div className="flex items-center gap-2 flex-1 overflow-hidden">
+            <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${project.isActive ? (isOverLimit ? 'bg-terminal-red animate-ping shadow-[0_0_8px_rgba(248,113,113,0.8)]' : 'bg-terminal-main animate-pulse shadow-[0_0_5px_rgba(255,176,0,0.5)]') : 'bg-white/5'}`}></span>
+            <div className="flex flex-col flex-1 overflow-hidden">
+              {isEditing ? (
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={editValue}
+                  onChange={(e) => setEditValue(e.target.value)}
+                  onBlur={handleSave}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleSave();
+                    if (e.key === 'Escape') {
+                      setEditValue(project.name);
+                      setIsEditing(false);
+                    }
+                  }}
+                  className="bg-white/5 border-none p-0 text-[0.6rem] font-black uppercase tracking-wider focus:outline-none focus:ring-0 text-white w-full"
+                />
+              ) : (
+                <span 
+                  onClick={() => setIsEditing(true)}
+                  className={`text-[0.6rem] font-black uppercase tracking-wider truncate cursor-text hover:text-terminal-main transition-colors ${isOverLimit ? 'text-terminal-red' : 'text-white/70'}`}
+                >
+                  {project.name}
+                </span>
+              )}
               <span className={`text-[0.7rem] font-black font-mono tracking-tighter ${project.isActive ? (isOverLimit ? 'text-terminal-red' : 'text-terminal-main') : 'text-white/20'}`}>
                 {formatTime(project.time)}
               </span>
@@ -74,7 +119,7 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, formatTime, w
           </div>
         </div>
         
-        <div className="flex items-center gap-1 opacity-20 group-hover:opacity-100 transition-opacity">
+        <div className={`flex items-center gap-1 transition-opacity ${isEditing ? 'opacity-0 pointer-events-none' : 'opacity-20 group-hover:opacity-100'}`}>
           <button 
             onClick={onToggle}
             className={`p-1.5 hover:bg-white/5 transition-colors ${project.isActive ? 'text-terminal-main' : 'text-white'}`}
@@ -225,6 +270,10 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
     ));
   };
 
+  const updateTimerName = (id: string, name: string) => {
+    setProjects((prev) => prev.map((p) => p.id === id ? { ...p, name } : p));
+  };
+
   const restProtocol = () => {
     const anyActive = projects.some(p => p.isActive);
     const limit = Math.max(1, restLimitMin) * 60;
@@ -318,6 +367,7 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
                   onToggle={() => toggleTimer(project.id)}
                   onReset={() => resetTimer(project.id)}
                   onDelete={() => setProjects(prev => prev.filter(p => p.id !== project.id))}
+                  onUpdateName={(name) => updateTimerName(project.id, name)}
                   formatTime={formatTime}
                 />
               ))}
