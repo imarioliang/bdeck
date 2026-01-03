@@ -5,7 +5,7 @@ import { AsciiLogo } from './AsciiLogo';
 describe('AsciiLogo', () => {
   it('should render ascii art text', () => {
     render(<AsciiLogo />);
-    const pre = screen.getByText((content) => content.includes('____'));
+    const pre = screen.getByText((content) => content.includes('██'));
     expect(pre).toBeInTheDocument();
     expect(pre.tagName).toBe('PRE');
   });
