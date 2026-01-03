@@ -2,6 +2,7 @@
 
 import { useDashboardStore, TerminalTheme, FontSize } from '@/store/useDashboardStore';
 import { useAuthStore } from '@/store/useAuthStore';
+import { supabase } from '@/utils/supabaseClient';
 import { X, Download, RotateCcw, Monitor, Type, User, LogIn, LogOut } from 'lucide-react';
 
 interface CustomizationMenuProps {
@@ -11,7 +12,7 @@ interface CustomizationMenuProps {
 
 export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) => {
   const { theme, fontSize, setTheme, setFontSize, resetAllData } = useDashboardStore();
-  const { user, setAuthModalOpen, setSession } = useAuthStore();
+  const { user, setAuthModalOpen } = useAuthStore();
 
   const themes: { name: string; value: TerminalTheme; color: string }[] = [
     { name: 'Amber', value: 'amber', color: '#ffb000' },
@@ -42,6 +43,10 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
     URL.revokeObjectURL(url);
   };
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -67,7 +72,7 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
                         <span className="text-[0.6rem] font-black uppercase truncate">{user.email}</span>
                     </div>
                     <button 
-                        onClick={() => setSession(null)}
+                        onClick={handleLogout}
                         className="flex items-center gap-2 text-[0.6rem] font-bold text-white/40 hover:text-terminal-red uppercase tracking-wider transition-colors"
                     >
                         <LogOut size={12} />

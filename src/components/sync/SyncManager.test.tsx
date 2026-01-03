@@ -15,6 +15,16 @@ vi.mock('@/utils/syncEngine', () => ({
   mapNoteToLocal: vi.fn(),
 }));
 
+// Mock supabaseClient
+vi.mock('@/utils/supabaseClient', () => ({
+  supabase: {
+    auth: {
+      getSession: vi.fn().mockResolvedValue({ data: { session: null } }),
+      onAuthStateChange: vi.fn().mockReturnValue({ data: { subscription: { unsubscribe: vi.fn() } } }),
+    },
+  },
+}));
+
 // Mock useAuthStore
 vi.mock('@/store/useAuthStore', () => ({
   useAuthStore: vi.fn(),
@@ -30,11 +40,13 @@ describe('SyncManager', () => {
   const setTodos = vi.fn();
   const setTimers = vi.fn();
   const setNotes = vi.fn();
+  const setSession = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
     (useAuthStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       user: { id: 'test-user' },
+      setSession,
     });
 
     // Mock useLocalStorage calls

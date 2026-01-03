@@ -4,10 +4,11 @@ import { useEffect, useRef } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { pushToCloud, fetchFromCloud, mapLinkToLocal, mapTodoToLocal, mapTimerToLocal, mapNoteToLocal } from '@/utils/syncEngine';
+import { supabase } from '@/utils/supabaseClient';
 import debounce from 'lodash.debounce';
 
 export const SyncManager = () => {
-  const { user } = useAuthStore();
+  const { user, setSession } = useAuthStore();
   
   const [links, setLinks] = useLocalStorage<any[]>('bdeck-links', []);
   const [todos, setTodos] = useLocalStorage<any[]>('bdeck-todos', []);
@@ -17,6 +18,19 @@ export const SyncManager = () => {
 
   // Initialization refs to prevent overwriting cloud data on mount
   const initialized = useRef(false);
+
+  // Recovery Session on Mount & Auth Listener
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [setSession]);
 
   // Debounced pushers
   const pushLinks = useRef(debounce((data) => pushToCloud('links', data), 2000)).current;
