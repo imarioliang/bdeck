@@ -25,12 +25,12 @@
 - [x] Task: Conductor - User Manual Verification 'High-Contrast Hover Effects' (Protocol in workflow.md) (3082bb2)
 
 ## Phase 4: Timer Daemon Refinement
-- [ ] Task: Create Tests for Condensed Timer Rows.
-- [ ] Task: Refactor `TimersPane.tsx`.
-    - [ ] Condense timer rows into tight, single-line boxes.
-    - [ ] Move Work/Rest interval inputs to a dedicated settings footer or modal.
-    - [ ] Title the pane `[ TIMER_DAEMON ]`.
-- [ ] Task: Conductor - User Manual Verification 'Timer Daemon Refinement' (Protocol in workflow.md)
+- [x] Task: Create Tests for Condensed Timer Rows. (760775d)
+- [x] Task: Refactor `TimersPane.tsx`. (760775d)
+    - [x] Condense timer rows into tight, single-line boxes.
+    - [x] Move Work/Rest interval inputs to a dedicated settings footer or modal.
+    - [x] Title the pane `[ TIMER_DAEMON ]`.
+- [~] Task: Conductor - User Manual Verification 'Timer Daemon Refinement' (Protocol in workflow.md)
 
 ## Phase 5: Repositioning & Final Audit
 - [ ] Task: Update Global Layout Repositioning.
