@@ -28,7 +28,7 @@
     - [x] Update `TimersPane.test.tsx` and `TodoPane.test.tsx` to reflect the new labels and placeholders.
 - [x] Task: Conductor - User Manual Verification 'UI Refinements' (Protocol in workflow.md) (d02e073)
 
-## Phase 4: Final Visual Audit
+## Phase 4: Final Visual Audit [checkpoint: adc9329]
 - [x] Task: Mobile Responsiveness Check. (9ed3f15)
     - [x] Verify that the new Links list layout doesn't break on narrow screens.
 - [x] Task: Final Contrast & Alignment Tweak. (9ed3f15)
