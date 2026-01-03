@@ -1,12 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { AsciiLogo } from './AsciiLogo';
 
 describe('AsciiLogo', () => {
-  it('should render ascii art text', () => {
-    render(<AsciiLogo />);
-    const pre = screen.getByText((content) => content.includes('██'));
-    expect(pre).toBeInTheDocument();
-    expect(pre.tagName).toBe('PRE');
+  it('should render terminal icon', () => {
+    const { container } = render(<AsciiLogo />);
+    const svg = container.querySelector('svg');
+    expect(svg).toBeInTheDocument();
+    expect(svg).toHaveClass('lucide-terminal');
   });
 });
