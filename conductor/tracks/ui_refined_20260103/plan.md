@@ -17,7 +17,7 @@
 - [x] Task: Refactor SortableLinkItem for Compactness [a66b158]
     - Update `src/components/dashboard/LinksPane.tsx`.
     - Reduce internal padding, icon size, and font sizes within the link cards.
-- [ ] Task: Increase Grid Column Density
+- [x] Task: Increase Grid Column Density [9e46cae]
     - Update the grid container classes in `src/app/page.tsx` to support more columns on medium and large screens (e.g., `sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10`).
 - [ ] Task: Conductor - User Manual Verification 'High-Density Grid' (Protocol in workflow.md)
 
