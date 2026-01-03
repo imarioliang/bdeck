@@ -1,12 +1,12 @@
 # Track Plan: Mockup Layout Refinement
 
-## Phase 1: Header Restructuring
-- [x] Task: Create Tests for Two-Row Header. (d65473a)
-- [x] Task: Implement Two-Row Header in `src/app/page.tsx`. (d65473a)
+## Phase 1: Header Restructuring [checkpoint: 00ed3ce]
+- [x] Task: Create Tests for Two-Row Header. (d65473a, 7114fe2)
+- [x] Task: Implement Two-Row Header in `src/app/page.tsx`. (d65473a, 7114fe2)
     - [x] Add Row 1: System Bar with `[ COMMAND_CENTER_V1.0 ]` and window controls.
     - [x] Add Row 2: Path Bar with `PATH:` label and Search integration.
     - [x] Ensure components are styled with high-contrast borders.
-- [~] Task: Conductor - User Manual Verification 'Header Restructuring' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Header Restructuring' (Protocol in workflow.md) (7114fe2)
 
 ## Phase 2: Directories Sidebar
 - [ ] Task: Create Tests for Directories Sidebar.
