@@ -32,9 +32,9 @@
     - [x] Title the pane `[ TIMER_DAEMON ]`.
 - [x] Task: Conductor - User Manual Verification 'Timer Daemon Refinement' (Protocol in workflow.md) (64ad614)
 
-## Phase 5: Repositioning & Final Audit
-- [ ] Task: Update Global Layout Repositioning.
+## Phase 5: Repositioning & Final Audit [checkpoint: 28e8c83]
+- [~] Task: Update Global Layout Repositioning.
     - [ ] Align System Indicators (MEM, CPU) with the bottom footer status bar style.
     - [ ] Ensure responsive behavior collapses sidebar on mobile.
-- [ ] Task: Final Visual Audit against `mock2.png`.
+- [~] Task: Final Visual Audit against `mock2.png`.
 - [ ] Task: Conductor - User Manual Verification 'Repositioning & Final Audit' (Protocol in workflow.md)
