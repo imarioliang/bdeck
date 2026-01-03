@@ -9,12 +9,12 @@
 - [x] Task: Conductor - User Manual Verification 'Header Restructuring' (Protocol in workflow.md) (7114fe2)
 
 ## Phase 2: Directories Sidebar
-- [ ] Task: Create Tests for Directories Sidebar.
-- [ ] Task: Implement `DirectoriesSidebar` component.
-    - [ ] Move Category navigation logic into a new vertical component.
-    - [ ] Update `src/app/page.tsx` to include the sidebar in a flex layout for the top section.
-    - [ ] Title the pane `[ DIRECTORIES ]` with mockup-style borders.
-- [ ] Task: Conductor - User Manual Verification 'Directories Sidebar' (Protocol in workflow.md)
+- [x] Task: Create Tests for Directories Sidebar. (e0fe664)
+- [x] Task: Implement `DirectoriesSidebar` component. (e0fe664)
+    - [x] Move Category navigation logic into a new vertical component.
+    - [x] Update `src/app/page.tsx` to include the sidebar in a flex layout for the top section.
+    - [x] Title the pane `[ DIRECTORIES ]` with mockup-style borders.
+- [~] Task: Conductor - User Manual Verification 'Directories Sidebar' (Protocol in workflow.md)
 
 ## Phase 3: High-Contrast Hover Effects
 - [ ] Task: Create Tests for Hover Interactions.
