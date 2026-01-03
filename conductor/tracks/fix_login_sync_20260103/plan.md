@@ -8,7 +8,7 @@
 ## [checkpoint: 5c69641]
 
 ## Phase 2: Logic Refinement
-- [ ] Task: Fix SyncManager Merge Strategy
+- [x] Task: Fix SyncManager Merge Strategy [be96b15]
     - Update `src/components/sync/SyncManager.tsx` to prioritize pushing anonymous local data to the cloud before performing the initial pull during a login event.
     - Ensure the logic distinguishes between "Anonymous -> User" (Merge) and "User A -> User B" (Wipe).
     - Verify that the reproduction test passes (Green phase).
