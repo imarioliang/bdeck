@@ -1,12 +1,12 @@
 # Track Plan: Retro Typography Polish
 
-## Phase 1: Glow & Scanlines
+## Phase 1: Glow & Scanlines [checkpoint: 1c8a453]
 - [x] Task: Implement CRT Text Glow. (9df8fb9)
     - [x] Add `text-shadow` to retro skin global styles in `src/app/globals.css`.
 - [x] Task: Implement Scanline Overlay. (9df8fb9)
     - [x] Create a scanline utility in `src/app/globals.css`.
     - [x] Apply the overlay to the root layout or `ThemeWrapper`.
-- [~] Task: Conductor - User Manual Verification 'Glow & Scanlines' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Glow & Scanlines' (Protocol in workflow.md) (1c8a453)
 
 ## Phase 2: Spacing & Refinement
 - [ ] Task: Refine Retro Font Spacing.
