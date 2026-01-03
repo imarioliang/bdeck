@@ -19,14 +19,14 @@
 - [x] Task: Conductor - User Manual Verification 'Links Pane Transformation' (Protocol in workflow.md) (9ed3f15)
 
 ## Phase 3: UI Refinements (Timers & Todo)
-- [ ] Task: Rename and Style Timers Rest Button.
-    - [ ] Update `src/components/dashboard/TimersPane.tsx` to change `[ RESET_ALL_PROCESSES ]` to `[ INITIATE_REST_PROTOCOL ]`.
-    - [ ] Ensure button styling aligns with the mockup's high-contrast, bordered look.
-- [ ] Task: Refine Todo Input Bar.
-    - [ ] Modify `src/components/dashboard/TodoPane.tsx` to match the mockup: `> add_objective... [ENT]`.
-- [ ] Task: Update Component Tests.
-    - [ ] Update `TimersPane.test.tsx` and `TodoPane.test.tsx` to reflect the new labels and placeholders.
-- [ ] Task: Conductor - User Manual Verification 'UI Refinements' (Protocol in workflow.md)
+- [x] Task: Rename and Style Timers Rest Button. (d02e073)
+    - [x] Update `src/components/dashboard/TimersPane.tsx` to change `[ RESET_ALL_PROCESSES ]` to `[ INITIATE_REST_PROTOCOL ]`.
+    - [x] Ensure button styling aligns with the mockup's high-contrast, bordered look.
+- [x] Task: Refine Todo Input Bar. (d02e073)
+    - [x] Modify `src/components/dashboard/TodoPane.tsx` to match the mockup: `> add_objective... [ENT]`.
+- [x] Task: Update Component Tests. (d02e073)
+    - [x] Update `TimersPane.test.tsx` and `TodoPane.test.tsx` to reflect the new labels and placeholders.
+- [x] Task: Conductor - User Manual Verification 'UI Refinements' (Protocol in workflow.md) (d02e073)
 
 ## Phase 4: Final Visual Audit
 - [ ] Task: Mobile Responsiveness Check.
