@@ -86,6 +86,27 @@ describe('SyncManager', () => {
     });
   });
 
-  // Testing the debounce and push logic is hard with just mocks without firing effects.
-  // We trust the component logic. This test ensures it connects to the engine.
+  it('should NOT push local data if switching users (Wipe on Switch)', async () => {
+    // 1. Setup: Local data exists (from previous user)
+    const localLinks = [{ id: 'prev-user-link', title: 'Prev User Link' }];
+    (useLocalStorage as unknown as ReturnType<typeof vi.fn>).mockImplementation((key) => {
+      if (key === 'bdeck-links') return [localLinks, setLinks];
+      if (key === 'bdeck-last-user-id') return ['previous-user-id', vi.fn()]; // Different user
+      return [[], vi.fn()];
+    });
+
+    // 2. Setup: Cloud data is empty for new user
+    (syncEngine.fetchFromCloud as any).mockResolvedValue([]);
+
+    render(<SyncManager />);
+
+    // 3. Verification: pushToCloud should NOT be called with local data
+    await waitFor(() => {
+        expect(syncEngine.fetchFromCloud).toHaveBeenCalled();
+        expect(syncEngine.pushToCloud).not.toHaveBeenCalledWith('links', expect.arrayContaining(localLinks));
+        // Should eventually wipe local links (setLinks with empty array)
+        // Note: In our implementation, we call setLinks([]) if cloud is empty and user switch.
+        expect(setLinks).toHaveBeenCalledWith([]); 
+    });
+  });
 });
