@@ -5,10 +5,10 @@
     - Create a new component `src/components/dashboard/AsciiLogo.tsx` using a pre-formatted string.
     - Replace the existing grid logo in `src/app/page.tsx` with this component.
     - Ensure it remains the trigger for the `CustomizationMenu`.
-- [ ] Task: Implement Collapsible Search Bar
+- [x] Task: Implement Collapsible Search Bar [8517910]
     - Modify the search input in `src/app/page.tsx` to be collapsible.
     - Use state to toggle between an icon-only view and an expanded input field.
-- [ ] Task: Unified Header Row Layout
+- [x] Task: Unified Header Row Layout [8517910]
     - Re-layout the header in `src/app/page.tsx` to put categories and the search bar in a single `flex` row.
     - Adjust spacing and alignment for a streamlined look.
 - [ ] Task: Conductor - User Manual Verification 'Header & Navigation' (Protocol in workflow.md)
