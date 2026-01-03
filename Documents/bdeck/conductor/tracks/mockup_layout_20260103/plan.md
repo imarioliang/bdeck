@@ -8,13 +8,13 @@
     - [x] Ensure components are styled with high-contrast borders.
 - [x] Task: Conductor - User Manual Verification 'Header Restructuring' (Protocol in workflow.md) (7114fe2)
 
-## Phase 2: Directories Sidebar
+## Phase 2: Directories Sidebar [checkpoint: 5381b88]
 - [x] Task: Create Tests for Directories Sidebar. (e0fe664)
 - [x] Task: Implement `DirectoriesSidebar` component. (e0fe664)
     - [x] Move Category navigation logic into a new vertical component.
     - [x] Update `src/app/page.tsx` to include the sidebar in a flex layout for the top section.
     - [x] Title the pane `[ DIRECTORIES ]` with mockup-style borders.
-- [~] Task: Conductor - User Manual Verification 'Directories Sidebar' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Directories Sidebar' (Protocol in workflow.md) (444534b)
 
 ## Phase 3: High-Contrast Hover Effects
 - [ ] Task: Create Tests for Hover Interactions.
