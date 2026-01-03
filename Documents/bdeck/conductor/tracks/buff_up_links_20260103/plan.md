@@ -18,7 +18,7 @@
 - [x] Task: Create Tests for Tag Navigation. (0ef4207)
 - [x] Task: Update Sidebar for Tag Display. (0ef4207)
 - [x] Task: Implement Tag Filtering Logic. (0ef4207)
-- [~] Task: Conductor - User Manual Verification 'Tag Navigation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Tag Navigation' (Protocol in workflow.md) (724e791)
 
 ## Phase 4: Visual Scaling & Polish
 - [ ] Task: Create Tests for Visual Scaling.
