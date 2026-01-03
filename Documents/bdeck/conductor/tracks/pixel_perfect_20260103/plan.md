@@ -7,13 +7,12 @@
 - [x] Task: Conductor - User Manual Verification 'De-cluttering & Global Cleanup' (Protocol in workflow.md) (e5a9ef0)
 
 ## Phase 2: Task List Enhancements
-- [ ] Task: Create Tests for Task List Scaling.
-    - [ ] Verify font size and icon dimensions for todo items in Retro mode.
-- [ ] Task: Refactor `TodoPane.tsx` for Retro Scaling.
-    - [ ] Increase font size for task text.
-    - [ ] Increase size of checkboxes and drag handles proportionally.
-    - [ ] Ensure vertical alignment remains centered.
-- [ ] Task: Conductor - User Manual Verification 'Task List Enhancements' (Protocol in workflow.md)
+- [x] Task: Create Tests for Task List Scaling. (38d454d)
+- [x] Task: Refactor `TodoPane.tsx` for Retro Scaling. (38d454d)
+    - [x] Increase font size for task text.
+    - [x] Increase size of checkboxes and drag handles proportionally.
+    - [x] Ensure vertical alignment remains centered.
+- [~] Task: Conductor - User Manual Verification 'Task List Enhancements' (Protocol in workflow.md)
 
 ## Phase 3: Structural Constraints (Min/Max Heights)
 - [ ] Task: Create Tests for Height Constraints.
