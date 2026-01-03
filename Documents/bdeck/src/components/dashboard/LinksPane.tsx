@@ -88,31 +88,31 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
       <div 
         ref={setNodeRef}
         style={style}
-        className="relative group w-full flex items-center border-b border-terminal-main/30 last:border-b-0 hover:bg-terminal-main/10 transition-colors cursor-pointer min-h-[40px]"
+        className="relative group w-full flex items-center border border-terminal-main/20 -mt-[1px] first:mt-0 hover:bg-terminal-main/10 transition-colors cursor-pointer min-h-[32px]"
       >
         <a 
           href={link.url} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="flex-1 flex items-center py-2 px-3 gap-4"
+          className="flex-1 flex items-center py-1.5 px-3 gap-0"
         >
-           <div className="w-[60%] text-xs font-mono uppercase truncate text-terminal-main">
+           <div className="w-[50%] md:w-[60%] text-[10px] font-mono uppercase truncate text-terminal-main pr-2">
              {link.title}
            </div>
 
-           <div className="flex-1 text-[10px] font-mono uppercase truncate text-terminal-main/60">
+           <div className="flex-1 text-[9px] font-mono uppercase truncate text-terminal-main/60">
              {link.isPinned ? '[PRIORITY]' : status}
            </div>
         </a>
 
         {/* LIST ACTIONS (RETRO) */}
-        <div className="flex items-center gap-2 px-3 opacity-0 group-hover:opacity-100 transition-opacity">
-           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="text-[10px] text-terminal-main hover:underline">
+        <div className="flex items-center gap-3 px-3 opacity-0 group-hover:opacity-100 transition-opacity bg-black h-full absolute right-0 border-l border-terminal-main/20">
+           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="text-[9px] text-terminal-main hover:bg-terminal-main hover:text-black px-1 border border-terminal-main/40">
              {link.isPinned ? 'UNPIN' : 'PIN'}
            </button>
-           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} className="text-[10px] text-terminal-main hover:underline">EDIT</button>
-           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} className="text-[10px] text-terminal-red hover:underline">DEL</button>
-           <div {...attributes} {...listeners} className="text-terminal-main/30 cursor-grab active:cursor-grabbing text-[10px] ml-1">
+           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} className="text-[9px] text-terminal-main hover:bg-terminal-main hover:text-black px-1 border border-terminal-main/40">EDIT</button>
+           <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} className="text-[9px] text-terminal-red hover:bg-terminal-red hover:text-black px-1 border border-terminal-red/40">DEL</button>
+           <div {...attributes} {...listeners} className="text-terminal-main/30 cursor-grab active:cursor-grabbing text-[9px]">
             [::]
           </div>
         </div>
@@ -262,9 +262,9 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
     <>
       <div className={`w-full ${isRetro ? 'flex flex-col' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-px bg-white/5 border border-white/5'}`}>
         {isRetro && (
-          <div className="flex w-full border-b border-terminal-main py-1 px-3 bg-terminal-main/5 mb-1">
-             <div className="w-[60%] text-[10px] font-black text-terminal-main/50 uppercase tracking-widest">FILENAME</div>
-             <div className="flex-1 text-[10px] font-black text-terminal-main/50 uppercase tracking-widest">STATUS</div>
+          <div className="flex w-full border border-terminal-main/40 py-1.5 px-3 bg-terminal-main/5 mb-0 font-bold">
+             <div className="w-[50%] md:w-[60%] text-[9px] text-terminal-main uppercase tracking-widest">FILENAME</div>
+             <div className="flex-1 text-[9px] text-terminal-main uppercase tracking-widest">STATUS</div>
           </div>
         )}
         
@@ -294,10 +294,10 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
         {isRetro ? (
           <button 
             onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
-            className="w-full flex items-center py-2 px-3 gap-4 border border-dashed border-terminal-main/30 text-terminal-main/50 hover:bg-terminal-main/10 transition-all group mt-2"
+            className="w-full flex items-center py-1.5 px-3 gap-4 border border-dashed border-terminal-main/20 text-terminal-main/40 hover:bg-terminal-main/5 hover:text-terminal-main hover:border-terminal-main/40 transition-all group mt-1"
           >
-            <span className="text-sm font-mono">+</span>
-            <span className="text-[10px] font-mono uppercase">[ADD_NEW_MODULE]</span>
+            <span className="text-xs font-mono">+</span>
+            <span className="text-[9px] font-mono uppercase tracking-widest">[ADD_NEW_MODULE]</span>
           </button>
         ) : (
           <button 
