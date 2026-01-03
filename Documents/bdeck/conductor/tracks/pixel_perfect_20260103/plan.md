@@ -23,15 +23,11 @@
 - [x] Task: Conductor - User Manual Verification 'Structural Constraints' (Protocol in workflow.md) (a2129cd)
 
 ## Phase 4: Spacing & Alignment Standardization
-- [ ] Task: Create Tests for Spacing and Alignment.
-    - [ ] Verify uniform gutters and padding.
-- [ ] Task: Standardize Dashboard Gutters.
-    - [ ] Update the main grid/flex gaps in `src/app/page.tsx` to use a consistent value (e.g., `gap-6`).
-- [ ] Task: Standardize Internal Padding.
-    - [ ] Audit `Pane.tsx`, `LinksPane.tsx`, and `DirectoriesSidebar.tsx` to ensure matching internal whitespace.
-- [ ] Task: Implement Border Snap Alignment.
-    - [ ] Ensure the width of the top container perfectly matches the total width of the bottom pane row.
-- [ ] Task: Conductor - User Manual Verification 'Spacing & Alignment' (Protocol in workflow.md)
+- [x] Task: Create Tests for Spacing and Alignment. (2d7c423)
+- [x] Task: Standardize Dashboard Gutters. (dda743c, 2d7c423)
+- [x] Task: Standardize Internal Padding. (dda743c, 2d7c423)
+- [x] Task: Implement Border Snap Alignment. (dda743c, 2d7c423)
+- [~] Task: Conductor - User Manual Verification 'Spacing & Alignment' (Protocol in workflow.md)
 
 ## Phase 5: Final Audit & Stability
 - [ ] Task: Final Visual Audit.
