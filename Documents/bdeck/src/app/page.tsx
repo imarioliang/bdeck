@@ -55,10 +55,8 @@ export default function Home() {
         
         <CustomizationMenu isOpen={isConfigOpen} onClose={() => setIsConfigOpen(false)} />
 
-        {/* COMBINED CONTAINER FOR HEADER AND LINKS */}
+        {/* HEADER SECTION */}
         <div className={`overflow-hidden transition-all ${isRetro ? 'border border-terminal-main bg-black' : 'border border-white/10 bg-white/[0.01] shadow-[0_0_40px_-20px_rgba(0,0,0,1)]'}`}>
-          
-          {/* HEADER SECTION */}
           {isRetro ? (
             <header className="flex flex-col">
               {/* Row 1: System Bar */}
@@ -73,9 +71,9 @@ export default function Home() {
               </div>
               
               {/* Row 2: Path Bar / Search */}
-              <div className="flex items-center gap-0 px-3 py-1.5 border-b border-terminal-main bg-black group/path">
-                <span className="text-[10px] text-terminal-main font-bold whitespace-nowrap mr-2">PATH:</span>
-                <div className="flex-1 flex items-center bg-terminal-main/5 border border-terminal-main/20 px-2 py-0.5 group-focus-within/path:border-terminal-main/50 transition-all">
+              <div className="flex items-center gap-0 px-4 py-3 border-b border-terminal-main bg-black group/path">
+                <span className="text-[10px] text-terminal-main font-bold whitespace-nowrap mr-3">PATH:</span>
+                <div className="flex-1 flex items-center bg-terminal-main/5 border border-terminal-main/20 px-3 py-1.5 group-focus-within/path:border-terminal-main/50 transition-all">
                   <span className="text-terminal-main text-[10px] mr-2">C:\USERS\ADMIN\SEARCH\</span>
                   <input 
                     type="text" 
@@ -86,14 +84,14 @@ export default function Home() {
                   />
                   <span className="text-terminal-main text-xs animate-pulse ml-1">█</span>
                 </div>
-                <div className="flex items-center gap-4 ml-4">
+                <div className="flex items-center gap-4 ml-6">
                   <HeaderIndicators />
-                  <button className="border border-terminal-main px-2 py-0.5 text-[10px] text-terminal-main hover:bg-terminal-main hover:text-black transition-colors font-bold tracking-tighter">↑ UP</button>
+                  <button className="border border-terminal-main px-3 py-1 text-[10px] text-terminal-main hover:bg-terminal-main hover:text-black transition-colors font-bold tracking-tighter uppercase">↑ UP</button>
                 </div>
               </div>
             </header>
           ) : (
-            <header className={`p-4 md:p-6 transition-all ${isRetro ? 'border-b border-terminal-main bg-black space-y-4' : 'border-b border-white/10 bg-white/[0.01] space-y-6'}`}>
+            <header className={`p-4 md:p-6 transition-all border-b border-white/10 bg-white/[0.01] space-y-6`}>
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <button 
                   onClick={() => setIsConfigOpen(true)}
@@ -114,17 +112,15 @@ export default function Home() {
               </div>
 
               {/* UNIFIED NAV & SEARCH ROW */}
-              <div className={`flex items-center justify-between gap-4 border-t pt-6 ${isRetro ? 'border-terminal-main/50' : 'border-white/5'}`}>
+              <div className={`flex items-center justify-between gap-4 border-t pt-6 border-white/5`}>
                 {!isSearchExpanded && (
                   <nav className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-left duration-300">
                     {['ALL SYSTEMS', ...categories].map((tab) => (
                       <button 
                         key={tab}
                         onClick={() => setActiveCategory(tab)}
-                        className={`px-4 py-1 text-[0.6rem] font-black border transition-all tracking-widest ${
-                          activeCategory === tab 
-                            ? (isRetro ? 'bg-terminal-main text-black border-terminal-main' : 'bg-terminal-main text-black border-terminal-main shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]') 
-                            : (isRetro ? 'border-terminal-main/30 text-terminal-main/40 hover:border-terminal-main/60 hover:text-terminal-main bg-black' : 'border-white/5 text-white/20 hover:border-white/20 hover:text-white bg-white/[0.01]')
+                        className={`px-4 py-1 text-[0.6rem] font-black border border-white/5 text-white/20 hover:border-white/20 hover:text-white bg-white/[0.01] transition-all tracking-widest ${
+                          activeCategory === tab ? 'bg-terminal-main text-black border-terminal-main shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]' : ''
                         }`}
                       >
                         {tab}
@@ -140,7 +136,7 @@ export default function Home() {
                         setIsSearchExpanded(!isSearchExpanded);
                         if (isSearchExpanded) setLinksSearchTerm('');
                       }}
-                      className={`p-2 transition-colors ${isRetro ? 'text-terminal-main/40 hover:text-terminal-main' : 'text-white/20 hover:text-terminal-main'} ${isSearchExpanded ? 'absolute left-0 z-10' : ''}`}
+                      className={`p-2 transition-colors text-white/20 hover:text-terminal-main ${isSearchExpanded ? 'absolute left-0 z-10' : ''}`}
                     >
                       <Search size={16} />
                     </button>
@@ -150,14 +146,8 @@ export default function Home() {
                       autoFocus={isSearchExpanded}
                       value={linksSearchTerm}
                       onChange={(e) => setLinksSearchTerm(e.target.value)}
-                      className={`transition-all uppercase tracking-widest ${
-                        isRetro 
-                          ? 'bg-black border border-terminal-main/50 py-2 text-xs text-terminal-main placeholder:text-terminal-main/20' 
-                          : 'bg-black/40 border border-white/10 py-2 text-[0.65rem] placeholder:text-white/20'
-                      } focus:outline-none focus:border-terminal-main/40 ${
-                        isSearchExpanded 
-                          ? 'w-full pl-10 pr-4 opacity-100' 
-                          : 'w-0 opacity-0 pointer-events-none'
+                      className={`transition-all uppercase tracking-widest bg-black/40 border border-white/10 py-2 text-[0.65rem] placeholder:text-white/20 focus:outline-none focus:border-terminal-main/40 ${
+                        isSearchExpanded ? 'w-full pl-10 pr-4 opacity-100' : 'w-0 opacity-0 pointer-events-none'
                       }`}
                     />
                     {isSearchExpanded && (
@@ -173,32 +163,32 @@ export default function Home() {
               </div>
             </header>
           )}
+        </div>
 
-          {/* MAIN SECTION WITH SIDEBAR AND GRID */}
-          <div className={`flex flex-col md:flex-row h-full min-h-[400px]`}>
-            {isRetro && (
-              <aside className="w-full md:w-[250px] border-r border-terminal-main bg-black max-h-[500px] overflow-y-auto custom-scrollbar" role="complementary">
-                <DirectoriesSidebar 
-                  categories={['ALL SYSTEMS', ...categories]} 
-                  activeCategory={activeCategory} 
-                  setActiveCategory={setActiveCategory} 
-                />
-              </aside>
-            )}
-            
-            {/* APPS GRID */}
-            <section 
-              aria-label="Apps Grid"
-              className={`flex-1 p-4 md:p-6 ${isRetro ? 'flex flex-col max-h-[500px] overflow-y-auto custom-scrollbar' : 'grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3'}`}
-            >
-              <LinksPane 
-                isAdding={isAddingLink} 
-                setIsAdding={setIsAddingLink} 
-                searchTerm={linksSearchTerm}
-                activeCategory={activeCategory}
+        {/* TOP SECTION WITH SIDEBAR AND GRID */}
+        <div className={`flex flex-col md:flex-row ${isRetro ? 'min-h-[400px] max-h-[500px] gap-6' : 'min-h-[400px] gap-6'}`}>
+          {isRetro && (
+            <aside className="w-full md:w-[250px] border border-terminal-main bg-black overflow-y-auto custom-scrollbar" role="complementary">
+              <DirectoriesSidebar 
+                categories={['ALL SYSTEMS', ...categories]} 
+                activeCategory={activeCategory} 
+                setActiveCategory={setActiveCategory} 
               />
-            </section>
-          </div>
+            </aside>
+          )}
+          
+          {/* APPS GRID */}
+          <section 
+            aria-label="Apps Grid"
+            className={`flex-1 ${isRetro ? 'flex flex-col overflow-y-auto custom-scrollbar bg-black border border-terminal-main' : 'p-4 md:p-6 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3 border border-white/10 bg-white/[0.01]'}`}
+          >
+            <LinksPane 
+              isAdding={isAddingLink} 
+              setIsAdding={setIsAddingLink} 
+              searchTerm={linksSearchTerm}
+              activeCategory={activeCategory}
+            />
+          </section>
         </div>
 
         {/* MAIN DASHBOARD CONTENT */}

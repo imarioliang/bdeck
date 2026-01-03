@@ -269,14 +269,25 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
 
   return (
     <>
-      <div className={`w-full ${isRetro ? 'flex flex-col' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-px bg-white/5 border border-white/5'}`}>
+      <div className={`w-full ${isRetro ? 'flex flex-col border border-terminal-main/20' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-px bg-white/5 border border-white/5'}`}>
         {isRetro && (
-          <div className="flex w-full border border-terminal-main/40 py-1.5 px-3 bg-terminal-main/5 mb-0 font-bold">
-             <div className="w-[45%] text-[9px] text-terminal-main uppercase tracking-widest">FILENAME</div>
-             <div className="w-[15%] text-[9px] text-terminal-main uppercase tracking-widest text-right pr-4">EXT</div>
-             <div className="w-[15%] text-[9px] text-terminal-main uppercase tracking-widest text-right pr-4">SIZE</div>
-             <div className="flex-1 text-[9px] text-terminal-main uppercase tracking-widest text-right">STATUS</div>
+          <div className="flex w-full border-b border-terminal-main py-1.5 px-3 bg-terminal-main text-black sticky top-0 z-10 font-black retro-invert">
+             <div className="w-[45%] text-[9px] uppercase tracking-widest">FILENAME</div>
+             <div className="w-[15%] text-[9px] uppercase tracking-widest text-right pr-4">EXT</div>
+             <div className="w-[15%] text-[9px] uppercase tracking-widest text-right pr-4">SIZE</div>
+             <div className="flex-1 text-[9px] uppercase tracking-widest text-right">STATUS</div>
           </div>
+        )}
+
+        {/* ADD APP BUTTON - TOP POSITION */}
+        {isRetro && (
+          <button 
+            onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
+            className="w-full flex items-center py-1.5 px-3 gap-4 border-b border-dashed border-terminal-main/20 text-terminal-main/40 hover:bg-terminal-main/5 hover:text-terminal-main transition-all group"
+          >
+            <span className="text-xs font-mono">+</span>
+            <span className="text-[9px] font-mono uppercase tracking-widest">[ADD_NEW_MODULE]</span>
+          </button>
         )}
         
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(e) => {
@@ -301,16 +312,8 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
           </SortableContext>
         </DndContext>
 
-        {/* ADD APP BUTTON */}
-        {isRetro ? (
-          <button 
-            onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
-            className="w-full flex items-center py-1.5 px-3 gap-4 border border-dashed border-terminal-main/20 text-terminal-main/40 hover:bg-terminal-main/5 hover:text-terminal-main hover:border-terminal-main/40 transition-all group mt-1"
-          >
-            <span className="text-xs font-mono">+</span>
-            <span className="text-[9px] font-mono uppercase tracking-widest">[ADD_NEW_MODULE]</span>
-          </button>
-        ) : (
+        {/* MODERN ADD APP BUTTON */}
+        {!isRetro && (
           <button 
             onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
             className="aspect-square flex flex-col items-center justify-center gap-1.5 border border-dashed border-white/5 hover:border-terminal-main/30 hover:bg-white/[0.01] transition-all text-white/10 hover:text-terminal-main group p-1.5"
