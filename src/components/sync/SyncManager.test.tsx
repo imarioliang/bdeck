@@ -67,6 +67,7 @@ describe('SyncManager', () => {
     const localLinks = [{ id: 'local-1', title: 'Local Link' }];
     (useLocalStorage as unknown as ReturnType<typeof vi.fn>).mockImplementation((key) => {
       if (key === 'bdeck-links') return [localLinks, setLinks];
+      if (key === 'bdeck-last-user-id') return [null, vi.fn()];
       return [[], vi.fn()];
     });
 

@@ -39,66 +39,56 @@ export const SyncManager = () => {
     const sync = async () => {
       const isUserSwitch = lastUserId && lastUserId !== user.id;
 
-      // 1. Fetch from Cloud FIRST
+      // 1. Pre-Fetch: Push Local if Merging (Anonymous -> User)
+      // If switching users, we skip this to avoid polluting the new user's account with old user's data.
+      if (!isUserSwitch) {
+          await pushToCloud('links', links);
+          await pushToCloud('todos', todos);
+          await pushToCloud('timers', timers);
+          await pushToCloud('notes', note);
+      }
+
+      // 2. Fetch from Cloud (Will now include merged data)
       const cloudLinks = await fetchFromCloud('links');
       const cloudTodos = await fetchFromCloud('todos');
       const cloudTimers = await fetchFromCloud('timers');
       const cloudNotes = await fetchFromCloud('notes');
 
-      // 2. Determine Strategy
+      // 3. Update Local State
       
       // LINKS
       if (cloudLinks && cloudLinks.length > 0) {
-         // Cloud wins
          cloudLinks.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
          setLinks(cloudLinks.map(mapLinkToLocal));
-      } else {
-         // Cloud empty.
-         if (isUserSwitch) {
-            // Different user -> Wipe local
-            setLinks([]);
-         } else {
-            // Same user or Anonymous -> Push Local
-            await pushToCloud('links', links);
-         }
+      } else if (isUserSwitch) {
+         // New user has no data, wipe local
+         setLinks([]);
       }
 
       // TODOS
       if (cloudTodos && cloudTodos.length > 0) {
          cloudTodos.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
          setTodos(cloudTodos.map(mapTodoToLocal));
-      } else {
-         if (isUserSwitch) {
-            setTodos([]);
-         } else {
-            await pushToCloud('todos', todos);
-         }
+      } else if (isUserSwitch) {
+         setTodos([]);
       }
 
       // TIMERS
       if (cloudTimers && cloudTimers.length > 0) {
          cloudTimers.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
          setTimers(cloudTimers.map(mapTimerToLocal));
-      } else {
-         if (isUserSwitch) {
-            setTimers([]);
-         } else {
-            await pushToCloud('timers', timers);
-         }
+      } else if (isUserSwitch) {
+         setTimers([]);
       }
 
       // NOTES
       if (cloudNotes && cloudNotes.length > 0) {
          setNote(mapNoteToLocal(cloudNotes[0]));
-      } else {
-         if (isUserSwitch) {
-            setNote('');
-         } else {
-            await pushToCloud('notes', note);
-         }
+      } else if (isUserSwitch) {
+         setNote('');
       }
 
-      // 3. Mark Initialized and Update Last User
+      // 4. Mark Initialized and Update Last User
       setLastUserId(user.id);
       initialized.current = true;
     };
