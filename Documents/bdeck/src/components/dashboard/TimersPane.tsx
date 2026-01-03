@@ -81,57 +81,46 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, onUpdateName,
       <div 
         ref={setNodeRef}
         style={style}
-        className={`group flex flex-col p-2 border font-mono ${isOverLimit ? 'border-terminal-red text-terminal-red animate-pulse' : 'border-terminal-main/20 text-terminal-main hover:border-terminal-main transition-colors'}`}
+        className={`group flex items-center p-2 border font-mono ${isOverLimit ? 'border-terminal-red text-terminal-red animate-pulse' : 'border-terminal-main/20 text-terminal-main hover:border-terminal-main transition-colors'} mb-1 last:mb-0`}
       >
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2 flex-1 overflow-hidden">
-            {!isEditing && (
-              <div {...attributes} {...listeners} className="text-terminal-main/30 cursor-grab active:cursor-grabbing shrink-0 text-[10px]">
-                ::
-              </div>
+        <div className="flex items-center gap-2 flex-1 overflow-hidden">
+          <span className="text-terminal-main font-bold">&gt;</span>
+          <div className="flex flex-col flex-1 overflow-hidden">
+            {isEditing ? (
+              <input
+                ref={inputRef}
+                type="text"
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+                onBlur={handleSave}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleSave();
+                  if (e.key === 'Escape') {
+                    setEditValue(project.name);
+                    setIsEditing(false);
+                  }
+                }}
+                className="bg-terminal-main/10 border-none p-0 text-[10px] font-mono uppercase focus:outline-none focus:ring-0 text-terminal-main w-full"
+              />
+            ) : (
+              <span className="text-[10px] uppercase truncate font-bold" onDoubleClick={() => setIsEditing(true)}>{project.name}</span>
             )}
-            <div className="flex flex-col flex-1 overflow-hidden">
-              <div className="flex items-center gap-1">
-                <span className="text-xs">{project.isActive ? '[R]' : '[P]'}</span>
-                {isEditing ? (
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    value={editValue}
-                    onChange={(e) => setEditValue(e.target.value)}
-                    onBlur={handleSave}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleSave();
-                      if (e.key === 'Escape') {
-                        setEditValue(project.name);
-                        setIsEditing(false);
-                      }
-                    }}
-                    className="bg-terminal-main/10 border-none p-0 text-xs font-mono uppercase focus:outline-none focus:ring-0 text-terminal-main w-full"
-                  />
-                ) : (
-                  <span className="text-xs uppercase truncate" onDoubleClick={() => setIsEditing(true)}>{project.name}</span>
-                )}
-              </div>
-              <span className={`text-base font-bold ${project.isActive ? 'text-terminal-main' : 'text-terminal-main/40'}`}>
-                {formatTime(project.time)}
-              </span>
-            </div>
+            <span className={`text-xs font-bold ${project.isActive ? 'text-terminal-main' : 'text-terminal-main/40'}`}>
+              {formatTime(project.time)}
+            </span>
           </div>
-          
-          <div className="flex items-center gap-1 ml-2">
-            <button 
-              onClick={onToggle}
-              className={`px-1.5 border ${project.isActive ? 'bg-terminal-main text-black border-terminal-main' : 'border-terminal-main/40 text-terminal-main hover:border-terminal-main'} text-[10px] transition-all`}
-            >
-              {project.isActive ? 'PAUSE' : 'START'}
-            </button>
-            <button onClick={onReset} className="px-1.5 border border-terminal-main/20 text-terminal-main/40 hover:border-terminal-main hover:text-terminal-main text-[10px] transition-all">
-              CLR
-            </button>
-            <button onClick={onDelete} className="px-1.5 border border-terminal-red/50 text-terminal-red/50 hover:bg-terminal-red hover:text-black hover:border-terminal-red text-[10px] transition-all">
-              DEL
-            </button>
+        </div>
+        
+        <div className="flex items-center gap-2 ml-2">
+          <button onClick={onToggle} className="text-[10px] font-bold">
+            {project.isActive ? '[R]' : '[P]'}
+          </button>
+          <div {...attributes} {...listeners} className="text-terminal-main/30 cursor-grab active:cursor-grabbing text-[10px]">
+            [S]
+          </div>
+          <div className="hidden group-hover:flex items-center gap-1">
+            <button onClick={onReset} className="text-[9px] border border-terminal-main/30 px-1 hover:bg-terminal-main hover:text-black">CLR</button>
+            <button onClick={onDelete} className="text-[9px] border border-terminal-red/30 px-1 text-terminal-red hover:bg-terminal-red hover:text-black">DEL</button>
           </div>
         </div>
       </div>
@@ -209,6 +198,7 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
   const [restLimitMin, setRestLimitMin] = useLocalStorage<number>('bdeck-rest-limit-min', 5);
   
   const [newProjectName, setNewProjectName] = useState('');
+  const [showSettings, setShowSettings] = useState(false);
 
   const skin = useSkin();
   const isRetro = skin === 'retro';
@@ -382,28 +372,56 @@ export const TimersPane = ({ isAdding, setIsAdding }: TimersPaneProps) => {
           )}
         </button>
 
-        <div className={`grid grid-cols-2 gap-4 px-4 transition-opacity ${isRetro ? 'text-terminal-main' : 'opacity-40 hover:opacity-100'}`}>
-          <div className="flex flex-col items-center group/input">
-            <span className={`${isRetro ? 'text-[9px] text-terminal-main/50' : 'text-[0.35rem] text-white/20'} font-black uppercase tracking-widest`}>{isRetro ? 'WORK_INT' : 'W_INTERVAL'}</span>
-            <div className="flex items-center gap-1">
+        {isRetro ? (
+          <button 
+            onClick={() => setShowSettings(!showSettings)}
+            className="text-[9px] text-terminal-main/40 hover:text-terminal-main text-center"
+          >
+            [ {showSettings ? 'CLOSE_SETTINGS' : 'CONFIGURE_INTERVALS'} ]
+          </button>
+        ) : (
+          <div className="flex justify-center items-center gap-10 px-4 opacity-40 hover:opacity-100 transition-opacity">
+            <div className="flex flex-col items-center group/input cursor-pointer">
+              <span className="text-[0.35rem] text-white/20 font-black uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors">W_INTERVAL</span>
               <input 
                 type="number" value={workLimitMin} onChange={e => setWorkLimitMin(Math.max(1, Number(e.target.value)))}
-                className={`w-10 bg-transparent border-none p-0 font-bold focus:outline-none text-center appearance-none ${isRetro ? 'text-terminal-main text-xs' : 'text-white/40 focus:text-terminal-main text-[0.65rem]'}`}
+                className="w-10 bg-transparent border-none p-0 font-black focus:outline-none transition-colors text-center appearance-none text-white/40 focus:text-terminal-main text-[0.65rem]"
               />
-              {isRetro && <span className="text-[9px] text-terminal-main/30">MIN</span>}
             </div>
-          </div>
-          <div className="flex flex-col items-center group/input">
-            <span className={`${isRetro ? 'text-[9px] text-terminal-main/50' : 'text-[0.35rem] text-white/20'} font-black uppercase tracking-widest`}>{isRetro ? 'REST_INT' : 'R_INTERVAL'}</span>
-            <div className="flex items-center gap-1">
+            <div className="flex flex-col items-center group/input cursor-pointer">
+              <span className="text-[0.35rem] text-white/20 font-black uppercase tracking-[0.3em] group-hover/input:text-terminal-main transition-colors">R_INTERVAL</span>
               <input 
                 type="number" value={restLimitMin} onChange={e => setRestLimitMin(Math.max(1, Number(e.target.value)))}
-                className={`w-10 bg-transparent border-none p-0 font-bold focus:outline-none text-center appearance-none ${isRetro ? 'text-terminal-main text-xs' : 'text-white/40 focus:text-terminal-main text-[0.65rem]'}`}
+                className="w-10 bg-transparent border-none p-0 font-black focus:outline-none transition-colors text-center appearance-none text-white/40 focus:text-terminal-main text-[0.65rem]"
               />
-              {isRetro && <span className="text-[9px] text-terminal-main/30">MIN</span>}
             </div>
           </div>
-        </div>
+        )}
+
+        {isRetro && showSettings && (
+          <div className="grid grid-cols-2 gap-4 px-4 py-2 border border-terminal-main/20 bg-terminal-main/5">
+            <div className="flex flex-col items-center group/input">
+              <span className="text-[9px] text-terminal-main/50 font-black uppercase tracking-widest">WORK_INT</span>
+              <div className="flex items-center gap-1">
+                <input 
+                  type="number" value={workLimitMin} onChange={e => setWorkLimitMin(Math.max(1, Number(e.target.value)))}
+                  className="w-10 bg-transparent border-none p-0 font-bold focus:outline-none text-center appearance-none text-terminal-main text-xs"
+                />
+                <span className="text-[9px] text-terminal-main/30">MIN</span>
+              </div>
+            </div>
+            <div className="flex flex-col items-center group/input">
+              <span className="text-[9px] text-terminal-main/50 font-black uppercase tracking-widest">REST_INT</span>
+              <div className="flex items-center gap-1">
+                <input 
+                  type="number" value={restLimitMin} onChange={e => setRestLimitMin(Math.max(1, Number(e.target.value)))}
+                  className="w-10 bg-transparent border-none p-0 font-bold focus:outline-none text-center appearance-none text-terminal-main text-xs"
+                />
+                <span className="text-[9px] text-terminal-main/30">MIN</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {isAdding && (

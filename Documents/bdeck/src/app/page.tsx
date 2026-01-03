@@ -200,17 +200,17 @@ export default function Home() {
         {/* MAIN DASHBOARD CONTENT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <div id="pane-timers" className="lg:col-span-4 h-full">
-            <Pane title="Project Timers" badge={isRetro ? projects.length : `TOTAL: ${projects.length}`} label="SYS_CHRONO">
+            <Pane title={isRetro ? "Timer Daemon" : "Project Timers"} badge={isRetro ? projects.length : `TOTAL: ${projects.length}`} label="SYS_CHRONO">
               <TimersPane isAdding={isAddingTimer} setIsAdding={setIsAddingTimer} />
             </Pane>
           </div>
           <div id="pane-todo" className="lg:col-span-4 h-full">
-            <Pane title="Mission Objectives" badge={isRetro ? pendingTodosCount : `${pendingTodosCount} Pending`} label="OBJ_PRIORITY">
+            <Pane title={isRetro ? "Task List" : "Mission Objectives"} badge={isRetro ? pendingTodosCount : `${pendingTodosCount} Pending`} label="OBJ_PRIORITY">
               <TodoPane />
             </Pane>
           </div>
           <div id="pane-notes" className="lg:col-span-4 h-full">
-            <Pane title="Data Log" label="LOG_STREAM" actions={isRetro ? null : <WindowControls />}>
+            <Pane title={isRetro ? "System Log" : "Data Log"} label="LOG_STREAM" actions={isRetro ? null : <WindowControls />}>
               <NotesPane />
             </Pane>
           </div>
