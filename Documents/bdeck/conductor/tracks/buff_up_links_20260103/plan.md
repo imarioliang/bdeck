@@ -21,14 +21,11 @@
 - [x] Task: Conductor - User Manual Verification 'Tag Navigation' (Protocol in workflow.md) (724e791)
 
 ## Phase 4: Visual Scaling & Polish
-- [ ] Task: Create Tests for Visual Scaling.
-    - [ ] Verify larger font classes are applied to link rows in Retro mode.
-- [ ] Task: Scale Link Row Typography.
-    - [ ] Increase font sizes for all columns in `SortableLinkItem` (Retro mode).
-    - [ ] Adjust padding and min-height to accommodate larger text.
-- [ ] Task: Conductor - User Manual Verification 'Visual Scaling & Polish' (Protocol in workflow.md)
+- [x] Task: Create Tests for Visual Scaling. (dc7d19f)
+- [x] Task: Scale Link Row Typography. (dc7d19f)
+- [~] Task: Conductor - User Manual Verification 'Visual Scaling & Polish' (Protocol in workflow.md)
 
-## Phase 4: Glitch Hover Animations
+## Phase 5: Glitch Hover Animations
 - [ ] Task: Create Tests for Hover Animations.
     - [ ] Verify animation trigger and keyframe existence in CSS.
 - [ ] Task: Implement Glitch Keyframes in `globals.css`.
