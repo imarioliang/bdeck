@@ -18,6 +18,7 @@ import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 export default function Home() {
   const [linksSearchTerm, setLinksSearchTerm] = useState('');
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [isAddingLink, setIsAddingLink] = useState(false);
   const [isAddingTimer, setIsAddingTimer] = useState(false);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
@@ -51,7 +52,7 @@ export default function Home() {
         <div className="border border-white/10 bg-white/[0.01] overflow-hidden shadow-[0_0_40px_-20px_rgba(0,0,0,1)]">
           
           {/* HEADER SECTION */}
-          <header className="p-4 md:p-6 border-b border-white/10 bg-white/[0.01]">
+          <header className="p-4 md:p-6 border-b border-white/10 bg-white/[0.01] space-y-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <button 
                 onClick={() => setIsConfigOpen(true)}
@@ -66,37 +67,62 @@ export default function Home() {
                 </div>
               </button>
               
-              <div className="flex flex-1 items-center justify-center md:justify-end gap-6 w-full md:w-auto">
+              <div className="flex items-center gap-6">
                 <HeaderIndicators />
-                
-                <div className="relative group w-full md:w-auto">
-                  <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-terminal-main transition-colors" size={14} />
+              </div>
+            </div>
+
+            {/* UNIFIED NAV & SEARCH ROW */}
+            <div className="flex items-center justify-between gap-4 border-t border-white/5 pt-6">
+              {!isSearchExpanded && (
+                <nav className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-left duration-300">
+                  {categories.map((tab) => (
+                    <button 
+                      key={tab}
+                      onClick={() => setActiveCategory(tab)}
+                      className={`px-4 py-1 text-[0.6rem] font-black border transition-all tracking-widest ${activeCategory === tab ? 'bg-terminal-main text-black border-terminal-main shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]' : 'border-white/5 text-white/20 hover:border-white/20 hover:text-white bg-white/[0.01]'}`}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </nav>
+              )}
+
+              <div className={`flex items-center justify-end transition-all duration-300 ${isSearchExpanded ? 'flex-1' : 'w-10'}`}>
+                <div className={`relative group w-full flex items-center justify-end`}>
+                  <button 
+                    onClick={() => {
+                      setIsSearchExpanded(!isSearchExpanded);
+                      if (isSearchExpanded) setLinksSearchTerm('');
+                    }}
+                    className={`p-2 text-white/20 hover:text-terminal-main transition-colors ${isSearchExpanded ? 'absolute left-0 z-10' : ''}`}
+                  >
+                    <Search size={16} />
+                  </button>
                   <input 
                     type="text" 
-                    placeholder="SEARCH MODULES..."
+                    placeholder="SEARCH_MODULES..."
+                    autoFocus={isSearchExpanded}
                     value={linksSearchTerm}
                     onChange={(e) => setLinksSearchTerm(e.target.value)}
-                    className="bg-black/40 border border-white/10 px-4 pr-10 py-2 text-[0.65rem] focus:outline-none focus:border-terminal-main/40 w-full md:w-64 transition-all uppercase tracking-widest placeholder:text-white/5"
+                    className={`bg-black/40 border border-white/10 py-2 text-[0.65rem] focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest placeholder:text-white/5 ${
+                      isSearchExpanded 
+                        ? 'w-full pl-10 pr-4 opacity-100' 
+                        : 'w-0 opacity-0 pointer-events-none'
+                    }`}
                   />
+                  {isSearchExpanded && (
+                    <button 
+                      onClick={() => { setIsSearchExpanded(false); setLinksSearchTerm(''); }}
+                      className="absolute right-3 text-white/10 hover:text-terminal-red transition-colors"
+                    >
+                      <div className="text-[10px] font-black">ESC</div>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
           </header>
-
-          {/* NAVIGATION TABS */}
-          <div className="px-4 md:px-6 pt-4">
-            <nav className="flex flex-wrap gap-2">
-              {categories.map((tab) => (
-                <button 
-                  key={tab}
-                  onClick={() => setActiveCategory(tab)}
-                  className={`px-4 py-1 text-[0.6rem] font-black border transition-all tracking-widest ${activeCategory === tab ? 'bg-terminal-main text-black border-terminal-main shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]' : 'border-white/5 text-white/20 hover:border-white/20 hover:text-white bg-white/[0.01]'}`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </nav>
-          </div>
 
           {/* APPS GRID */}
           <section className="p-4 md:p-6 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-3">
