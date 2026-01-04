@@ -33,9 +33,10 @@ const mapTimerToCloud = (timer: any, userId: string, index: number) => ({
   position: index
 });
 
-const mapNoteToCloud = (note: string, userId: string) => ({
+const mapNoteToCloud = (note: string, userId: string, index: number) => ({
   user_id: userId,
   content: note,
+  position: index,
   updated_at: new Date().toISOString()
 });
 
@@ -78,12 +79,12 @@ export const pushToCloud = async (table: string, data: any) => {
     payload = data.map((item: any, i: number) => mapTodoToCloud(item, user.id, i));
   } else if (table === 'timers' && Array.isArray(data)) {
     payload = data.map((item: any, i: number) => mapTimerToCloud(item, user.id, i));
-  } else if (table === 'notes') {
-    payload = [mapNoteToCloud(data, user.id)];
+  } else if (table === 'notes' && Array.isArray(data)) { // Handle array of notes
+    payload = data.map((noteContent: string, i: number) => mapNoteToCloud(noteContent, user.id, i));
   }
 
-  // Handle array-based tables (links, todos, timers)
-  if (Array.isArray(data) && (table === 'links' || table === 'todos' || table === 'timers')) {
+  // Handle array-based tables (links, todos, timers, notes)
+  if (Array.isArray(data) && (table === 'links' || table === 'todos' || table === 'timers' || table === 'notes')) {
     // 1. Delete all existing records for this user to sync deletions
     const { error: deleteError } = await supabase.from(table).delete().eq('user_id', user.id);
     if (deleteError) {
@@ -100,7 +101,7 @@ export const pushToCloud = async (table: string, data: any) => {
       }
     }
   } else if (payload.length > 0) {
-    // For single-row tables like 'notes'
+    // This case should ideally not be reached with current data structures
     const { error } = await supabase.from(table).upsert(payload);
     if (error) {
       console.error(`Sync error ${table}:`, error.message, error.details, error.hint);
@@ -120,6 +121,11 @@ export const fetchFromCloud = async (table: string) => {
   if (error) {
     console.error(`Fetch error ${table}:`, error);
     return { data: null, error };
+  }
+  
+  // Sort notes by position if fetching notes
+  if (table === 'notes' && data && data.length > 0) {
+    data.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
   }
   
   return { data, error: null };

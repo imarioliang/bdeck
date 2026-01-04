@@ -1,140 +1,129 @@
--- Enable UUID extension
-create extension if not exists "uuid-ossp";
+DO $$
+BEGIN
+  -- profiles: select
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'profiles' AND policyname = 'Users can view own profile'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can view own profile" ON public.profiles FOR SELECT USING ((SELECT auth.uid()) = id);$$;
+  END IF;
 
--- Profiles table (extends auth.users)
-create table if not exists profiles (
-  id uuid references auth.users not null primary key,
-  email text,
-  updated_at timestamp with time zone default now(),
-  
-  constraint username_length check (char_length(email) >= 3)
-);
+  -- profiles: update
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'profiles' AND policyname = 'Users can update own profile'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can update own profile" ON public.profiles FOR UPDATE USING ((SELECT auth.uid()) = id);$$;
+  END IF;
 
--- Row Level Security (RLS) for Profiles
-alter table profiles enable row level security;
+  -- profiles: insert
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'profiles' AND policyname = 'Users can insert own profile'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can insert own profile" ON public.profiles FOR INSERT WITH CHECK ((SELECT auth.uid()) = id);$$;
+  END IF;
 
-create policy "Users can view own profile" 
-  on profiles for select 
-  using ( auth.uid() = id );
+  -- user_settings
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'user_settings' AND policyname = 'Users can view own settings'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can view own settings" ON public.user_settings FOR SELECT USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'user_settings' AND policyname = 'Users can update own settings'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can update own settings" ON public.user_settings FOR UPDATE USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'user_settings' AND policyname = 'Users can insert own settings'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can insert own settings" ON public.user_settings FOR INSERT WITH CHECK ((SELECT auth.uid()) = user_id);$$;
+  END IF;
 
-create policy "Users can update own profile" 
-  on profiles for update 
-  using ( auth.uid() = id );
+  -- links
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'links' AND policyname = 'Users can view own links'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can view own links" ON public.links FOR SELECT USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'links' AND policyname = 'Users can insert own links'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can insert own links" ON public.links FOR INSERT WITH CHECK ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'links' AND policyname = 'Users can update own links'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can update own links" ON public.links FOR UPDATE USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'links' AND policyname = 'Users can delete own links'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can delete own links" ON public.links FOR DELETE USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
 
-create policy "Users can insert own profile" 
-  on profiles for insert 
-  with check ( auth.uid() = id );
+  -- todos
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'todos' AND policyname = 'Users can view own todos'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can view own todos" ON public.todos FOR SELECT USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'todos' AND policyname = 'Users can insert own todos'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can insert own todos" ON public.todos FOR INSERT WITH CHECK ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'todos' AND policyname = 'Users can update own todos'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can update own todos" ON public.todos FOR UPDATE USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'todos' AND policyname = 'Users can delete own todos'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can delete own todos" ON public.todos FOR DELETE USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
 
--- User Settings Table (for theme, etc.)
-create table if not exists user_settings (
-  user_id uuid references auth.users not null primary key,
-  theme text default 'amber',
-  font_size text default 'standard',
-  active_category text default 'ALL SYSTEMS',
-  updated_at timestamp with time zone default now()
-);
+  -- notes
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'notes' AND policyname = 'Users can view own notes'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can view own notes" ON public.notes FOR SELECT USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'notes' AND policyname = 'Users can insert own notes'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can insert own notes" ON public.notes FOR INSERT WITH CHECK ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'notes' AND policyname = 'Users can update own notes'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can update own notes" ON public.notes FOR UPDATE USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'notes' AND policyname = 'Users can delete own notes'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can delete own notes" ON public.notes FOR DELETE USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
 
-alter table user_settings enable row level security;
-
-create policy "Users can view own settings" on user_settings for select using (auth.uid() = user_id);
-create policy "Users can update own settings" on user_settings for update using (auth.uid() = user_id);
-create policy "Users can insert own settings" on user_settings for insert with check (auth.uid() = user_id);
-
--- Links Table
-create table if not exists links (
-  id text not null, -- using text to match local storage IDs (e.g. 'link-123')
-  user_id uuid references auth.users not null,
-  title text not null,
-  url text not null,
-  category text,
-  tags text[], -- added tags support
-  is_pinned boolean default false,
-  position integer, -- for sorting
-  updated_at timestamp with time zone default now(),
-  
-  primary key (id, user_id) -- composite key
-);
-
-alter table links enable row level security;
-
-create policy "Users can view own links" on links for select using (auth.uid() = user_id);
-create policy "Users can insert own links" on links for insert with check (auth.uid() = user_id);
-create policy "Users can update own links" on links for update using (auth.uid() = user_id);
-create policy "Users can delete own links" on links for delete using (auth.uid() = user_id);
-
--- Todos Table
-create table if not exists todos (
-  id text not null,
-  user_id uuid references auth.users not null,
-  text text,
-  done boolean default false,
-  level integer default 0,
-  position integer,
-  updated_at timestamp with time zone default now(),
-  
-  primary key (id, user_id)
-);
-
-alter table todos enable row level security;
-
-create policy "Users can view own todos" on todos for select using (auth.uid() = user_id);
-create policy "Users can insert own todos" on todos for insert with check (auth.uid() = user_id);
-create policy "Users can update own todos" on todos for update using (auth.uid() = user_id);
-create policy "Users can delete own todos" on todos for delete using (auth.uid() = user_id);
-
--- Notes Table (Single note per user for now, as per NotesPane)
-create table if not exists notes (
-  user_id uuid references auth.users not null primary key,
-  content text,
-  updated_at timestamp with time zone default now()
-);
-
-alter table notes enable row level security;
-
-create policy "Users can view own notes" on notes for select using (auth.uid() = user_id);
-create policy "Users can insert own notes" on notes for insert with check (auth.uid() = user_id);
-create policy "Users can update own notes" on notes for update using (auth.uid() = user_id);
-
--- Timers Table
-create table if not exists timers (
-  id text not null,
-  user_id uuid references auth.users not null,
-  name text,
-  time integer default 0,
-  is_active boolean default false,
-  session_start_time bigint default 0,
-  position integer,
-  updated_at timestamp with time zone default now(),
-  
-  primary key (id, user_id)
-);
-
-alter table timers enable row level security;
-
-create policy "Users can view own timers" on timers for select using (auth.uid() = user_id);
-create policy "Users can insert own timers" on timers for insert with check (auth.uid() = user_id);
-create policy "Users can update own timers" on timers for update using (auth.uid() = user_id);
-create policy "Users can delete own timers" on timers for delete using (auth.uid() = user_id);
-
--- Function to handle new user signup (automatically create profile)
-create or replace function public.handle_new_user() 
-returns trigger as $$
-begin
-  insert into public.profiles (id, email)
-  values (new.id, new.email);
-  
-  insert into public.user_settings (user_id)
-  values (new.id);
-  
-  insert into public.notes (user_id, content)
-  values (new.id, '');
-  
-  return new;
-end;
-$$ language plpgsql security definer;
-
--- Trigger for new user
-drop trigger if exists on_auth_user_created on auth.users;
-create trigger on_auth_user_created
-  after insert on auth.users
-  for each row execute procedure public.handle_new_user();
+  -- timers
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'timers' AND policyname = 'Users can view own timers'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can view own timers" ON public.timers FOR SELECT USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'timers' AND policyname = 'Users can insert own timers'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can insert own timers" ON public.timers FOR INSERT WITH CHECK ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'timers' AND policyname = 'Users can update own timers'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can update own timers" ON public.timers FOR UPDATE USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'timers' AND policyname = 'Users can delete own timers'
+  ) THEN
+    EXECUTE $$CREATE POLICY "Users can delete own timers" ON public.timers FOR DELETE USING ((SELECT auth.uid()) = user_id);$$;
+  END IF;
+END
+$$;

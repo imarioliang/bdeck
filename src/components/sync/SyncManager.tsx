@@ -15,7 +15,7 @@ export const SyncManager = () => {
   const [links, setLinks] = useLocalStorage<any[]>('bdeck-links', []);
   const [todos, setTodos] = useLocalStorage<any[]>('bdeck-todos', []);
   const [timers, setTimers] = useLocalStorage<any[]>('bdeck-timers', []);
-  const [note, setNote] = useLocalStorage<string>('bdeck-note', '');
+  const [notes, setNotes] = useLocalStorage<string[]>('bdeck-notes-multi', ['', '', '']); // Changed to notes (plural) and default to array
   const [lastUserId, setLastUserId] = useLocalStorage<string | null>('bdeck-last-user-id', null);
 
   // Initialization refs to prevent overwriting cloud data on mount
@@ -45,13 +45,13 @@ export const SyncManager = () => {
   const pushLinks = useRef(debounce((data) => pushWithStatus('links', data), 2000)).current;
   const pushTodos = useRef(debounce((data) => pushWithStatus('todos', data), 2000)).current;
   const pushTimers = useRef(debounce((data) => pushWithStatus('timers', data), 2000)).current;
-  const pushNote = useRef(debounce((data) => pushWithStatus('notes', data), 2000)).current;
+  const pushNotes = useRef(debounce((data) => pushWithStatus('notes', data), 2000)).current; // Changed to pushNotes
 
   // Sync on change (only if user is logged in AND initialized)
-  useEffect(() => { if (user && initialized.current) pushLinks(links); }, [links, user]);
-  useEffect(() => { if (user && initialized.current) pushTodos(todos); }, [todos, user]);
-  useEffect(() => { if (user && initialized.current) pushTimers(timers); }, [timers, user]);
-  useEffect(() => { if (user && initialized.current) pushNote(note); }, [note, user]);
+  useEffect(() => { if (user && initialized.current) pushLinks(links); }, [links, user, pushLinks]);
+  useEffect(() => { if (user && initialized.current) pushTodos(todos); }, [todos, user, pushTodos]);
+  useEffect(() => { if (user && initialized.current) pushTimers(timers); }, [timers, user, pushTimers]);
+  useEffect(() => { if (user && initialized.current) pushNotes(notes); }, [notes, user, pushNotes]); // Changed to pushNotes
 
   // Initial Fetch / Merge on Login
   useEffect(() => {
@@ -70,7 +70,7 @@ export const SyncManager = () => {
             await pushToCloud('links', links);
             await pushToCloud('todos', todos);
             await pushToCloud('timers', timers);
-            await pushToCloud('notes', note);
+            await pushToCloud('notes', notes); // Changed to notes
         }
 
         // 2. Fetch from Cloud (Will now include merged data)
@@ -113,9 +113,9 @@ export const SyncManager = () => {
 
         // NOTES
         if (cloudNotes && cloudNotes.length > 0) {
-           setNote(mapNoteToLocal(cloudNotes[0]));
+           setNotes(cloudNotes.map(mapNoteToLocal)); // Map each note in the array
         } else if (isUserSwitch) {
-           setNote('');
+           setNotes(['', '', '']); // Reset to empty array of notes for new user
         }
 
         // 4. Mark Initialized and Update Last User
