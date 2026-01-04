@@ -43,7 +43,8 @@ describe('AuthModal', () => {
 
   it('renders login form by default', () => {
     render(<AuthModal />);
-    expect(screen.getByText('AUTHENTICATION PROTOCOL')).toBeInTheDocument();
+    expect(screen.getByText('[ AUTH_GATE ]')).toBeInTheDocument();
+    expect(screen.getByText('USER_LOGIN')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('OPERATOR_ID (EMAIL)...')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('ACCESS_CODE (PASSWORD)...')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'INITIATE SESSION' })).toBeInTheDocument();

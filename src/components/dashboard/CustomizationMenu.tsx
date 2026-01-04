@@ -58,7 +58,7 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
       >
         {/* Retro Header Bar */}
         <div className="bg-terminal-main text-black px-3 py-1 flex justify-between items-center font-black text-[9px] tracking-widest retro-invert">
-          <span>[ SYSTEM_CONFIGURATION_UTILITY ]</span>
+          <span>[ SYS_CONFIG ]</span>
           <div className="flex gap-4 items-center">
             <span>_</span>
             <button 
@@ -72,8 +72,7 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
 
         <div className="p-8 space-y-6 overflow-y-auto max-h-[80vh] custom-scrollbar">
           <div className="text-center space-y-2 mb-4">
-            <h3 className="text-terminal-main text-sm font-black tracking-[0.2em] uppercase">Control Panel</h3>
-            <p className="text-[9px] text-terminal-main/50 font-bold">Adjust system parameters and aesthetic profiles.</p>
+            <h3 className="text-terminal-main text-xs font-black tracking-[0.2em] uppercase">CTRL_PANEL</h3>
             <div className="border-b border-terminal-main/20 border-dashed pt-2 w-full mx-auto max-w-[80%]" />
           </div>
 
@@ -82,7 +81,7 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-terminal-main" />
-                <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">Operator Identity</label>
+                <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">OPERATOR</label>
               </div>
               {user ? (
                 <div className="bg-terminal-main/5 border border-terminal-main/20 px-3 py-2 flex items-center justify-between group/auth">
@@ -97,9 +96,9 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
               ) : (
                 <button 
                   onClick={() => { onClose(); setAuthModalOpen(true); }}
-                  className="w-full py-2.5 bg-terminal-main text-black flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_15px_-5px_var(--terminal-main)]"
+                  className="w-full py-2.5 bg-terminal-main text-black flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest transition-all retro-btn-filled"
                 >
-                  &lt; IDENTIFY / LOGIN &gt;
+                  &lt; IDENTIFY &gt;
                 </button>
               )}
             </div>
@@ -108,7 +107,7 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-terminal-main" />
-                <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">Visual Theme</label>
+                <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">THEME</label>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {themes.map((t) => (
@@ -131,7 +130,7 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-terminal-main" />
-                <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">Text Scaling</label>
+                <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">SCALE</label>
               </div>
               <div className="flex gap-2">
                 {fontSizes.map((s) => (
@@ -154,7 +153,7 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-terminal-main" />
-                <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">Signal Contrast</label>
+                <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">CONTRAST</label>
               </div>
               <div className="bg-terminal-main/5 border border-terminal-main/20 px-3 py-2 flex items-center group/contrast focus-within:border-terminal-main/50 transition-all gap-4">
                 <span className="text-terminal-main text-xs font-black shrink-0">&gt;</span>
@@ -199,13 +198,13 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
                   onClick={handleExport}
                   className="flex-1 py-2 border border-terminal-main/40 text-[9px] font-black text-terminal-main retro-hover-invert transition-all uppercase"
                 >
-                  [ EXPORT_BACKUP ]
+                  [ EXPORT ]
                 </button>
                 <button 
                   onClick={() => confirm("DANGER: INITIATING FULL DATA WIPE. CONTINUE?") && resetAllData()}
                   className="flex-1 py-2 border border-terminal-red/40 text-[9px] font-black text-terminal-red hover:bg-terminal-red hover:text-black transition-all uppercase"
                 >
-                  [ FACTORY_RESET ]
+                  [ WIPE_DATA ]
                 </button>
               </div>
             </div>
@@ -216,7 +215,7 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
               onClick={onClose} 
               className="w-full py-2.5 bg-terminal-main/10 border border-terminal-main/40 text-[10px] font-black text-terminal-main retro-hover-invert transition-all uppercase tracking-widest"
             >
-              &lt; EXIT CONFIGURATION &gt;
+              &lt; EXIT &gt;
             </button>
           </div>
         </div>

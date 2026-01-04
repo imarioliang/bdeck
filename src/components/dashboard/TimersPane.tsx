@@ -385,7 +385,7 @@ export const TimersPane = ({ isAdding, setIsAdding, isEditing = false }: TimersP
           {isRetro && (
             <button 
               onClick={() => setShowSettings(!showSettings)}
-              className={`px-3 py-2.5 border transition-all font-black text-[9px] ${showSettings ? 'bg-terminal-main text-black border-terminal-main' : 'border-terminal-main/40 text-terminal-main/60 hover:border-terminal-main hover:text-terminal-main'}`}
+              className={`px-3 py-2.5 border transition-all font-black text-[9px] ${showSettings ? 'retro-btn-filled' : 'border-terminal-main/40 text-terminal-main/60 hover:border-terminal-main hover:text-terminal-main'}`}
             >
               [ MENU ]
             </button>

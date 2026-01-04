@@ -45,7 +45,7 @@ describe('CustomizationMenu', () => {
 
   it('should render theme selection buttons', () => {
     render(<CustomizationMenu isOpen={true} onClose={vi.fn()} />);
-    expect(screen.getByText(/Visual Theme/i)).toBeDefined();
+    expect(screen.getByText(/THEME/i)).toBeDefined();
     expect(screen.getByText('Amber')).toBeDefined();
     expect(screen.getByText('Green')).toBeDefined();
     expect(screen.getByText('Blue')).toBeDefined();

@@ -91,6 +91,21 @@ body {
   border-color: var(--terminal-main) !important;
 }
 
+/* Filled Button with Hover Invert (Overrides retro-invert if needed) */
+.retro-btn-filled {
+  background-color: var(--terminal-main) !important;
+  color: #000000 !important;
+  border-color: var(--terminal-main) !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.retro-btn-filled:hover {
+  background-color: #000000 !important;
+  color: var(--terminal-main) !important;
+  border-color: var(--terminal-main) !important;
+  box-shadow: none !important;
+}
+
 /* Glitch Animations */
 @keyframes shake {
   0% { transform: translate(0, 0); }
@@ -118,7 +133,7 @@ body {
 
 /* Global Retro Styles - Lower specificity to allow overrides */
 [data-skin='retro'] body, 
-[data-skin='retro'] *:not(.retro-invert):not(.retro-invert *):not(.retro-hover-invert):not(.retro-hover-invert *) {
+[data-skin='retro'] *:not(.retro-invert):not(.retro-invert *):not(.retro-hover-invert):not(.retro-hover-invert *):not(.retro-btn-filled):not(.retro-btn-filled *) {
   -webkit-font-smoothing: none !important;
   -moz-osx-font-smoothing: grayscale !important;
   font-family: var(--font-press-start), cursive !important;
