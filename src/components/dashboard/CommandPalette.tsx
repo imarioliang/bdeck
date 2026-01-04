@@ -11,10 +11,15 @@ import {
   Action,
 } from 'kbar';
 import { useDashboardStore } from '@/store/useDashboardStore';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 export const CommandPalette = ({ children }: { children: React.ReactNode }) => {
   const { setActiveCategory } = useDashboardStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const actions: Action[] = useMemo(() => [
     {
@@ -58,6 +63,8 @@ export const CommandPalette = ({ children }: { children: React.ReactNode }) => {
       section: 'Navigation',
     },
   ], [setActiveCategory]);
+
+  if (!mounted) return <>{children}</>;
 
   return (
     <KBarProvider actions={actions}>
