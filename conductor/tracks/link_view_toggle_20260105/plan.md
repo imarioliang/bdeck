@@ -16,14 +16,14 @@
     - [x] Sub-task: Run existing test suite to ensure no breakage.
 - [ ] **Task: Conductor - User Manual Verification 'Modern Theme Purge' (Protocol in workflow.md)**
 
-## Phase 2: View Mode State & Toggle UI
+## Phase 2: View Mode State & Toggle UI [checkpoint: e4747c3]
 *Goal: Implement the persistent state for view mode and the UI controls to switch it.*
 
-- [x] **Task 1: Update Dashboard Store** [adb9ae6]
+- [x] **Task 1: Update Dashboard Store** [e4747c3]
     - [x] Sub-task: Add `viewMode: 'list' | 'grid'` to `DashboardState`.
     - [x] Sub-task: Add `setViewMode` action to the store.
     - [x] Sub-task: Ensure `viewMode` is persisted in `bdeck-dashboard-storage`.
-- [x] **Task 2: Implement Toggle Button** [adb9ae6]
+- [x] **Task 2: Implement Toggle Button** [e4747c3]
     - [x] Sub-task: Create failing tests for the View Toggle button in `LinksPane`.
     - [x] Sub-task: Implement the toggle button in the `LinksPane` header (Retro style).
     - [x] Sub-task: Verify button switches state in store.
