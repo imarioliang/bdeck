@@ -9,6 +9,7 @@ a web app that display frequenly visited site, with features
 ## Key Features
 - **Frequently Visited Sites:** A manually curated list of bookmarks and quick links, ensuring users have immediate access to their most important resources.
     - **Pinning:** Users can pin important links to the top of the grid for immediate access.
+    - **View Toggles:** Switch between a high-density vertical 'List' view and a terminal-inspired 'Grid' layout.
     - **Integrated Subsystems:** Grouped header and link grid within a unified container.
     - **Dual Navigation & Filtering:** Navigate via a hierarchical 'Repositories' sidebar (Categories) and a dynamic 'Tags' subsystem. Supports simultaneous category and tag filtering.
     - **Visual Watermarks:** Automated favicon fetching with generic fallback, displayed as high-density watermarks.
@@ -22,7 +23,7 @@ a web app that display frequenly visited site, with features
     - **Command Palette (KBAR):** Global action menu (Ctrl+K) for rapid navigation and system commands.
     - **Quick-Access Keys:** Dedicated shortcuts (p, n, t) for instant pane focusing and interaction.
     - **System Customization:** Personalized terminal themes (Amber, Green, Blue) and global text scaling (Small to Large).
-    - **Interface Skins:** Toggle between 'Modern' (clean, refined) and 'Retro' (high-fidelity terminal aesthetic featuring independent scrollable containers, a two-row system bar, a 'Directories' sidebar, and strict 1px border alignment) via the Command Center logo.
+    - **Retro Terminal Aesthetic:** A high-fidelity terminal interface featuring independent scrollable containers, a two-row system bar, a 'Directories' sidebar, and strict 1px border alignment.
 - **Data Persistence & Sync:**
     - **Cloud Synchronization:** Seamlessly syncs Links, Todos, Timers, and Notes across devices via Supabase.
     - **Offline First:** Fully functional offline with automatic synchronization when online.

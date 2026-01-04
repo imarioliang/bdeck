@@ -11,7 +11,8 @@
 
 ## Styling and Layout
 - **Tailwind CSS:** All styling will be implemented using Tailwind CSS utility classes to maintain a consistent, raw aesthetic and facilitate rapid layout adjustments.
-- **Layered Monospace Hierarchy:** Use a multi-font hierarchy for terminal skins. Primary 8-bit aesthetic (Press Start 2P) for headers and link titles, and highly readable monospace (VT323) for data inputs and small metadata to maintain information density.
+- **Layered Monospace Hierarchy:** Primary 8-bit aesthetic (Press Start 2P) for headers and link titles, and highly readable monospace (VT323) for data inputs and small metadata.
+- **Retro-Only Focus:** The application maintains a single, high-fidelity retro skin. All UI components must adhere to the 1px border alignment and monospaced typography.
 
 ## Accessibility and Navigation
 - **Keyboard-First Design:** Full keyboard support is the primary requirement. Every action (opening links, starting timers, adding notes) must be accessible via keyboard shortcuts.
