@@ -15,8 +15,9 @@ export const SyncManager = () => {
   const [links, setLinks] = useLocalStorage<any[]>('bdeck-links', []);
   const [todos, setTodos] = useLocalStorage<any[]>('bdeck-todos', []);
   const [timers, setTimers] = useLocalStorage<any[]>('bdeck-timers', []);
-  const [notes, setNotes] = useLocalStorage<string[]>('bdeck-notes-multi', ['', '', '']); // Changed to notes (plural) and default to array
-  const [lastUserId, setLastUserId] = useLocalStorage<string | null>('bdeck-last-user-id', null);
+  const [notes, setNotes] = useLocalStorage<{ id: string, content: string }[]>('bdeck-notes-multi', 
+    [{ id: 'log-01', content: '' }, { id: 'log-02', content: '' }, { id: 'log-03', content: '' }]
+  );  const [lastUserId, setLastUserId] = useLocalStorage<string | null>('bdeck-last-user-id', null);
 
   // Initialization refs to prevent overwriting cloud data on mount
   const initialized = useRef(false);
@@ -85,7 +86,7 @@ export const SyncManager = () => {
         const remoteLinks = cloudLinks ? cloudLinks.map(mapLinkToLocal) : [];
         const remoteTodos = cloudTodos ? cloudTodos.map(mapTodoToLocal) : [];
         const remoteTimers = cloudTimers ? cloudTimers.map(mapTimerToLocal) : [];
-        const remoteNotes = cloudNotes && cloudNotes.length > 0 ? cloudNotes.map(mapNoteToLocal) : ['', '', '']; 
+        const remoteNotes = cloudNotes && cloudNotes.length > 0 ? cloudNotes.map(mapNoteToLocal) : [{id: 'log-01', content: ''}, {id: 'log-02', content: ''}, {id: 'log-03', content: ''}]; 
 
         // 3. Merge Local and Remote data
         // Prioritize remote data if it exists. If remote is empty, use local data.
