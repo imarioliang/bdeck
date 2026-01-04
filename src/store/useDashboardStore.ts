@@ -15,6 +15,7 @@ interface DashboardState {
   activeTag: string | null;
   activeNoteIndex: number;
   syncStatus: SyncStatus;
+  triggerSync: number;
   
   // UI States
   isConfigOpen: boolean;
@@ -30,6 +31,7 @@ interface DashboardState {
   setActiveTag: (tag: string | null) => void;
   setActiveNoteIndex: (index: number) => void;
   setSyncStatus: (status: SyncStatus) => void;
+  requestSync: () => void;
   
   // UI Setters
   setIsConfigOpen: (isOpen: boolean) => void;
@@ -51,6 +53,7 @@ export const useDashboardStore = create<DashboardState>()(
       activeTag: null,
       activeNoteIndex: 0,
       syncStatus: 'idle',
+      triggerSync: 0,
       isConfigOpen: false,
       isSearchExpanded: false,
       isAddingLink: false,
@@ -64,6 +67,7 @@ export const useDashboardStore = create<DashboardState>()(
       setActiveTag: (activeTag) => set({ activeTag }),
       setActiveNoteIndex: (activeNoteIndex) => set({ activeNoteIndex }),
       setSyncStatus: (syncStatus) => set({ syncStatus }),
+      requestSync: () => set((state) => ({ triggerSync: state.triggerSync + 1 })),
       setIsConfigOpen: (isConfigOpen) => set({ isConfigOpen }),
       setIsSearchExpanded: (isSearchExpanded) => set({ isSearchExpanded }),
       setIsAddingLink: (isAddingLink) => set({ isAddingLink }),

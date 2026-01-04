@@ -29,7 +29,8 @@ export default function Home() {
     isConfigOpen, setIsConfigOpen,
     isSearchExpanded, setIsSearchExpanded,
     isAddingLink, setIsAddingLink,
-    isAddingTimer, setIsAddingTimer
+    isAddingTimer, setIsAddingTimer,
+    requestSync, syncStatus
   } = useDashboardStore();
   const skin = useSkin();
   const isRetro = skin === 'retro';
@@ -116,7 +117,12 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-4 ml-6">
                   <HeaderIndicators />
-                  <button className="border border-terminal-main px-3 py-1 text-[10px] text-terminal-main hover:bg-terminal-main hover:text-black transition-colors font-bold tracking-tighter uppercase">↑ UP</button>
+                  <button 
+                    onClick={requestSync}
+                    className="border border-terminal-main px-3 py-1 text-[10px] text-terminal-main hover:bg-terminal-main hover:text-black transition-colors font-bold tracking-tighter uppercase"
+                  >
+                    {syncStatus === 'syncing' ? 'SYNCING...' : '↑ SYNC'}
+                  </button>
                 </div>
               </div>
             </header>
@@ -147,7 +153,19 @@ export default function Home() {
                       <span>CPU: 8%</span>
                     </div>
                   </div>
-                  <HeaderIndicators />
+                  <div className="flex items-center gap-3">
+                    <button 
+                      onClick={requestSync}
+                      className={`text-[10px] font-black tracking-widest px-3 py-1 border transition-all ${
+                        syncStatus === 'syncing' 
+                          ? 'border-terminal-main text-terminal-main animate-pulse' 
+                          : 'border-white/10 text-white/40 hover:border-terminal-main hover:text-terminal-main'
+                      }`}
+                    >
+                      {syncStatus === 'syncing' ? 'SYNCING' : 'SYNC'}
+                    </button>
+                    <HeaderIndicators />
+                  </div>
                 </div>
               </div>
 
