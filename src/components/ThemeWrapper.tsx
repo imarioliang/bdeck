@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 export default function ThemeWrapper({ children }: { children: React.ReactNode }) {
   const theme = useDashboardStore((state) => state.theme);
   const fontSize = useDashboardStore((state) => state.fontSize);
-  const skin = useDashboardStore((state) => state.skin);
   const contrast = useDashboardStore((state) => state.contrast);
   const [mounted, setFocused] = useState(false);
 
@@ -19,9 +18,9 @@ export default function ThemeWrapper({ children }: { children: React.ReactNode }
     if (mounted) {
       document.documentElement.setAttribute('data-theme', theme);
       document.documentElement.setAttribute('data-size', fontSize);
-      document.documentElement.setAttribute('data-skin', skin);
+      document.documentElement.setAttribute('data-skin', 'retro');
     }
-  }, [mounted, theme, fontSize, skin]);
+  }, [mounted, theme, fontSize]);
 
   if (!mounted) {
     return null;
@@ -29,7 +28,7 @@ export default function ThemeWrapper({ children }: { children: React.ReactNode }
 
   return (
     <div className="min-h-screen relative" style={{ filter: `contrast(${contrast}%)` }}>
-      {skin === 'retro' && <div className="scanline-overlay" />}
+      <div className="scanline-overlay" />
       {children}
     </div>
   );
