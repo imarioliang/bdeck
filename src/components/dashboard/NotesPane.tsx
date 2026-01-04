@@ -5,33 +5,73 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useSkin } from '@/hooks/useSkin';
 import { useDashboardStore } from '@/store/useDashboardStore';
 
+// Helper to generate unique IDs
+const generateId = () => `note-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+
 export const NotesPane = () => {
   const { activeNoteIndex: activeIndex, setActiveNoteIndex: setActiveIndex } = useDashboardStore();
-  const [notes, setNotes] = useLocalStorage<string[]>('bdeck-notes-multi', ['', '', '']);
+  // Change local storage to store an array of objects {id: string, content: string}
+  const [notes, setNotes] = useLocalStorage<{ id: string, content: string }[]>('bdeck-notes-multi', 
+    Array.from({ length: 3 }).map((_, i) => ({ id: generateId(), content: '' }))
+  );
   const skin = useSkin();
   const isRetro = skin === 'retro';
 
-  // Migration from legacy single-note store
+  // Migration from legacy single-note store (string to object array)
   useEffect(() => {
     const legacyNote = localStorage.getItem('bdeck-note');
     if (legacyNote) {
       try {
         const parsed = JSON.parse(legacyNote);
         if (typeof parsed === 'string' && parsed.trim() !== '') {
-          setNotes([parsed, '', '']);
+          // If legacy note exists, create an object for it and fill others
+          const newNotes = [
+            { id: generateId(), content: parsed },
+            { id: generateId(), content: '' },
+            { id: generateId(), content: '' }
+          ];
+          setNotes(newNotes);
           localStorage.removeItem('bdeck-note');
         }
       } catch (e) {
         // Silently fail if not valid JSON or string
       }
+    } else {
+      // Ensure notes array has IDs if initial load didn't generate them
+      // This covers cases where 'bdeck-notes-multi' might exist but contain old structure
+      const currentNotes = notes;
+      const needsIdFix = currentNotes.some(note => typeof note === 'string' || !note.id);
+      if (needsIdFix || currentNotes.length !== 3) {
+        const fixedNotes = Array.from({ length: 3 }).map((_, i) => {
+          const existing = currentNotes[i];
+          if (existing && typeof existing === 'object' && existing.id) {
+            return existing;
+          }
+          return { id: generateId(), content: typeof existing === 'string' ? existing : '' };
+        });
+        setNotes(fixedNotes);
+      }
     }
   }, [setNotes]);
 
-  const activeNote = notes[activeIndex] || '';
+  // Ensure 'notes' array always has 3 elements with IDs
+  useEffect(() => {
+    if (notes.length !== 3 || notes.some(note => !note.id)) {
+      setNotes(prevNotes => {
+        const newNotes = Array.from({ length: 3 }).map((_, i) => {
+          const existing = prevNotes[i];
+          return { id: existing?.id || generateId(), content: existing?.content || '' };
+        });
+        return newNotes;
+      });
+    }
+  }, [notes, setNotes]);
+
+  const activeNote = notes[activeIndex] ? notes[activeIndex].content : '';
 
   const updateActiveNote = (content: string) => {
     const newNotes = [...notes];
-    newNotes[activeIndex] = content;
+    newNotes[activeIndex] = { id: newNotes[activeIndex]?.id || generateId(), content };
     setNotes(newNotes);
   };
 

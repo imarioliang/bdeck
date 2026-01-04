@@ -24,7 +24,11 @@ describe('NotesPane', () => {
   const mockSetNotes = vi.fn();
 
   beforeEach(() => {
-    vi.mocked(useLocalStorage).mockReturnValue([['', '', ''], mockSetNotes]);
+    vi.mocked(useLocalStorage).mockReturnValue([[
+      { id: '1', content: '' }, 
+      { id: '2', content: '' }, 
+      { id: '3', content: '' }
+    ], mockSetNotes]);
     vi.mocked(useSkin).mockReturnValue('modern');
     vi.mocked(useDashboardStore).mockReturnValue({ activeNoteIndex: 0, setActiveNoteIndex: vi.fn() } as any);
     vi.clearAllMocks();
@@ -45,6 +49,10 @@ describe('NotesPane', () => {
     render(<NotesPane />);
     const textarea = screen.getByRole('textbox');
     fireEvent.change(textarea, { target: { value: 'New note content' } });
-    expect(mockSetNotes).toHaveBeenCalled();
+    expect(mockSetNotes).toHaveBeenCalledWith([
+      { id: '1', content: 'New note content' }, 
+      { id: '2', content: '' }, 
+      { id: '3', content: '' }
+    ]);
   });
 });

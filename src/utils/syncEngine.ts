@@ -33,9 +33,10 @@ const mapTimerToCloud = (timer: any, userId: string, index: number) => ({
   position: index
 });
 
-const mapNoteToCloud = (note: string, userId: string, index: number) => ({
+const mapNoteToCloud = (note: { id: string, content: string }, userId: string, index: number) => ({
+  id: note.id,
   user_id: userId,
-  content: note,
+  content: note.content,
   position: index,
   updated_at: new Date().toISOString()
 });
@@ -65,7 +66,10 @@ export const mapTimerToLocal = (row: any) => ({
   sessionStartTime: row.session_start_time
 });
 
-export const mapNoteToLocal = (row: any) => row.content;
+export const mapNoteToLocal = (row: any) => ({
+  id: row.id,
+  content: row.content
+});
 
 export const pushToCloud = async (table: string, data: any) => {
   const user = useAuthStore.getState().user;
@@ -80,7 +84,7 @@ export const pushToCloud = async (table: string, data: any) => {
   } else if (table === 'timers' && Array.isArray(data)) {
     payload = data.map((item: any, i: number) => mapTimerToCloud(item, user.id, i));
   } else if (table === 'notes' && Array.isArray(data)) { // Handle array of notes
-    payload = data.map((noteContent: string, i: number) => mapNoteToCloud(noteContent, user.id, i));
+    payload = data.map((noteContent: {id: string, content: string}, i: number) => mapNoteToCloud(noteContent, user.id, i));
   }
 
   // Handle array-based tables (links, todos, timers, notes)
