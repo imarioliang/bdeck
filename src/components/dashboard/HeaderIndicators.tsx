@@ -47,15 +47,6 @@ export const HeaderIndicators = () => {
         )}
       </div>
 
-      {/* DEV BRANCH INDICATOR */}
-      {isDev && (
-        <div className={`flex items-center gap-1.5 transition-colors ${isRetro ? 'text-terminal-main/30' : 'text-white/10 hover:text-white/30'}`}>
-          {!isRetro && <GitBranch size={10} />}
-          <span className={`font-black uppercase italic ${isRetro ? 'text-[10px]' : 'text-[0.55rem] tracking-widest'}`}>
-            {isRetro ? 'DEV_MOD: ENABLED' : 'Dev_Branch: addLogin'}
-          </span>
-        </div>
-      )}
     </div>
   );
 };

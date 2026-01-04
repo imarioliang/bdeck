@@ -120,10 +120,10 @@ export default function Home() {
                   <button 
                     onClick={requestSync}
                     disabled={syncStatus === 'syncing'}
-                    className={`border border-terminal-main px-3 py-1 text-[10px] font-bold tracking-tighter uppercase transition-all active:scale-95 active:bg-terminal-main active:text-black ${
+                    className={`border border-terminal-main px-3 py-1 text-[10px] font-bold tracking-tighter uppercase transition-all duration-200 active:scale-90 ${
                       syncStatus === 'syncing' 
                         ? 'bg-terminal-main/20 text-terminal-main animate-pulse cursor-wait' 
-                        : 'text-terminal-main hover:bg-terminal-main hover:text-black'
+                        : 'bg-black text-terminal-main hover:bg-terminal-main hover:text-black active:bg-terminal-main active:text-black shadow-[inset_0_0_0_1px_rgba(255,176,0,0)] active:shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]'
                     }`}
                   >
                     {syncStatus === 'syncing' ? 'SYNCING...' : '↑ SYNC'}
@@ -162,10 +162,10 @@ export default function Home() {
                     <button 
                       onClick={requestSync}
                       disabled={syncStatus === 'syncing'}
-                      className={`text-[10px] font-black tracking-widest px-3 py-1 border transition-all active:scale-95 ${
+                      className={`text-[10px] font-black tracking-widest px-3 py-1 border transition-all duration-200 active:scale-95 ${
                         syncStatus === 'syncing' 
-                          ? 'border-terminal-main text-terminal-main animate-pulse cursor-wait' 
-                          : 'border-white/10 text-white/40 hover:border-terminal-main hover:text-terminal-main hover:shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]'
+                          ? 'border-terminal-main text-terminal-main animate-pulse cursor-wait bg-terminal-main/5' 
+                          : 'bg-transparent border-white/10 text-white/40 hover:border-terminal-main hover:text-terminal-main hover:bg-terminal-main/5 hover:shadow-[0_0_15px_-3px_rgba(255,176,0,0.2)] active:bg-terminal-main/20 active:border-terminal-main'
                       }`}
                     >
                       {syncStatus === 'syncing' ? 'SYNCING' : 'SYNC'}
