@@ -21,4 +21,15 @@ describe('useDashboardStore', () => {
     const state = useDashboardStore.getState();
     expect(state.syncStatus).toBe('syncing');
   });
+
+  it('should have initial viewMode as list', () => {
+    const state = useDashboardStore.getState();
+    expect(state.viewMode).toBe('list');
+  });
+
+  it('should update viewMode', () => {
+    useDashboardStore.getState().setViewMode('grid');
+    const state = useDashboardStore.getState();
+    expect(state.viewMode).toBe('grid');
+  });
 });

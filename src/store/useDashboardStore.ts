@@ -4,6 +4,7 @@ import { persist } from 'zustand/middleware';
 export type TerminalTheme = 'amber' | 'green' | 'blue';
 export type FontSize = 'small' | 'standard' | 'large';
 export type SyncStatus = 'idle' | 'syncing' | 'error';
+export type ViewMode = 'list' | 'grid';
 
 interface DashboardState {
   theme: TerminalTheme;
@@ -14,6 +15,7 @@ interface DashboardState {
   activeNoteIndex: number;
   syncStatus: SyncStatus;
   triggerSync: number;
+  viewMode: ViewMode;
   
   // UI States
   isConfigOpen: boolean;
@@ -29,6 +31,7 @@ interface DashboardState {
   setActiveNoteIndex: (index: number) => void;
   setSyncStatus: (status: SyncStatus) => void;
   requestSync: () => void;
+  setViewMode: (mode: ViewMode) => void;
   
   // UI Setters
   setIsConfigOpen: (isOpen: boolean) => void;
@@ -50,6 +53,7 @@ export const useDashboardStore = create<DashboardState>()(
       activeNoteIndex: 0,
       syncStatus: 'idle',
       triggerSync: 0,
+      viewMode: 'list',
       isConfigOpen: false,
       isSearchExpanded: false,
       isAddingLink: false,
@@ -63,6 +67,7 @@ export const useDashboardStore = create<DashboardState>()(
       setActiveNoteIndex: (activeNoteIndex) => set({ activeNoteIndex }),
       setSyncStatus: (syncStatus) => set({ syncStatus }),
       requestSync: () => set((state) => ({ triggerSync: state.triggerSync + 1 })),
+      setViewMode: (viewMode) => set({ viewMode }),
       setIsConfigOpen: (isConfigOpen) => set({ isConfigOpen }),
       setIsSearchExpanded: (isSearchExpanded) => set({ isSearchExpanded }),
       setIsAddingLink: (isAddingLink) => set({ isAddingLink }),

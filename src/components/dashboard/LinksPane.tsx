@@ -162,7 +162,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
-  const { activeTag } = useDashboardStore();
+  const { activeTag, viewMode, setViewMode } = useDashboardStore();
 
   // Extraction of categories from existing links
   const categories = useMemo(() => {
@@ -243,7 +243,15 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
     <>
       <div className="w-full flex flex-col border border-terminal-main/20">
         <div className="flex w-full border-b border-terminal-main py-1.5 px-3 bg-terminal-main text-black sticky top-0 z-10 font-black retro-invert">
-           <div className="w-[45%] text-[9px] uppercase tracking-widest">FILENAME</div>
+           <div className="w-[45%] text-[9px] uppercase tracking-widest flex items-center gap-4">
+             <span>FILENAME</span>
+             <button 
+               onClick={() => setViewMode(viewMode === 'list' ? 'grid' : 'list')}
+               className="px-1.5 border border-black/20 hover:bg-black hover:text-terminal-main transition-colors text-[8px]"
+             >
+               [ VIEW: {viewMode.toUpperCase()} ]
+             </button>
+           </div>
            <div className="w-[15%] text-[9px] uppercase tracking-widest text-right pr-4">EXT</div>
            <div className="w-[15%] text-[9px] uppercase tracking-widest text-right pr-4">TAGS</div>
            <div className="flex-1 text-[9px] uppercase tracking-widest text-right">STATUS</div>

@@ -19,14 +19,14 @@
 ## Phase 2: View Mode State & Toggle UI
 *Goal: Implement the persistent state for view mode and the UI controls to switch it.*
 
-- [ ] **Task 1: Update Dashboard Store**
-    - [ ] Sub-task: Add `viewMode: 'list' | 'grid'` to `DashboardState`.
-    - [ ] Sub-task: Add `setViewMode` action to the store.
-    - [ ] Sub-task: Ensure `viewMode` is persisted in `bdeck-dashboard-storage`.
-- [ ] **Task 2: Implement Toggle Button**
-    - [ ] Sub-task: Create failing tests for the View Toggle button in `LinksPane`.
-    - [ ] Sub-task: Implement the toggle button in the `LinksPane` header (Retro style).
-    - [ ] Sub-task: Verify button switches state in store.
+- [x] **Task 1: Update Dashboard Store** [adb9ae6]
+    - [x] Sub-task: Add `viewMode: 'list' | 'grid'` to `DashboardState`.
+    - [x] Sub-task: Add `setViewMode` action to the store.
+    - [x] Sub-task: Ensure `viewMode` is persisted in `bdeck-dashboard-storage`.
+- [x] **Task 2: Implement Toggle Button** [adb9ae6]
+    - [x] Sub-task: Create failing tests for the View Toggle button in `LinksPane`.
+    - [x] Sub-task: Implement the toggle button in the `LinksPane` header (Retro style).
+    - [x] Sub-task: Verify button switches state in store.
 - [ ] **Task: Conductor - User Manual Verification 'View Mode State & Toggle UI' (Protocol in workflow.md)**
 
 ## Phase 3: Retro Grid View Implementation
