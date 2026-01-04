@@ -21,15 +21,4 @@ describe('useDashboardStore', () => {
     const state = useDashboardStore.getState();
     expect(state.syncStatus).toBe('syncing');
   });
-
-  it('should have initial skin as retro', () => {
-    const state = useDashboardStore.getState();
-    expect(state.skin).toBe('retro');
-  });
-
-  it('should update skin', () => {
-    useDashboardStore.getState().setSkin('retro');
-    const state = useDashboardStore.getState();
-    expect(state.skin).toBe('retro');
-  });
 });

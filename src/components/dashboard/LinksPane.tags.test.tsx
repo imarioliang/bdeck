@@ -32,10 +32,10 @@ describe('LinksPane Tag Functions', () => {
     render(<LinksPane isAdding={true} setIsAdding={mockSetIsAdding} searchTerm="" activeCategory="ALL SYSTEMS" />);
     
     // Find the new tags input (to be implemented)
-    const tagsInput = screen.getByPlaceholderText(/TAGS \(COMMA SEPARATED\)/i);
-    const titleInput = screen.getByPlaceholderText(/APP_NAME/i);
+    const tagsInput = screen.getByPlaceholderText(/TAGS\.\.\./i);
+    const titleInput = screen.getByPlaceholderText(/TITLE\.\.\./i);
     const urlInput = screen.getByPlaceholderText(/https:/i);
-    const saveButton = screen.getByText(/< ADD LINK >/i);
+    const saveButton = screen.getByText(/\[ EXECUTE \]/i);
 
     fireEvent.change(titleInput, { target: { value: 'New Module' } });
     fireEvent.change(urlInput, { target: { value: 'https://new.com' } });

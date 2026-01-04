@@ -87,7 +87,7 @@ export default function Home() {
                 <span className="hidden sm:inline opacity-80 border-l border-black/20 pl-3">MEM:64K CPU:8% UP:14H</span>
               </div>
               <div className="flex gap-4 items-center">
-                <span className="text-[8px] opacity-80 font-black">[{process.env.NEXT_PUBLIC_GIT_BRANCH || 'DEV'}] v0.1.1</span>
+                <span className="text-[8px] opacity-80 font-black">[{process.env.NEXT_PUBLIC_GIT_BRANCH || 'DEV'}] v0.1.2</span>
                 <button 
                   onClick={() => setIsConfigOpen(true)} 
                   className="px-2 py-0.5 retro-btn-filled uppercase font-black border-none"

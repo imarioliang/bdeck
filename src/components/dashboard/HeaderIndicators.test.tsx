@@ -16,18 +16,18 @@ describe('HeaderIndicators', () => {
   it('should render sync ok when idle', () => {
     (useDashboardStore as any).mockReturnValue({ syncStatus: 'idle' });
     render(<HeaderIndicators />);
-    expect(screen.getByText('Sync_Ok')).toBeInTheDocument();
+    expect(screen.getByText('[SYNC_OK]')).toBeInTheDocument();
   });
 
   it('should render transmitting when syncing', () => {
     (useDashboardStore as any).mockReturnValue({ syncStatus: 'syncing' });
     render(<HeaderIndicators />);
-    expect(screen.getByText('Transmitting...')).toBeInTheDocument();
+    expect(screen.getByText('[SYNC...]')).toBeInTheDocument();
   });
 
   it('should render sync err when error', () => {
     (useDashboardStore as any).mockReturnValue({ syncStatus: 'error' });
     render(<HeaderIndicators />);
-    expect(screen.getByText('Sync_Err')).toBeInTheDocument();
+    expect(screen.getByText('[SYNC_ERR]')).toBeInTheDocument();
   });
 });

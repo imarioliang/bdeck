@@ -385,7 +385,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
               <>
                                                 {/* Retro Header Bar */}
                                                 <div className="bg-terminal-main text-black px-3 py-1 flex justify-between items-center font-black text-[9px] tracking-widest retro-invert">
-                                                  <span>[ NEW_LINK_WIZARD ]</span>
+                                                  <span>[ ADD_LINK ]</span>
                                                   <div className="flex gap-4 items-center">
                                                     <span>_</span>
                                                     <button 
@@ -396,10 +396,9 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                                                     </button>
                                                   </div>
                                                 </div>                
-                                <div className="p-8 space-y-8">
+                                <div className="p-8 space-y-6">
                                   <div className="text-center space-y-2">
-                                    <h3 className="text-terminal-main text-sm font-black tracking-[0.2em] uppercase">Create New Shortcut</h3>
-                                    <p className="text-[9px] text-terminal-main/50 font-bold">Enter the parameters for the new system link.</p>
+                                    <h3 className="text-terminal-main text-xs font-black tracking-[0.2em] uppercase">NEW_ENTRY</h3>
                                     <div className="border-b border-terminal-main/20 border-dashed pt-2 w-full mx-auto max-w-[80%]" />
                                   </div>
                 
@@ -407,14 +406,14 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                                     <div className="space-y-2.5">
                                       <div className="flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 bg-terminal-main" />
-                                        <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">Display Name</label>
+                                        <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">TITLE</label>
                                       </div>
                                       <div className="flex items-center bg-terminal-main/5 border border-terminal-main/20 px-3 py-2 group-focus-within:border-terminal-main/50 transition-all">
                                         <span className="text-terminal-main text-xs mr-2 font-black">&gt;</span>
                                         <input 
                                           type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)}
                                           onKeyDown={e => e.key === 'Enter' && addLink()}
-                                          placeholder="APP_NAME..." className="flex-1 bg-transparent border-none p-0 text-xs font-black focus:outline-none uppercase tracking-widest text-terminal-main placeholder:text-terminal-main/20 font-mono"
+                                          placeholder="TITLE..." className="flex-1 bg-transparent border-none p-0 text-xs font-black focus:outline-none uppercase tracking-widest text-terminal-main placeholder:text-terminal-main/20 font-mono"
                                         />
                                       </div>
                                     </div>
@@ -422,7 +421,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                                     <div className="space-y-2.5">
                                       <div className="flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 bg-terminal-main" />
-                                        <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">Resource Locator (URL)</label>
+                                        <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">URL</label>
                                       </div>
                                       <div className="flex items-center bg-terminal-main/5 border border-terminal-main/20 px-3 py-2 group-focus-within:border-terminal-main/50 transition-all">
                                         <span className="text-terminal-main text-xs mr-2 font-black">&gt;</span>
@@ -437,14 +436,14 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                                     <div className="space-y-2.5">
                                       <div className="flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 bg-terminal-main" />
-                                        <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">Tags (comma separated)</label>
+                                        <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">TAGS</label>
                                       </div>
                                       <div className="flex items-center bg-terminal-main/5 border border-terminal-main/20 px-3 py-2 group-focus-within:border-terminal-main/50 transition-all">
                                         <span className="text-terminal-main text-xs mr-2 font-black">&gt;</span>
                                         <input 
                                           type="text" value={newTags} onChange={e => setNewTags(e.target.value)}
                                           onKeyDown={e => e.key === 'Enter' && addLink()}
-                                          placeholder="TAGS (COMMA SEPARATED)..." className="flex-1 bg-transparent border-none p-0 text-xs font-black focus:outline-none uppercase tracking-widest text-terminal-main placeholder:text-terminal-main/20 font-mono"
+                                          placeholder="TAGS..." className="flex-1 bg-transparent border-none p-0 text-xs font-black focus:outline-none uppercase tracking-widest text-terminal-main placeholder:text-terminal-main/20 font-mono"
                                         />
                                       </div>
                                     </div>
@@ -452,7 +451,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                                     <div className="space-y-2.5">
                                       <div className="flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 bg-terminal-main" />
-                                        <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">Target Directory</label>
+                                        <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">CATEGORY</label>
                                       </div>
                                                             <div className="flex items-center bg-terminal-main/5 border border-terminal-main/20 px-3 py-2 group-focus-within:border-terminal-main/50 transition-all relative">
                                                               <span className="text-terminal-main text-xs mr-2 font-black">&gt;</span>
@@ -483,21 +482,15 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                                                         onClick={() => setIsAdding(false)} 
                                                         className="flex-1 py-2 border border-terminal-main/40 text-[10px] font-black text-terminal-main retro-hover-invert transition-all uppercase tracking-widest"
                                                       >
-                                                        [ CANCEL ]
+                                                        [ ABORT ]
                                                       </button>
                                                       <button 
                                                         onClick={addLink} 
-                                                        className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest transition-all shadow-[0_0_15px_-5px_var(--terminal-main)] retro-invert"
+                                                        className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest transition-all retro-btn-filled"
                                                       >
-                                                        &lt; ADD LINK &gt;
+                                                        [ EXECUTE ]
                                                       </button>
                                                     </div>                                </div>
-
-                {/* Retro Footer Bar */}
-                <div className="mt-4 border-t border-terminal-main/30 px-3 py-1 flex justify-between items-center text-[8px] text-terminal-main/40 font-bold tracking-tighter uppercase">
-                  <span>MEM_ALLOC: 2KB</span>
-                  <span className="animate-pulse">WAITING_INPUT...</span>
-                </div>
               </>
             ) : (
               <div className="p-8 space-y-6 bg-[#111111]">

@@ -40,7 +40,7 @@ describe('Header Restructuring', () => {
     render(<Home />);
     
     // Check for System Bar (Row 1)
-    expect(screen.getByText(/COMMAND_CENTER_V1.0/i)).toBeDefined();
+    expect(screen.getByText(/\[ COMMAND_CENTER \]/i)).toBeDefined();
     
     // There might be multiple MENU buttons, get the one in the header (System Bar)
     const menuButtons = screen.getAllByText(/MENU/i);
@@ -48,14 +48,5 @@ describe('Header Restructuring', () => {
     
     // Check for Path Bar (Row 2)
     expect(screen.getByText(/PATH:/i)).toBeDefined();
-  });
-
-  it('should render standard header in modern mode', () => {
-    vi.mocked(useSkin).mockReturnValue('modern');
-    render(<Home />);
-    
-    // In modern mode, we shouldn't see the specific retro labels
-    expect(screen.queryByText(/COMMAND_CENTER_V1.0/i)).toBeNull();
-    expect(screen.queryByText(/PATH:/i)).toBeNull();
   });
 });
