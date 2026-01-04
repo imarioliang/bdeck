@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Trash2, GripVertical, CheckSquare, Square, CornerDownLeft } from 'lucide-react';
-import { useSkin } from '@/hooks/useSkin';
 import {
   DndContext,
   closestCenter,
@@ -39,8 +38,6 @@ const SortableTodoItem = ({ todo, onToggle, onDelete, onUpdateText, onKeyDown, i
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: todo.id });
-  const skin = useSkin();
-  const isRetro = skin === 'retro';
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -52,68 +49,23 @@ const SortableTodoItem = ({ todo, onToggle, onDelete, onUpdateText, onKeyDown, i
 
   useEffect(() => { if (isFocused && inputRef.current) inputRef.current.focus(); }, [isFocused]);
 
-  if (isRetro) {
-    return (
-      <li 
-        ref={setNodeRef}
-        style={style}
-        className="flex items-center gap-2 group bg-black border-b border-terminal-main/20 py-3 pr-2 font-mono retro-hover-invert transition-all"
-      >
-        <span {...attributes} {...listeners} className="text-terminal-main/50 cursor-grab active:cursor-grabbing shrink-0 select-none group-hover:text-black/30 text-base px-1">
-          ::
-        </span>
-        
-        <div className="flex-1 flex items-center gap-4">
-          <button 
-            onClick={onToggle}
-            className={`flex-shrink-0 font-black text-base ${todo.done ? 'text-terminal-main group-hover:text-black' : 'text-terminal-main/50 hover:text-terminal-main group-hover:text-black/50 group-hover:hover:text-black'}`}
-            title={todo.done ? "Mark as undone" : "Mark as done"}
-          >
-            [{todo.done ? 'x' : ' '}]
-          </button>
-          
-          <div className="flex flex-col flex-1 gap-0">
-            <input
-              ref={inputRef}
-              type="text"
-              value={todo.text}
-              onChange={(e) => onUpdateText(e.target.value)}
-              onKeyDown={onKeyDown}
-              placeholder="OBJECTIVE..."
-              className={`bg-transparent focus:outline-none border-none p-0 font-mono uppercase transition-all text-base ${todo.done ? 'line-through text-terminal-main/40 group-hover:text-black/40' : 'text-terminal-main group-hover:text-black'}}`}
-            />
-          </div>
-        </div>
-  
-        <button 
-          onClick={onDelete}
-          className="opacity-0 group-hover:opacity-100 px-1.5 text-terminal-red hover:bg-terminal-red hover:text-black transition-all border border-terminal-red text-xs group-hover:border-black/40 group-hover:text-black group-hover:hover:bg-black group-hover:hover:text-terminal-red"
-          title="Delete"
-        >
-          DEL
-        </button>
-      </li>
-    );
-  }
-
-  // Modern Default
   return (
     <li 
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-2.5 group bg-white/[0.01] border-b border-white/5 py-2.5 pr-2.5"
+      className="flex items-center gap-2 group bg-black border-b border-terminal-main/20 py-3 pr-2 font-mono retro-hover-invert transition-all"
     >
-      <div {...attributes} {...listeners} className="text-white/5 group-hover:text-white/20 cursor-grab active:cursor-grabbing shrink-0">
-        <GripVertical size={14} />
-      </div>
+      <span {...attributes} {...listeners} className="text-terminal-main/50 cursor-grab active:cursor-grabbing shrink-0 select-none group-hover:text-black/30 text-base px-1">
+        ::
+      </span>
       
-      <div className="flex-1 flex items-center gap-3">
+      <div className="flex-1 flex items-center gap-4">
         <button 
           onClick={onToggle}
-          className={`flex-shrink-0 transition-all ${todo.done ? 'text-terminal-main' : 'text-white/10 hover:text-white/20'}`}
+          className={`flex-shrink-0 font-black text-base ${todo.done ? 'text-terminal-main group-hover:text-black' : 'text-terminal-main/50 hover:text-terminal-main group-hover:text-black/50 group-hover:hover:text-black'}`}
           title={todo.done ? "Mark as undone" : "Mark as done"}
         >
-          {todo.done ? <CheckSquare size={18} strokeWidth={2} /> : <Square size={18} strokeWidth={2} />}
+          [{todo.done ? 'x' : ' '}]
         </button>
         
         <div className="flex flex-col flex-1 gap-0">
@@ -123,21 +75,18 @@ const SortableTodoItem = ({ todo, onToggle, onDelete, onUpdateText, onKeyDown, i
             value={todo.text}
             onChange={(e) => onUpdateText(e.target.value)}
             onKeyDown={onKeyDown}
-            placeholder="OBJECTIVE_INPUT..."
-            className={`bg-transparent focus:outline-none border-none p-0 text-[10px] font-black uppercase tracking-wider transition-all ${todo.done ? 'line-through text-white/30' : 'text-white/90'}}`}
+            placeholder="OBJECTIVE..."
+            className={`bg-transparent focus:outline-none border-none p-0 font-mono uppercase transition-all text-base ${todo.done ? 'line-through text-terminal-main/40 group-hover:text-black/40' : 'text-terminal-main group-hover:text-black'}}`}
           />
-          <span className={`text-[7px] font-black tracking-widest ${todo.done ? 'text-terminal-green/30' : 'text-white/10'}`}>
-            {todo.done ? 'STATUS: NOMINAL' : 'PRIORITY: STANDBY'}
-          </span>
         </div>
       </div>
 
       <button 
         onClick={onDelete}
-        className="opacity-0 group-hover:opacity-100 p-1.5 text-white/10 hover:text-terminal-red transition-all hover:bg-terminal-red/5 rounded-sm"
+        className="opacity-0 group-hover:opacity-100 px-1.5 text-terminal-red hover:bg-terminal-red hover:text-black transition-all border border-terminal-red text-xs group-hover:border-black/40 group-hover:text-black group-hover:hover:bg-black group-hover:hover:text-terminal-red"
         title="Delete"
       >
-        <Trash2 size={12} />
+        DEL
       </button>
     </li>
   );
@@ -148,8 +97,6 @@ export const TodoPane = () => {
   const [focusedId, setFocusedId] = useState<string | null>(null);
 
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
-  const skin = useSkin();
-  const isRetro = skin === 'retro';
 
   const sortedTodos = useMemo(() => {
     return [...todos].sort((a, b) => {
@@ -192,11 +139,11 @@ export const TodoPane = () => {
     <div className="h-full flex flex-col gap-4">
       {/* ADD INPUT BAR */}
       <div className="relative group">
-        <div className={`absolute left-3 top-1/2 -translate-y-1/2 ${isRetro ? 'text-terminal-main font-mono text-sm' : 'text-white/10 font-black text-xs'}`}>{isRetro ? '>' : '+'}</div>
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-terminal-main font-mono text-sm">&gt;</div>
         <input 
           type="text"
-          placeholder={isRetro ? "ADD_OBJECTIVE..." : "NEW MISSION OBJECTIVE..."}
-          className={`w-full px-8 py-2.5 transition-all uppercase focus:outline-none ${isRetro ? 'bg-black border border-terminal-main text-terminal-main font-mono text-xs placeholder:text-terminal-main/30 pr-12 hover:bg-terminal-main/5' : 'bg-white/[0.02] border border-white/5 text-[9px] font-black focus:border-terminal-main/20 hover:border-white/10 placeholder:text-white/5 tracking-[0.1em]'}`}
+          placeholder="ADD_OBJECTIVE..."
+          className="w-full px-8 py-2.5 transition-all uppercase focus:outline-none bg-black border border-terminal-main text-terminal-main font-mono text-xs placeholder:text-terminal-main/30 pr-12 hover:bg-terminal-main/5"
           onKeyDown={(e) => {
             if (e.key === 'Enter' && e.currentTarget.value.trim()) {
               const id = `todo-${Date.now()}`;
@@ -206,11 +153,7 @@ export const TodoPane = () => {
             }
           }}
         />
-        {isRetro ? (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-terminal-main/50 font-mono text-[10px] select-none">[ENT]</div>
-        ) : (
-          <CornerDownLeft className="absolute right-3 top-1/2 -translate-y-1/2 text-white/5 group-focus-within:text-terminal-main/40 transition-colors" size={12} />
-        )}
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-terminal-main/50 font-mono text-[10px] select-none">[ENT]</div>
       </div>
 
       <div className="flex-1 overflow-y-auto pr-1 custom-scrollbar">

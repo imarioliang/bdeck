@@ -1,16 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { LinksPane } from './LinksPane';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { useSkin } from '@/hooks/useSkin';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 // Mock hooks
 vi.mock('@/hooks/useLocalStorage', () => ({
   useLocalStorage: vi.fn(),
-}));
-
-vi.mock('@/hooks/useSkin', () => ({
-  useSkin: vi.fn(),
 }));
 
 describe('LinksPane Tag Functions', () => {
@@ -24,7 +19,6 @@ describe('LinksPane Tag Functions', () => {
 
   beforeEach(() => {
     vi.mocked(useLocalStorage).mockReturnValue([initialLinks, mockSetLinks]);
-    vi.mocked(useSkin).mockReturnValue('retro');
     vi.clearAllMocks();
   });
 
@@ -55,7 +49,7 @@ describe('LinksPane Tag Functions', () => {
     ]));
   });
 
-  it('should display tags in the list (Retro Mode)', () => {
+  it('should display tags in the list', () => {
     const linksWithTags = [
       { id: '2', title: 'Tagged Link', url: 'https://tags.com', category: 'DEVELOPMENT', isPinned: false, tags: ['work', 'important'] }
     ];
@@ -63,7 +57,7 @@ describe('LinksPane Tag Functions', () => {
     
     render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="" activeCategory="ALL SYSTEMS" />);
     
-    // SIZE column should show tags
+    // TAGS column should show tags
     expect(screen.getByText(/work/i)).toBeDefined();
     expect(screen.getByText(/important/i)).toBeDefined();
   });

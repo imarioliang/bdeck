@@ -1,14 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import Home from './page';
-import { useSkin } from '@/hooks/useSkin';
 import { useDashboardStore } from '@/store/useDashboardStore';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-
-// Mock hooks
-vi.mock('@/hooks/useSkin', () => ({
-  useSkin: vi.fn(),
-}));
 
 vi.mock('@/store/useDashboardStore', () => ({
   useDashboardStore: vi.fn(),
@@ -29,7 +23,6 @@ vi.mock('@/utils/supabaseClient', () => ({
 
 describe('Structural Constraints', () => {
   beforeEach(() => {
-    vi.mocked(useSkin).mockReturnValue('retro');
     vi.mocked(useDashboardStore).mockReturnValue({
       activeCategory: 'ALL SYSTEMS',
       setActiveCategory: vi.fn(),
@@ -37,15 +30,17 @@ describe('Structural Constraints', () => {
     vi.clearAllMocks();
   });
 
-  it('top section container should have max-height in retro mode', () => {
+  it('top section container should have max-height', () => {
     const { container } = render(<Home />);
     
-    // The parent container of aside and section
-    const topContainer = container.querySelector('.max-h-\\[500px\\]');
+    // Find by the max-h class using a more robust selector
+    const topContainer = Array.from(container.querySelectorAll('div')).find(el => 
+      el.className.includes('max-h-[500px]')
+    );
     expect(topContainer).toBeDefined();
   });
 
-  it('bottom panes should have min-height in retro mode', () => {
+  it('bottom panes should have min-height', () => {
     render(<Home />);
     
     // We expect the Pane components to have min-h-[400px]

@@ -3,13 +3,13 @@ import fs from 'fs';
 import path from 'path';
 
 describe('Retro Typography Effects', () => {
-  it('should NOT have text-shadow for retro skin', () => {
+  it('should NOT have text-shadow in body', () => {
     const cssPath = path.resolve(process.cwd(), 'src/app/globals.css');
     const cssContent = fs.readFileSync(cssPath, 'utf8');
     
-    // We explicitly removed text-shadow
-    const hasTextGlow = cssContent.includes("[data-skin='retro']") && 
-                        cssContent.includes("text-shadow:");
+    // Check if body has text-shadow
+    const bodyMatch = cssContent.match(/body\s*{[^}]*}/);
+    const hasTextGlow = bodyMatch ? bodyMatch[0].includes("text-shadow:") : false;
     
     expect(hasTextGlow).toBe(false);
   });
@@ -18,7 +18,7 @@ describe('Retro Typography Effects', () => {
     const cssPath = path.resolve(process.cwd(), 'src/app/globals.css');
     const cssContent = fs.readFileSync(cssPath, 'utf8');
     
-    const hasScanlines = cssContent.includes(".scanlines") || cssContent.includes("scanline");
+    const hasScanlines = cssContent.includes("scanline");
     
     expect(hasScanlines).toBe(true);
   });

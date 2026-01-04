@@ -1,61 +1,46 @@
 @import "tailwindcss";
 
-/* Font Scaling - Applied to :root to scale rem units */
+/* Font Scaling - Adjusted for Retro aesthetic (Press Start 2P) */
 :root[data-size='small'] {
-  font-size: 12px;
-}
-
-:root[data-size='standard'] {
-  font-size: 16px;
-}
-
-:root[data-size='large'] {
-  font-size: 20px;
-}
-
-/* Retro skin specific scaling (Press Start 2P is bulky but compact spacing helps) */
-:root[data-skin='retro'][data-size='small'] {
   font-size: 10px;
 }
 
-:root[data-skin='retro'][data-size='standard'] {
+:root[data-size='standard'] {
   font-size: 12px;
 }
 
-:root[data-skin='retro'][data-size='large'] {
+:root[data-size='large'] {
   font-size: 16px;
 }
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #d4d4d4;
-  --terminal-main: #ffb000; /* Default Amber */
+  --background: #000000;
+  --foreground: #ffb000; /* Default Amber */
+  --terminal-main: #ffb000;
   --terminal-green: #4ade80;
   --terminal-red: #ff5f5f;
-  --panel-bg: #111111;
-  --border-color: #262626;
-  --font-family-base: var(--font-vt323), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --panel-bg: #000000;
+  --border-color: var(--terminal-main);
+  --font-family-base: var(--font-press-start), cursive;
   transition: font-size 0.2s ease-in-out;
 }
 
 [data-theme='amber'] {
   --terminal-main: #ffb000;
+  --foreground: #ffb000;
+  --border-color: #ffb000;
 }
 
 [data-theme='green'] {
   --terminal-main: #4ade80;
+  --foreground: #4ade80;
+  --border-color: #4ade80;
 }
 
 [data-theme='blue'] {
   --terminal-main: #3b82f6;
-}
-
-[data-skin='retro'] {
-  --background: #000000;
-  --foreground: var(--terminal-main);
-  --panel-bg: #000000;
-  --border-color: var(--terminal-main);
-  --font-family-base: var(--font-press-start), cursive;
+  --foreground: #3b82f6;
+  --border-color: #3b82f6;
 }
 
 body {
@@ -63,7 +48,10 @@ body {
   background: var(--background);
   font-family: var(--font-family-base);
   text-transform: uppercase;
-  line-height: 1.2;
+  line-height: 1.4;
+  -webkit-font-smoothing: none !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  letter-spacing: -0.05em;
 }
 
 /* Retro Inversion Utilities */
@@ -91,7 +79,7 @@ body {
   border-color: var(--terminal-main) !important;
 }
 
-/* Filled Button with Hover Invert (Overrides retro-invert if needed) */
+/* Filled Button with Hover Invert */
 .retro-btn-filled {
   background-color: var(--terminal-main) !important;
   color: #000000 !important;
@@ -104,6 +92,13 @@ body {
   color: var(--terminal-main) !important;
   border-color: var(--terminal-main) !important;
   box-shadow: none !important;
+}
+
+/* Input Styles */
+input, textarea, select {
+  font-family: var(--font-vt323), monospace !important;
+  letter-spacing: 0.05em !important;
+  color: var(--terminal-main) !important;
 }
 
 /* Glitch Animations */
@@ -129,25 +124,6 @@ body {
   scale: 1.01;
   z-index: 20;
   position: relative;
-}
-
-/* Global Retro Styles - Lower specificity to allow overrides */
-[data-skin='retro'] body, 
-[data-skin='retro'] *:not(.retro-invert):not(.retro-invert *):not(.retro-hover-invert):not(.retro-hover-invert *):not(.retro-btn-filled):not(.retro-btn-filled *) {
-  -webkit-font-smoothing: none !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  font-family: var(--font-press-start), cursive !important;
-  letter-spacing: -0.05em;
-  line-height: 1.4;
-  color: var(--terminal-main);
-}
-
-[data-skin='retro'] input,
-[data-skin='retro'] textarea,
-[data-skin='retro'] select {
-  font-family: var(--font-vt323), monospace !important;
-  letter-spacing: 0.05em !important;
-  color: var(--terminal-main) !important;
 }
 
 /* CRT Scanlines Utility */

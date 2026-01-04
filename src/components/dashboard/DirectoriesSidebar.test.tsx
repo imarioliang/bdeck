@@ -1,12 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { DirectoriesSidebar } from './DirectoriesSidebar';
-import { useSkin } from '@/hooks/useSkin';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-
-// Mock useSkin
-vi.mock('@/hooks/useSkin', () => ({
-  useSkin: vi.fn(),
-}));
 
 describe('DirectoriesSidebar', () => {
   const mockSetActiveCategory = vi.fn();
@@ -15,7 +9,6 @@ describe('DirectoriesSidebar', () => {
   const tags = ['work', 'personal'];
 
   beforeEach(() => {
-    vi.mocked(useSkin).mockReturnValue('retro');
     vi.clearAllMocks();
   });
 

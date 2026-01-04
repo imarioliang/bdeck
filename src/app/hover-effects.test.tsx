@@ -1,15 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { DirectoriesSidebar } from '@/components/dashboard/DirectoriesSidebar';
 import { LinksPane } from '@/components/dashboard/LinksPane';
-import { useSkin } from '@/hooks/useSkin';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 // Mock hooks
-vi.mock('@/hooks/useSkin', () => ({
-  useSkin: vi.fn(),
-}));
-
 vi.mock('@/hooks/useLocalStorage', () => ({
   useLocalStorage: vi.fn(),
 }));
@@ -17,10 +12,9 @@ vi.mock('@/hooks/useLocalStorage', () => ({
 describe('High-Contrast Hover Effects', () => {
   const mockSetActiveCategory = vi.fn();
   const categories = ['SYSTEM'];
-  const initialLinks = [{ id: '1', title: 'Mail', url: 'https://mail.com', isPinned: false }];
+  const initialLinks = [{ id: '1', title: 'Mail', url: 'https://mail.com', isPinned: false, category: 'SYSTEM', tags: [] }];
 
   beforeEach(() => {
-    vi.mocked(useSkin).mockReturnValue('retro');
     vi.mocked(useLocalStorage).mockReturnValue([initialLinks, vi.fn()]);
     vi.clearAllMocks();
   });

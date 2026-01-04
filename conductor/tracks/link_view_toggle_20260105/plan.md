@@ -1,0 +1,51 @@
+# Plan: Link View Toggle (Grid/List) - Retro Only
+
+## Phase 1: Modern Theme Purge
+*Goal: Remove all remaining "Modern" theme code to simplify the codebase and prepare for Retro-only expansion.*
+
+- [x] **Task 1: Audit and Cleanup Store/Hooks**
+    - [x] Sub-task: Remove `modern` from `TerminalTheme` types if applicable.
+    - [x] Sub-task: Simplify `useSkin.ts` to return only 'retro' (if not already done).
+    - [x] Sub-task: Remove any skin-switching logic from `useDashboardStore.ts`.
+- [x] **Task 2: Cleanup Component Conditionals**
+    - [x] Sub-task: Refactor `LinksPane.tsx` to remove `!isRetro` blocks.
+    - [x] Sub-task: Refactor `HeaderIndicators.tsx` to remove `!isRetro` blocks.
+    - [x] Sub-task: Clean up `globals.css` of any non-retro utility classes.
+- [x] **Task 3: Remove Obsolete Tests**
+    - [x] Sub-task: Identify and delete tests that explicitly check for "Modern" behavior (e.g., in `header.test.tsx`, `LinksPane.test.tsx`).
+    - [x] Sub-task: Run existing test suite to ensure no breakage.
+- [ ] **Task: Conductor - User Manual Verification 'Modern Theme Purge' (Protocol in workflow.md)**
+
+## Phase 2: View Mode State & Toggle UI
+*Goal: Implement the persistent state for view mode and the UI controls to switch it.*
+
+- [ ] **Task 1: Update Dashboard Store**
+    - [ ] Sub-task: Add `viewMode: 'list' | 'grid'` to `DashboardState`.
+    - [ ] Sub-task: Add `setViewMode` action to the store.
+    - [ ] Sub-task: Ensure `viewMode` is persisted in `bdeck-dashboard-storage`.
+- [ ] **Task 2: Implement Toggle Button**
+    - [ ] Sub-task: Create failing tests for the View Toggle button in `LinksPane`.
+    - [ ] Sub-task: Implement the toggle button in the `LinksPane` header (Retro style).
+    - [ ] Sub-task: Verify button switches state in store.
+- [ ] **Task: Conductor - User Manual Verification 'View Mode State & Toggle UI' (Protocol in workflow.md)**
+
+## Phase 3: Retro Grid View Implementation
+*Goal: Create the "Bordered Box" grid layout for links in the Retro aesthetic.*
+
+- [ ] **Task 1: Layout Refactoring**
+    - [ ] Sub-task: Update `LinksPane.tsx` to conditionally render a `Grid` container vs the current `List` container.
+- [ ] **Task 2: Implement Retro Grid Item**
+    - [ ] Sub-task: Write tests for `SortableLinkItem` in 'grid' mode.
+    - [ ] Sub-task: Style the grid item: 1px border, truncated title, shorthand metadata.
+    - [ ] Sub-task: Ensure hover effects (inversion) work correctly in grid tiles.
+- [ ] **Task 3: Drag and Drop Verification**
+    - [ ] Sub-task: Ensure `dnd-kit` sortable logic works correctly within the new grid layout.
+- [ ] **Task: Conductor - User Manual Verification 'Retro Grid View Implementation' (Protocol in workflow.md)**
+
+## Phase 4: Final Polish & Standards
+*Goal: Ensure the feature meets all quality gates and aesthetic requirements.*
+
+- [ ] **Task 1: Final Audit**
+    - [ ] Sub-task: Verify >80% coverage for new logic.
+    - [ ] Sub-task: Run linting and type checks.
+- [ ] **Task: Conductor - User Manual Verification 'Final Polish & Standards' (Protocol in workflow.md)**

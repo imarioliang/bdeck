@@ -3,22 +3,22 @@ import fs from 'fs';
 import path from 'path';
 
 describe('Global Aesthetic - Font Smoothing', () => {
-  it('should have CSS to disable antialiased font smoothing for retro skin', () => {
+  it('should have CSS to disable antialiased font smoothing', () => {
     const cssPath = path.resolve(process.cwd(), 'src/app/globals.css');
     const cssContent = fs.readFileSync(cssPath, 'utf8');
     
-    // Check for the retro skin font smoothing disable
-    const hasRetroSmoothingDisable = cssContent.includes("[data-skin='retro'] body") && 
-                                    cssContent.includes("-webkit-font-smoothing: none");
+    // Check for the font smoothing disable in body
+    const hasSmoothingDisable = cssContent.includes("body {") && 
+                                cssContent.includes("-webkit-font-smoothing: none");
     
-    expect(hasRetroSmoothingDisable).toBe(true);
+    expect(hasSmoothingDisable).toBe(true);
   });
 
-  it('should use Press Start 2P for retro skin', () => {
+  it('should use Press Start 2P by default', () => {
     const cssPath = path.resolve(process.cwd(), 'src/app/globals.css');
     const cssContent = fs.readFileSync(cssPath, 'utf8');
     
-    const hasPressStart = cssContent.includes("[data-skin='retro']") && 
+    const hasPressStart = cssContent.includes(":root {") && 
                           cssContent.includes("--font-family-base: var(--font-press-start)");
     
     expect(hasPressStart).toBe(true);

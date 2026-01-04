@@ -1,6 +1,3 @@
-'use client';
-
-import { useSkin } from '@/hooks/useSkin';
 import { Folder, FolderOpen, Tag, Hash } from 'lucide-react';
 
 interface DirectoriesSidebarProps {
@@ -13,11 +10,6 @@ interface DirectoriesSidebarProps {
 }
 
 export const DirectoriesSidebar = ({ categories, activeCategory, setActiveCategory, tags = [], activeTag = null, setActiveTag }: DirectoriesSidebarProps) => {
-  const skin = useSkin();
-  const isRetro = skin === 'retro';
-
-  if (!isRetro) return null;
-
   return (
     <div className="w-full flex flex-col bg-black h-full">
       <div className="border-b border-terminal-main/50 px-3 py-1.5 flex items-center justify-center bg-terminal-main text-black sticky top-0 z-10 font-black retro-invert">

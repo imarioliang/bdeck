@@ -1,17 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { LinksPane } from './LinksPane';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { useSkin } from '@/hooks/useSkin';
 import { useDashboardStore } from '@/store/useDashboardStore';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 // Mock hooks
 vi.mock('@/hooks/useLocalStorage', () => ({
   useLocalStorage: vi.fn(),
-}));
-
-vi.mock('@/hooks/useSkin', () => ({
-  useSkin: vi.fn(),
 }));
 
 vi.mock('@/store/useDashboardStore', () => ({
@@ -25,12 +20,11 @@ describe('LinksPane Visual Scaling', () => {
 
   beforeEach(() => {
     vi.mocked(useLocalStorage).mockReturnValue([initialLinks, vi.fn()]);
-    vi.mocked(useSkin).mockReturnValue('retro');
     vi.mocked(useDashboardStore).mockReturnValue({ activeTag: null } as any);
     vi.clearAllMocks();
   });
 
-  it('link rows should use larger font classes in retro mode', () => {
+  it('link rows should use larger font classes', () => {
     render(<LinksPane isAdding={false} setIsAdding={vi.fn()} searchTerm="" activeCategory="ALL SYSTEMS" />);
     
     const filename = screen.getByText('BIG TEXT LINK');
