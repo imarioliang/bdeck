@@ -62,12 +62,13 @@ const getStatusText = (title: string) => {
   return 'STANDBY';
 };
 
-const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }: {
+const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable, viewMode }: {
   link: Link;
   onEdit: () => void;
   onDelete: () => void;
   onTogglePin: () => void;
   isReorderable: boolean;
+  viewMode: ViewMode;
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: link.id, disabled: !isReorderable });
 
@@ -93,6 +94,63 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
     const firstTwo = link.tags.slice(0, 2).join(' ');
     return link.tags.length > 2 ? `${firstTwo}...` : firstTwo;
   }, [link.tags]);
+
+  if (viewMode === 'grid') {
+    return (
+      <div 
+        ref={setNodeRef}
+        style={style}
+        className="relative group aspect-square flex flex-col items-center justify-center border border-terminal-main/30 bg-black hover:border-terminal-main retro-hover-invert transition-all cursor-pointer p-3 text-center overflow-hidden"
+      >
+        <a 
+          href={link.url} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="w-full h-full flex flex-col items-center justify-center gap-3"
+        >
+          {faviconUrl ? (
+            <img 
+              src={faviconUrl} 
+              alt="" 
+              className="w-6 h-6 favicon-retro"
+              onError={(e) => (e.currentTarget.style.display = 'none')}
+            />
+          ) : (
+            <Icon size={20} className="text-terminal-main group-hover:text-black" />
+          )}
+          
+          <div className="flex flex-col items-center gap-1 w-full">
+            <span className="text-[9px] font-black uppercase truncate w-full tracking-tighter">
+              {link.title}
+            </span>
+            <span className="text-[7px] font-bold opacity-40 group-hover:opacity-100">
+              {categoryShorthand}
+            </span>
+          </div>
+        </a>
+
+        {/* GRID ACTIONS */}
+        <div className="absolute inset-0 bg-black/90 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20 retro-invert">
+          <div className="flex gap-2">
+            <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="text-[8px] border border-black/40 px-1 hover:bg-black hover:text-terminal-main">
+              {link.isPinned ? 'UNPIN' : 'PIN'}
+            </button>
+            <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} className="text-[8px] border border-black/40 px-1 hover:bg-black hover:text-terminal-main">EDIT</button>
+          </div>
+          <div className="flex gap-2 items-center">
+            <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} className="text-[8px] border border-terminal-red/40 px-1 text-terminal-red hover:bg-terminal-red hover:text-black">DEL</button>
+            <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-[8px] opacity-40">[::]</div>
+          </div>
+        </div>
+
+        {link.isPinned && (
+          <div className="absolute top-1.5 left-1.5 text-terminal-main/40 group-hover:text-black/40">
+            <Pin size={8} fill="currentColor" />
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div 
@@ -241,9 +299,9 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
 
   return (
     <>
-      <div className="w-full flex flex-col border border-terminal-main/20">
+      <div className={`w-full flex flex-col border border-terminal-main/20 ${viewMode === 'grid' ? 'bg-terminal-main/5' : ''}`}>
         <div className="flex w-full border-b border-terminal-main py-1.5 px-3 bg-terminal-main text-black sticky top-0 z-10 font-black retro-invert">
-           <div className="w-[45%] text-[9px] uppercase tracking-widest flex items-center gap-4">
+           <div className={`${viewMode === 'list' ? 'w-[45%]' : 'flex-1'} text-[9px] uppercase tracking-widest flex items-center gap-4`}>
              <span>FILENAME</span>
              <button 
                onClick={() => setViewMode(viewMode === 'list' ? 'grid' : 'list')}
@@ -252,32 +310,44 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
                [ VIEW: {viewMode.toUpperCase()} ]
              </button>
            </div>
-           <div className="w-[15%] text-[9px] uppercase tracking-widest text-right pr-4">EXT</div>
-           <div className="w-[15%] text-[9px] uppercase tracking-widest text-right pr-4">TAGS</div>
-           <div className="flex-1 text-[9px] uppercase tracking-widest text-right">STATUS</div>
+           {viewMode === 'list' && (
+             <>
+               <div className="w-[15%] text-[9px] uppercase tracking-widest text-right pr-4">EXT</div>
+               <div className="w-[15%] text-[9px] uppercase tracking-widest text-right pr-4">TAGS</div>
+               <div className="flex-1 text-[9px] uppercase tracking-widest text-right">STATUS</div>
+             </>
+           )}
         </div>
         
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(e) => {
-          const { active, over } = e;
-          if (over && active.id !== over.id) {
-            const oldIndex = links.findIndex(l => l.id === active.id);
-            const newIndex = links.findIndex(l => l.id === over.id);
-            setLinks(arrayMove(links, oldIndex, newIndex));
-          }
-        }}>
-          <SortableContext items={filteredLinks.map(l => l.id)} strategy={verticalListSortingStrategy}>
-            {filteredLinks.map(link => (
-              <SortableLinkItem 
-                key={link.id} 
-                link={link} 
-                onEdit={() => startEditing(link.id)} 
-                onDelete={() => deleteLink(link.id)} 
-                onTogglePin={() => togglePin(link.id)}
-                isReorderable={searchTerm === ''}
-              />
-            ))}
-          </SortableContext>
-        </DndContext>
+        <div className={`flex-1 overflow-y-auto custom-scrollbar ${viewMode === 'grid' ? 'p-4' : ''}`}>
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(e) => {
+            const { active, over } = e;
+            if (over && active.id !== over.id) {
+              const oldIndex = links.findIndex(l => l.id === active.id);
+              const newIndex = links.findIndex(l => l.id === over.id);
+              setLinks(arrayMove(links, oldIndex, newIndex));
+            }
+          }}>
+            <SortableContext 
+              items={filteredLinks.map(l => l.id)} 
+              strategy={viewMode === 'list' ? verticalListSortingStrategy : rectSortingStrategy}
+            >
+              <div className={viewMode === 'list' ? 'flex flex-col' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'}>
+                {filteredLinks.map(link => (
+                  <SortableLinkItem 
+                    key={link.id} 
+                    link={link} 
+                    onEdit={() => startEditing(link.id)} 
+                    onDelete={() => deleteLink(link.id)} 
+                    onTogglePin={() => togglePin(link.id)}
+                    isReorderable={searchTerm === ''}
+                    viewMode={viewMode}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
+        </div>
 
         {/* ADD APP BUTTON - STICKY BOTTOM */}
         <button 

@@ -32,14 +32,14 @@
 ## Phase 3: Retro Grid View Implementation
 *Goal: Create the "Bordered Box" grid layout for links in the Retro aesthetic.*
 
-- [ ] **Task 1: Layout Refactoring**
-    - [ ] Sub-task: Update `LinksPane.tsx` to conditionally render a `Grid` container vs the current `List` container.
-- [ ] **Task 2: Implement Retro Grid Item**
-    - [ ] Sub-task: Write tests for `SortableLinkItem` in 'grid' mode.
-    - [ ] Sub-task: Style the grid item: 1px border, truncated title, shorthand metadata.
-    - [ ] Sub-task: Ensure hover effects (inversion) work correctly in grid tiles.
-- [ ] **Task 3: Drag and Drop Verification**
-    - [ ] Sub-task: Ensure `dnd-kit` sortable logic works correctly within the new grid layout.
+- [x] **Task 1: Layout Refactoring** [e4747c3]
+    - [x] Sub-task: Update `LinksPane.tsx` to conditionally render a `Grid` container vs the current `List` container.
+- [x] **Task 2: Implement Retro Grid Item** [e4747c3]
+    - [x] Sub-task: Write tests for `SortableLinkItem` in 'grid' mode.
+    - [x] Sub-task: Style the grid item: 1px border, truncated title, shorthand metadata.
+    - [x] Sub-task: Ensure hover effects (inversion) work correctly in grid tiles.
+- [x] **Task 3: Drag and Drop Verification** [e4747c3]
+    - [x] Sub-task: Ensure `dnd-kit` sortable logic works correctly within the new grid layout.
 - [ ] **Task: Conductor - User Manual Verification 'Retro Grid View Implementation' (Protocol in workflow.md)**
 
 ## Phase 4: Final Polish & Standards

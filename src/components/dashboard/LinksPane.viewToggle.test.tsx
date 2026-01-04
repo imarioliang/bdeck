@@ -57,4 +57,18 @@ describe('LinksPane View Toggle', () => {
     
     expect(screen.getByText(/VIEW: GRID/i)).toBeDefined();
   });
+
+  it('should render the grid container class when in grid mode', () => {
+    vi.mocked(useDashboardStore).mockReturnValue({
+      viewMode: 'grid',
+      setViewMode: mockSetViewMode,
+      activeTag: null,
+    } as any);
+
+    const { container } = render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="" activeCategory="ALL SYSTEMS" />);
+    
+    // Check for grid container class
+    const gridContainer = container.querySelector('.grid-cols-2');
+    expect(gridContainer).toBeDefined();
+  });
 });
