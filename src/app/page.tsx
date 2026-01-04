@@ -86,6 +86,7 @@ export default function Home() {
                 <div className="flex items-center gap-3">
                   <span>[ COMMAND_CENTER_V1.0 ]</span>
                   <span className="bg-black text-terminal-main px-1.5 py-0.5 text-[8px] animate-pulse">BETA_RELEASE</span>
+                  <span className="text-[8px] opacity-50">v0.0.1</span>
                 </div>
                 <div className="flex gap-2 items-center">
                   <span className="text-[8px] opacity-50">[M]</span>
@@ -275,6 +276,7 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-4">
                 <span>RETRO_OS_BUILD_2024.1</span>
+                <span className="text-[8px] opacity-50">v0.0.1</span>
                 <span className="animate-pulse">█</span>
               </div>
             </>
