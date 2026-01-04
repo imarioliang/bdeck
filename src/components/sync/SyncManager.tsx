@@ -53,27 +53,24 @@ export const SyncManager = () => {
   useEffect(() => { if (user && initialized.current) pushTimers(timers); }, [timers, user, pushTimers]);
   useEffect(() => { if (user && initialized.current) pushNotes(notes); }, [notes, user, pushNotes]); // Changed to pushNotes
 
-  // Initial Fetch / Merge on Login
+  // Initial Fetch / Merge on Login and Local Storage initialization
   useEffect(() => {
-    if (!user) return;
-    // Reset initialization on user change
-    initialized.current = false;
+    if (!user) return; // Only run if a user is logged in
+    
+    // This flag ensures syncAndMerge runs only once per user session initialization
+    // or when the user explicitly switches accounts.
+    if (initialized.current && lastUserId === user.id) {
+      // If already initialized for this user, no need to re-run syncAndMerge
+      return;
+    }
 
-    const sync = async () => {
+    const syncAndMerge = async () => {
       setSyncStatus('syncing');
+      
       const isUserSwitch = lastUserId && lastUserId !== user.id;
 
       try {
-        // 1. Pre-Fetch: Push Local if Merging (Anonymous -> User)
-        // If switching users, we skip this to avoid polluting the new user's account with old user's data.
-        if (!isUserSwitch) {
-            await pushToCloud('links', links);
-            await pushToCloud('todos', todos);
-            await pushToCloud('timers', timers);
-            await pushToCloud('notes', notes); // Changed to notes
-        }
-
-        // 2. Fetch from Cloud (Will now include merged data)
+        // 1. Always fetch data from the cloud first
         const { data: cloudLinks, error: errLinks } = await fetchFromCloud('links');
         const { data: cloudTodos, error: errTodos } = await fetchFromCloud('todos');
         const { data: cloudTimers, error: errTimers } = await fetchFromCloud('timers');
@@ -84,52 +81,52 @@ export const SyncManager = () => {
             return;
         }
 
-        // 3. Update Local State
+        // 2. Map Cloud data to Local format
+        const remoteLinks = cloudLinks ? cloudLinks.map(mapLinkToLocal) : [];
+        const remoteTodos = cloudTodos ? cloudTodos.map(mapTodoToLocal) : [];
+        const remoteTimers = cloudTimers ? cloudTimers.map(mapTimerToLocal) : [];
+        const remoteNotes = cloudNotes && cloudNotes.length > 0 ? cloudNotes.map(mapNoteToLocal) : ['', '', '']; 
+
+        // 3. Merge Local and Remote data
+        // Prioritize remote data if it exists. If remote is empty, use local data.
+        // For a new machine, local data will be empty, so remote data will populate.
+        const mergedLinks = remoteLinks.length > 0 ? remoteLinks : links;
+        const mergedTodos = remoteTodos.length > 0 ? remoteTodos : todos;
+        const mergedTimers = remoteTimers.length > 0 ? remoteTimers : timers;
+        // For new machine or user switch, local notes might be empty, so remote should populate.
+        const mergedNotes = remoteNotes.length > 0 ? remoteNotes : notes;
         
-        // LINKS
-        if (cloudLinks && cloudLinks.length > 0) {
-           cloudLinks.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
-           setLinks(cloudLinks.map(mapLinkToLocal));
-        } else if (isUserSwitch) {
-           // New user has no data, wipe local
-           setLinks([]);
-        }
+        // 4. Update Local State (after ensuring data is from cloud or merged)
+        setLinks(mergedLinks);
+        setTodos(mergedTodos);
+        setTimers(mergedTimers);
+        setNotes(mergedNotes);
 
-        // TODOS
-        if (cloudTodos && cloudTodos.length > 0) {
-           cloudTodos.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
-           setTodos(cloudTodos.map(mapTodoToLocal));
-        } else if (isUserSwitch) {
-           setTodos([]);
-        }
+        // 5. Ensure all data (local or merged) is pushed to the cloud
+        // This handles cases where local had unique data before merge, or remote was empty.
+        await pushToCloud('links', mergedLinks);
+        await pushToCloud('todos', mergedTodos);
+        await pushToCloud('timers', mergedTimers);
+        await pushToCloud('notes', mergedNotes);
 
-        // TIMERS
-        if (cloudTimers && cloudTimers.length > 0) {
-           cloudTimers.sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
-           setTimers(cloudTimers.map(mapTimerToLocal));
-        } else if (isUserSwitch) {
-           setTimers([]);
-        }
-
-        // NOTES
-        if (cloudNotes && cloudNotes.length > 0) {
-           setNotes(cloudNotes.map(mapNoteToLocal)); // Map each note in the array
-        } else if (isUserSwitch) {
-           setNotes(['', '', '']); // Reset to empty array of notes for new user
-        }
-
-        // 4. Mark Initialized and Update Last User
+        // 6. Mark Initialized and Update Last User
         setLastUserId(user.id);
-        initialized.current = true;
+        initialized.current = true; // Mark as initialized ONLY after merge and push
         setSyncStatus('idle');
+
       } catch (e) {
+        console.error("Sync and merge failed:", e);
         setSyncStatus('error');
       }
     };
 
-    sync();
+    // Trigger full sync on user change or initial load if not yet initialized for this user
+    if (!initialized.current || (lastUserId !== user.id)) {
+      syncAndMerge();
+    } 
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id]); 
+  }, [user?.id, initialized.current]);
 
   return null;
 };
