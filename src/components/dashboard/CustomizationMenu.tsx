@@ -50,6 +50,7 @@ export const CustomizationMenu = ({ isOpen, onClose }: CustomizationMenuProps) =
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    onClose(); // Close modal after logout
   };
 
   if (!isOpen) return null;

@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📟 Bdeck: Cyber-Organic Command Center (BETA)
 
-## Getting Started
+**Bdeck** is a high-density, keyboard-driven productivity dashboard designed for power users and developers who live in the terminal aesthetic. It combines frequently used resources with a suite of productivity tools in a brutalist, retro-inspired interface.
 
-First, run the development server:
+🚀 **Live Beta:** [Your Netlify URL Here]
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠 Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Unified Subsystems
+- **Repositories (Categories):** Group your modules into functional directories.
+- **Smart Tags:** Dynamic metadata filtering for rapid resource identification.
+- **Auto-Favicons:** Pixelated, theme-colored icons for every link.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Productivity Suite
+- **Mission Objectives (Todo):** Keyboard-optimized task list with subtask nesting (Tab) and automatic sorting.
+- **Timer Daemon:** High-visibility project timers with a built-in **Rest Protocol** (Pomodoro integration).
+- **System Logs (Notes):** Three independent log streams (`LOG_01`, `LOG_02`, `LOG_03`) for persistent scratchpad notes.
 
-## Learn More
+### 3. Terminal Interface
+- **Calibration:** Real-time **Signal Contrast** adjustment via the System Config menu.
+- **Themes:** High-contrast Amber, Green, and Blue CRT profiles.
+- **Global Shortcuts:** Full system control without leaving the home row.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ⌨️ Keyboard Shortcuts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Key | Action |
+| :--- | :--- |
+| `m` | Toggle System Configuration Menu |
+| `/` | Open Global Search / Module Palette |
+| `Tab` | Cycle through categories |
+| `1` - `5` | Jump directly to Repository 1-5 |
+| `Alt + 1-3` | Switch between System Logs |
+| `l` | Add New Module (Wizard) |
+| `p` | Initialize New Timer |
+| `t` | Focus Mission Objectives (Todo) |
+| `n` | Focus active System Log (Notes) |
+| `Esc` | Close Modal / Unfocus |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧪 Beta Testing Protocol
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+We are currently in **Beta Release 1.0**. Your feedback is critical for system optimization.
+
+### How to test:
+1. **Sync Data:** Log in via the **Operator Identity** section to enable cloud synchronization.
+2. **Stress Test:** Try adding multiple timers and nested tasks.
+3. **Report Issues:** If you encounter a "Signal Failure" (bug) or have a feature request, please [describe how they should report bugs - e.g., GitHub Issues].
+
+---
+
+## 🏗 Setup & Development
+
+If you want to run your own instance:
+
+1. **Install Dependencies:** `npm install`
+2. **Configure Environment:** Create a `.env.local` with your Supabase credentials.
+3. **Execute:** `npm run dev`
+4. **Build:** `npm run build`
+
+---
+
+**[ SYSTEM_STATUS: OPERATIONAL ]**
