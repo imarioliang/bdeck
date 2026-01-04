@@ -90,7 +90,7 @@ export default function Home() {
                   <span className="hidden sm:inline opacity-80">MEM:64K CPU:8% UP:14H</span>
                 </div>
                 <div className="flex gap-3 items-center">
-                  <span className="text-[8px] opacity-70">[{process.env.NEXT_PUBLIC_GIT_BRANCH || 'DEV'}] v0.1.1</span>
+                  <span className="text-[8px] opacity-70">v0.1.1</span>
                   <button 
                     onClick={() => setIsConfigOpen(true)} 
                     className="hover:bg-black hover:text-terminal-main px-2 py-0.5 transition-all border border-transparent hover:border-black uppercase font-black"
@@ -119,7 +119,12 @@ export default function Home() {
                   <HeaderIndicators />
                   <button 
                     onClick={requestSync}
-                    className="border border-terminal-main px-3 py-1 text-[10px] text-terminal-main hover:bg-terminal-main hover:text-black transition-colors font-bold tracking-tighter uppercase"
+                    disabled={syncStatus === 'syncing'}
+                    className={`border border-terminal-main px-3 py-1 text-[10px] font-bold tracking-tighter uppercase transition-all ${
+                      syncStatus === 'syncing' 
+                        ? 'bg-terminal-main/20 text-terminal-main animate-pulse cursor-wait' 
+                        : 'text-terminal-main hover:bg-terminal-main hover:text-black'
+                    }`}
                   >
                     {syncStatus === 'syncing' ? 'SYNCING...' : '↑ SYNC'}
                   </button>
@@ -137,7 +142,7 @@ export default function Home() {
                     <AsciiLogo />
                     <div className="flex flex-col">
                       <h1 className="text-sm md:text-base font-black tracking-[0.3em] uppercase leading-none text-terminal-main group-hover:text-white transition-colors">Command Center</h1>
-                      <p className={`text-[0.55rem] mt-1.5 font-bold tracking-widest group-hover:text-white/60 transition-colors uppercase ${isRetro ? 'text-terminal-main/60' : 'text-white/40'}`}>&gt; System_Config [{process.env.NEXT_PUBLIC_GIT_BRANCH || 'DEV'}] v0.1.1</p>
+                      <p className={`text-[0.55rem] mt-1.5 font-bold tracking-widest group-hover:text-white/60 transition-colors uppercase ${isRetro ? 'text-terminal-main/60' : 'text-white/40'}`}>&gt; System_Config v0.1.1</p>
                     </div>
                   </div>
                 </button>
@@ -156,10 +161,11 @@ export default function Home() {
                   <div className="flex items-center gap-3">
                     <button 
                       onClick={requestSync}
+                      disabled={syncStatus === 'syncing'}
                       className={`text-[10px] font-black tracking-widest px-3 py-1 border transition-all ${
                         syncStatus === 'syncing' 
-                          ? 'border-terminal-main text-terminal-main animate-pulse' 
-                          : 'border-white/10 text-white/40 hover:border-terminal-main hover:text-terminal-main'
+                          ? 'border-terminal-main text-terminal-main animate-pulse cursor-wait' 
+                          : 'border-white/10 text-white/40 hover:border-terminal-main hover:text-terminal-main hover:shadow-[0_0_10px_-2px_rgba(255,176,0,0.3)]'
                       }`}
                     >
                       {syncStatus === 'syncing' ? 'SYNCING' : 'SYNC'}
