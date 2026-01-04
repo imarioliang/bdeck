@@ -277,7 +277,7 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-4">
                 <span>RETRO_OS_BUILD_2024.1</span>
-                <span className="text-[8px] opacity-50">v0.0.1</span>
+                <span className="text-[8px] opacity-50">[{process.env.NEXT_PUBLIC_GIT_BRANCH || 'UNKNOWN'}] v0.1.1</span>
                 <span className="animate-pulse">█</span>
               </div>
             </>
@@ -293,7 +293,10 @@ export default function Home() {
                   <span>CPU: 8%</span>
                 </div>
               </div>
-              <div>Retro.OS Build 2024.1</div>
+              <div className="flex gap-4">
+                <span>Retro.OS Build 2024.1</span>
+                <span className="opacity-50">[{process.env.NEXT_PUBLIC_GIT_BRANCH || 'UNKNOWN'}] v0.1.1</span>
+              </div>
             </>
           )}
         </footer>

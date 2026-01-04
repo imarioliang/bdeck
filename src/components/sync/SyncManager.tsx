@@ -86,7 +86,7 @@ export const SyncManager = () => {
         const remoteLinks = cloudLinks ? cloudLinks.map(mapLinkToLocal) : [];
         const remoteTodos = cloudTodos ? cloudTodos.map(mapTodoToLocal) : [];
         const remoteTimers = cloudTimers ? cloudTimers.map(mapTimerToLocal) : [];
-        const remoteNotes = cloudNotes && cloudNotes.length > 0 ? cloudNotes.map(mapNoteToLocal) : [{id: 'log-01', content: ''}, {id: 'log-02', content: ''}, {id: 'log-03', content: ''}]; 
+        const remoteNotes = (cloudNotes && cloudNotes.length > 0) ? cloudNotes.map(mapNoteToLocal) : []; 
 
         // 3. Merge Local and Remote data
         // Prioritize remote data if it exists. If remote is empty, use local data.
@@ -94,14 +94,25 @@ export const SyncManager = () => {
         const mergedLinks = remoteLinks.length > 0 ? remoteLinks : links;
         const mergedTodos = remoteTodos.length > 0 ? remoteTodos : todos;
         const mergedTimers = remoteTimers.length > 0 ? remoteTimers : timers;
-        // For new machine or user switch, local notes might be empty, so remote should populate.
-        const mergedNotes = remoteNotes.length > 0 ? remoteNotes : notes;
+        
+        // For notes, if remote exists, use it. Otherwise use local. 
+        // If BOTH are empty (new user), use the default structure.
+        let mergedNotes = remoteNotes.length > 0 ? remoteNotes : notes;
+        if (mergedNotes.length === 0) {
+          mergedNotes = [
+            { id: 'log-01', content: '' },
+            { id: 'log-02', content: '' },
+            { id: 'log-03', content: '' }
+          ];
+        }
         
         // 4. Update Local State (after ensuring data is from cloud or merged)
         setLinks(mergedLinks);
         setTodos(mergedTodos);
         setTimers(mergedTimers);
         setNotes(mergedNotes);
+
+        console.log('DEBUG: mergedLinks before pushToCloud:', JSON.stringify(mergedLinks));
 
         // 5. Ensure all data (local or merged) is pushed to the cloud
         // This handles cases where local had unique data before merge, or remote was empty.

@@ -76,7 +76,7 @@ export const NotesPane = () => {
   };
 
   const lineCount = useMemo(() => {
-    return activeNote.split('\n').length || 1;
+    return typeof activeNote === 'string' ? activeNote.split('\n').length || 1 : 1;
   }, [activeNote]);
 
   const tabs = ['LOG_01', 'LOG_02', 'LOG_03'];
