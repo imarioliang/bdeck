@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Trash2, GripVertical, Play, Pause, Square, RotateCcw, Plus, Coffee } from 'lucide-react';
-import { useSkin } from '@/hooks/useSkin';
+import { RotateCcw, Coffee } from 'lucide-react';
 import {
   DndContext,
   closestCenter,
@@ -11,7 +10,6 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -289,6 +287,8 @@ export const TimersPane = ({ isAdding, setIsAdding, isEditing = false }: TimersP
     return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const currentWorkLimit = workLimitSecondsRef.current;
+
   return (
     <div className="space-y-4 h-full flex flex-col relative">
       <div className="flex flex-col gap-3 border-b border-terminal-main pb-4">
@@ -371,7 +371,7 @@ export const TimersPane = ({ isAdding, setIsAdding, isEditing = false }: TimersP
                 <SortableTimerItem 
                   key={project.id} 
                   project={project}
-                  workLimit={workLimitSecondsRef.current}
+                  workLimit={currentWorkLimit}
                   onToggle={() => toggleTimer(project.id)}
                   onReset={() => resetTimer(project.id)}
                   onDelete={() => setProjects(prev => prev.filter(p => p.id !== project.id))}

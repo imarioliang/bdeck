@@ -27,6 +27,8 @@ describe('Spacing & Alignment', () => {
     vi.mocked(useDashboardStore).mockReturnValue({
       activeCategory: 'ALL SYSTEMS',
       setActiveCategory: vi.fn(),
+      viewMode: 'list',
+      setViewMode: vi.fn(),
     } as any);
     vi.clearAllMocks();
   });

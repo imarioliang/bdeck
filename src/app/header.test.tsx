@@ -32,7 +32,9 @@ describe('Header Restructuring', () => {
     vi.mocked(useDashboardStore).mockReturnValue({
       activeCategory: 'ALL SYSTEMS',
       setActiveCategory: vi.fn(),
-    } as any);
+      viewMode: 'list',
+      setViewMode: vi.fn(),
+    } as unknown as ReturnType<typeof useDashboardStore>);
   });
 
   it('should render two header rows in retro mode', () => {

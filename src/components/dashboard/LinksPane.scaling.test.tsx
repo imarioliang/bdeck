@@ -20,7 +20,11 @@ describe('LinksPane Visual Scaling', () => {
 
   beforeEach(() => {
     vi.mocked(useLocalStorage).mockReturnValue([initialLinks, vi.fn()]);
-    vi.mocked(useDashboardStore).mockReturnValue({ activeTag: null } as any);
+    vi.mocked(useDashboardStore).mockReturnValue({ 
+      activeTag: null,
+      viewMode: 'list',
+      setViewMode: vi.fn(),
+    } as any);
     vi.clearAllMocks();
   });
 

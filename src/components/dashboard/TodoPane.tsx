@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Trash2, GripVertical, CheckSquare, Square, CornerDownLeft } from 'lucide-react';
 import {
   DndContext,
   closestCenter,
@@ -10,7 +9,6 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -111,15 +109,16 @@ export const TodoPane = () => {
   };
 
   const deleteTodo = (id: string) => {
-    const index = sortedTodos.findIndex(t => t.id === id);
     const newTodos = todos.filter(t => t.id !== id);
     setTodos(newTodos);
+    
+    // Find index in sorted list to decide focus
+    const index = sortedTodos.findIndex(t => t.id === id);
     if (index > 0) setFocusedId(sortedTodos[index - 1].id);
     else if (newTodos.length > 0) setFocusedId(newTodos[0].id);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, id: string) => {
-    const index = sortedTodos.findIndex(t => t.id === id);
     if (e.key === 'Enter') {
       e.preventDefault();
       const newId = `todo-${Date.now()}`;

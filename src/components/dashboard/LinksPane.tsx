@@ -2,9 +2,9 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Pencil, Trash2, GripHorizontal, Pin, Mail, Calendar, Music, HardDrive, BarChart3, Code, Plus, ShieldCheck } from 'lucide-react';
+import { Pin, Mail, Calendar, Music, HardDrive, BarChart3, Code, ShieldCheck } from 'lucide-react';
 import { getFaviconUrl } from '@/utils/favicon';
-import { useDashboardStore } from '@/store/useDashboardStore';
+import { useDashboardStore, ViewMode } from '@/store/useDashboardStore';
 import {
   DndContext,
   closestCenter,
@@ -12,7 +12,6 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -72,9 +71,9 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable, 
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: link.id, disabled: !isReorderable });
 
-  const Icon = getIcon(link.title);
-  const status = getStatusText(link.title);
-  const faviconUrl = getFaviconUrl(link.url);
+  const Icon = useMemo(() => getIcon(link.title), [link.title]);
+  const status = useMemo(() => getStatusText(link.title), [link.title]);
+  const faviconUrl = useMemo(() => getFaviconUrl(link.url), [link.url]);
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -113,7 +112,7 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable, 
               src={faviconUrl} 
               alt="" 
               className="w-6 h-6 favicon-retro"
-              onError={(e) => (e.currentTarget.style.display = 'none')}
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
             />
           ) : (
             <Icon size={20} className="text-terminal-main group-hover:text-black" />
@@ -301,8 +300,8 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
     <>
       <div className={`w-full flex flex-col border border-terminal-main/20 ${viewMode === 'grid' ? 'bg-terminal-main/5' : ''}`}>
         <div className="flex w-full border-b border-terminal-main py-1.5 px-3 bg-terminal-main text-black sticky top-0 z-10 font-black retro-invert">
-           <div className={`${viewMode === 'list' ? 'w-[45%]' : 'flex-1'} text-[9px] uppercase tracking-widest flex items-center gap-4`}>
-             <span>FILENAME</span>
+           <div className={`${viewMode === 'list' ? 'w-[45%]' : 'flex-1'} uppercase tracking-widest flex items-center gap-4`}>
+             <span className="text-[9px]">FILENAME</span>
              <button 
                onClick={() => setViewMode(viewMode === 'list' ? 'grid' : 'list')}
                className="px-1.5 border border-black/20 hover:bg-black hover:text-terminal-main transition-colors text-[8px]"

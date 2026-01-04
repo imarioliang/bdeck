@@ -7,16 +7,13 @@ import { TimersPane } from "@/components/dashboard/TimersPane";
 import { TodoPane } from "@/components/dashboard/TodoPane";
 import { NotesPane } from "@/components/dashboard/NotesPane";
 import { CustomizationMenu } from "@/components/dashboard/CustomizationMenu";
-import { AsciiLogo } from "@/components/dashboard/AsciiLogo";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { SyncManager } from "@/components/sync/SyncManager";
 import { HeaderIndicators } from "@/components/dashboard/HeaderIndicators";
-import { Search } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useDashboardStore } from '@/store/useDashboardStore';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { DirectoriesSidebar } from "@/components/dashboard/DirectoriesSidebar";
-import { CommandPalette } from "@/components/dashboard/CommandPalette";
 
 export default function Home() {
   const [linksSearchTerm, setLinksSearchTerm] = useState('');
@@ -26,7 +23,6 @@ export default function Home() {
     activeCategory, setActiveCategory, 
     activeTag, setActiveTag,
     isConfigOpen, setIsConfigOpen,
-    isSearchExpanded, setIsSearchExpanded,
     isAddingLink, setIsAddingLink,
     isAddingTimer, setIsAddingTimer,
     requestSync, syncStatus
@@ -35,15 +31,15 @@ export default function Home() {
   // Initialize Global Shortcuts
   useKeyboardShortcuts();
   
-  const [projects] = useLocalStorage<any[]>('bdeck-timers', []);
-  const [todos] = useLocalStorage<any[]>('bdeck-todos', []);
-  const [links] = useLocalStorage<any[]>('bdeck-links', []);
+  const [projects] = useLocalStorage<unknown[]>('bdeck-timers', []);
+  const [todos] = useLocalStorage<unknown[]>('bdeck-todos', []);
+  const [links] = useLocalStorage<unknown[]>('bdeck-links', []);
 
-  const pendingTodosCount = useMemo(() => todos.filter(t => !t.done).length, [todos]);
+  const pendingTodosCount = useMemo(() => (todos as {done: boolean}[]).filter(t => !t.done).length, [todos]);
 
   const categories = useMemo(() => {
     const baseOrder = ['SYSTEM', 'DEVELOPMENT', 'COMMUNICATION', 'ANALYTICS'];
-    const custom = links.map(l => l.category).filter(Boolean) as string[];
+    const custom = (links as {category: string}[]).map(l => l.category).filter(Boolean) as string[];
     const unique = Array.from(new Set(custom)).filter(c => c !== 'ALL SYSTEMS');
     
     return unique.sort((a, b) => {
@@ -59,7 +55,7 @@ export default function Home() {
   }, [links]);
 
   const allTags = useMemo(() => {
-    const tags = links.flatMap(l => l.tags || []);
+    const tags = (links as {tags: string[]}[]).flatMap(l => l.tags || []);
     return Array.from(new Set(tags)).sort((a, b) => 
       a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
     );
@@ -192,11 +188,3 @@ export default function Home() {
     </div>
   );
 }
-
-const WindowControls = () => (
-  <div className="flex gap-1">
-    <div className="w-2 h-2 rounded-full bg-terminal-red opacity-40"></div>
-    <div className="w-2 h-2 rounded-full bg-terminal-main opacity-40"></div>
-    <div className="w-2 h-2 rounded-full bg-terminal-green opacity-40"></div>
-  </div>
-);
