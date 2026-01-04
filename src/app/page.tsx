@@ -85,12 +85,11 @@ export default function Home() {
               {/* Row 1: System Bar */}
               <div className="flex justify-between items-center bg-terminal-main text-black px-3 py-1 font-bold text-[10px] tracking-widest retro-invert">
                 <div className="flex items-center gap-3">
-                  <span>[ COMMAND_CENTER_V1.0 ]</span>
-                  <span className="bg-black text-terminal-main px-1.5 py-0.5 text-[8px] animate-pulse">BETA_RELEASE</span>
-                  <span className="text-[8px] opacity-50">v0.1.0</span>
+                  <span>[ COMMAND_CENTER ]</span>
+                  <span className="hidden sm:inline opacity-80">MEM:64K CPU:8% UP:14H</span>
                 </div>
-                <div className="flex gap-2 items-center">
-                  <span className="text-[8px] opacity-50">[M]</span>
+                <div className="flex gap-3 items-center">
+                  <span className="text-[8px] opacity-70">[{process.env.NEXT_PUBLIC_GIT_BRANCH || 'DEV'}] v0.1.1</span>
                   <button 
                     onClick={() => setIsConfigOpen(true)} 
                     className="hover:bg-black hover:text-terminal-main px-2 py-0.5 transition-all border border-transparent hover:border-black uppercase font-black"
@@ -132,12 +131,22 @@ export default function Home() {
                     <AsciiLogo />
                     <div className="flex flex-col">
                       <h1 className="text-sm md:text-base font-black tracking-[0.3em] uppercase leading-none text-terminal-main group-hover:text-white transition-colors">Command Center</h1>
-                      <p className={`text-[0.55rem] mt-1.5 font-bold tracking-widest group-hover:text-white/60 transition-colors uppercase ${isRetro ? 'text-terminal-main/60' : 'text-white/40'}`}>&gt; System_Config_v4.2</p>
+                      <p className={`text-[0.55rem] mt-1.5 font-bold tracking-widest group-hover:text-white/60 transition-colors uppercase ${isRetro ? 'text-terminal-main/60' : 'text-white/40'}`}>&gt; System_Config [{process.env.NEXT_PUBLIC_GIT_BRANCH || 'DEV'}] v0.1.1</p>
                     </div>
                   </div>
                 </button>
                 
                 <div className="flex items-center gap-6">
+                  <div className="hidden sm:flex items-center gap-4 text-[0.6rem] font-bold tracking-widest opacity-50">
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-terminal-green shadow-terminal"></span>
+                      <span>MEM: 64K</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full animate-pulse bg-terminal-green shadow-terminal"></span>
+                      <span>CPU: 8%</span>
+                    </div>
+                  </div>
                   <HeaderIndicators />
                 </div>
               </div>
@@ -258,48 +267,6 @@ export default function Home() {
             </Pane>
           </div>
         </div>
-
-        {/* FOOTER / STATUS BAR */}
-        <footer className={`flex flex-col sm:flex-row justify-between items-center transition-all uppercase font-bold ${
-          isRetro 
-            ? 'border border-terminal-main bg-black px-3 py-1 text-[9px] text-terminal-main' 
-            : 'pt-8 pb-4 border-t border-white/5 text-white/10 text-[0.6rem] tracking-[0.2em]'
-        }`}>
-          {isRetro ? (
-            <>
-              <div className="flex gap-6">
-                <div className="flex items-center gap-4">
-                  <span>MEM: 64K [OK]</span>
-                  <span>CPU: 8%</span>
-                  <span>UPTIME: 14:02:11</span>
-                </div>
-                <HeaderIndicators />
-              </div>
-              <div className="flex items-center gap-4">
-                <span>RETRO_OS_BUILD_2024.1</span>
-                <span className="text-[8px] opacity-50">[{process.env.NEXT_PUBLIC_GIT_BRANCH || 'UNKNOWN'}] v0.1.1</span>
-                <span className="animate-pulse">█</span>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="flex gap-6">
-                <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-terminal-green shadow-terminal"></span>
-                  <span>MEM: 64K OK</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full animate-pulse bg-terminal-green shadow-terminal"></span>
-                  <span>CPU: 8%</span>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <span>Retro.OS Build 2024.1</span>
-                <span className="opacity-50">[{process.env.NEXT_PUBLIC_GIT_BRANCH || 'UNKNOWN'}] v0.1.1</span>
-              </div>
-            </>
-          )}
-        </footer>
       </div>
     </div>
   );
