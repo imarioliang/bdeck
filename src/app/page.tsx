@@ -117,10 +117,10 @@ export default function Home() {
                 <button 
                   onClick={requestSync}
                   disabled={syncStatus === 'syncing'}
-                  className={`border border-terminal-main px-4 py-1.5 text-[10px] font-black tracking-tighter uppercase transition-all duration-200 
+                  className={`border border-terminal-main px-4 py-1.5 text-[10px] font-black tracking-tighter uppercase transition-all duration-200 active:scale-95
                     ${syncStatus === 'syncing' 
                       ? 'bg-terminal-main/20 text-terminal-main animate-pulse cursor-wait' 
-                      : 'bg-black text-terminal-main hover:bg-terminal-main hover:text-black active:scale-95 active:bg-white active:text-black shadow-[0_0_15px_rgba(255,176,0,0.1)] hover:shadow-[0_0_20px_rgba(255,176,0,0.3)]'
+                      : 'bg-transparent text-terminal-main hover:bg-terminal-main hover:text-black'
                     }`}
                 >
                   {syncStatus === 'syncing' ? 'SYNCING...' : '↑ SYNC'}
