@@ -29,16 +29,16 @@
     - [x] Sub-task: Verify button switches state in store.
 - [ ] **Task: Conductor - User Manual Verification 'View Mode State & Toggle UI' (Protocol in workflow.md)**
 
-## Phase 3: Retro Grid View Implementation
+## Phase 3: Retro Grid View Implementation [checkpoint: 0b51263]
 *Goal: Create the "Bordered Box" grid layout for links in the Retro aesthetic.*
 
-- [x] **Task 1: Layout Refactoring** [e4747c3]
+- [x] **Task 1: Layout Refactoring** [0b51263]
     - [x] Sub-task: Update `LinksPane.tsx` to conditionally render a `Grid` container vs the current `List` container.
-- [x] **Task 2: Implement Retro Grid Item** [e4747c3]
+- [x] **Task 2: Implement Retro Grid Item** [0b51263]
     - [x] Sub-task: Write tests for `SortableLinkItem` in 'grid' mode.
     - [x] Sub-task: Style the grid item: 1px border, truncated title, shorthand metadata.
     - [x] Sub-task: Ensure hover effects (inversion) work correctly in grid tiles.
-- [x] **Task 3: Drag and Drop Verification** [e4747c3]
+- [x] **Task 3: Drag and Drop Verification** [0b51263]
     - [x] Sub-task: Ensure `dnd-kit` sortable logic works correctly within the new grid layout.
 - [ ] **Task: Conductor - User Manual Verification 'Retro Grid View Implementation' (Protocol in workflow.md)**
 
