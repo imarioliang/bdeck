@@ -42,10 +42,10 @@
     - [x] Sub-task: Ensure `dnd-kit` sortable logic works correctly within the new grid layout.
 - [ ] **Task: Conductor - User Manual Verification 'Retro Grid View Implementation' (Protocol in workflow.md)**
 
-## Phase 4: Final Polish & Standards [checkpoint: adb9ae6]
+## Phase 4: Final Polish & Standards [checkpoint: e09bc7b]
 *Goal: Ensure the feature meets all quality gates and aesthetic requirements.*
 
-- [x] **Task 1: Final Audit** [adb9ae6]
+- [x] **Task 1: Final Audit** [e09bc7b]
     - [x] Sub-task: Verify >80% coverage for new logic.
     - [x] Sub-task: Run linting and type checks.
 - [ ] **Task: Conductor - User Manual Verification 'Final Polish & Standards' (Protocol in workflow.md)**
