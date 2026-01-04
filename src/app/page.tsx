@@ -18,9 +18,6 @@ import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { useSkin } from '@/hooks/useSkin';
 import { DirectoriesSidebar } from "@/components/dashboard/DirectoriesSidebar";
 import { CommandPalette } from "@/components/dashboard/CommandPalette";
-import { CommandPalette } from "@/components/dashboard/CommandPalette";
-import { CommandPalette } from "@/components/dashboard/CommandPalette";
-import { CommandPalette } from "@/components/dashboard/CommandPalette";
 
 export default function Home() {
   const [linksSearchTerm, setLinksSearchTerm] = useState('');
