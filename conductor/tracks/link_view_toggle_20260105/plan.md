@@ -1,17 +1,17 @@
 # Plan: Link View Toggle (Grid/List) - Retro Only
 
-## Phase 1: Modern Theme Purge
+## Phase 1: Modern Theme Purge [checkpoint: aa8c5b1]
 *Goal: Remove all remaining "Modern" theme code to simplify the codebase and prepare for Retro-only expansion.*
 
-- [x] **Task 1: Audit and Cleanup Store/Hooks**
+- [x] **Task 1: Audit and Cleanup Store/Hooks** [aa8c5b1]
     - [x] Sub-task: Remove `modern` from `TerminalTheme` types if applicable.
     - [x] Sub-task: Simplify `useSkin.ts` to return only 'retro' (if not already done).
     - [x] Sub-task: Remove any skin-switching logic from `useDashboardStore.ts`.
-- [x] **Task 2: Cleanup Component Conditionals**
+- [x] **Task 2: Cleanup Component Conditionals** [aa8c5b1]
     - [x] Sub-task: Refactor `LinksPane.tsx` to remove `!isRetro` blocks.
     - [x] Sub-task: Refactor `HeaderIndicators.tsx` to remove `!isRetro` blocks.
     - [x] Sub-task: Clean up `globals.css` of any non-retro utility classes.
-- [x] **Task 3: Remove Obsolete Tests**
+- [x] **Task 3: Remove Obsolete Tests** [aa8c5b1]
     - [x] Sub-task: Identify and delete tests that explicitly check for "Modern" behavior (e.g., in `header.test.tsx`, `LinksPane.test.tsx`).
     - [x] Sub-task: Run existing test suite to ensure no breakage.
 - [ ] **Task: Conductor - User Manual Verification 'Modern Theme Purge' (Protocol in workflow.md)**
