@@ -17,6 +17,10 @@ import { useDashboardStore } from '@/store/useDashboardStore';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { useSkin } from '@/hooks/useSkin';
 import { DirectoriesSidebar } from "@/components/dashboard/DirectoriesSidebar";
+import { CommandPalette } from "@/components/dashboard/CommandPalette";
+import { CommandPalette } from "@/components/dashboard/CommandPalette";
+import { CommandPalette } from "@/components/dashboard/CommandPalette";
+import { CommandPalette } from "@/components/dashboard/CommandPalette";
 
 export default function Home() {
   const [linksSearchTerm, setLinksSearchTerm] = useState('');
@@ -86,7 +90,7 @@ export default function Home() {
                 <div className="flex items-center gap-3">
                   <span>[ COMMAND_CENTER_V1.0 ]</span>
                   <span className="bg-black text-terminal-main px-1.5 py-0.5 text-[8px] animate-pulse">BETA_RELEASE</span>
-                  <span className="text-[8px] opacity-50">v0.0.1</span>
+                  <span className="text-[8px] opacity-50">v0.1.0</span>
                 </div>
                 <div className="flex gap-2 items-center">
                   <span className="text-[8px] opacity-50">[M]</span>

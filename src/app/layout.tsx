@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, VT323, Press_Start_2P } from "next/font/google";
 import "./globals.css";
 import ThemeWrapper from "@/components/ThemeWrapper";
-import { CommandPalette } from "@/components/dashboard/CommandPalette";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,9 +39,7 @@ export default function RootLayout({
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${vt323.variable} ${pressStart2P.variable}`}>
       <body className="antialiased">
         <ThemeWrapper>
-          <CommandPalette>
-            {children}
-          </CommandPalette>
+          {children}
         </ThemeWrapper>
       </body>
     </html>
