@@ -47,6 +47,7 @@ create table if not exists links (
   title text not null,
   url text not null,
   category text,
+  tags text[], -- added tags support
   is_pinned boolean default false,
   position integer, -- for sorting
   updated_at timestamp with time zone default now(),

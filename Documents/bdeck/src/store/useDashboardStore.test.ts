@@ -22,9 +22,9 @@ describe('useDashboardStore', () => {
     expect(state.syncStatus).toBe('syncing');
   });
 
-  it('should have initial skin as modern', () => {
+  it('should have initial skin as retro', () => {
     const state = useDashboardStore.getState();
-    expect(state.skin).toBe('modern');
+    expect(state.skin).toBe('retro');
   });
 
   it('should update skin', () => {

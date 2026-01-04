@@ -28,11 +28,11 @@ describe('TimersPane Retro Mode', () => {
     vi.clearAllMocks();
   });
 
-  it('should render condensed status indicators [P] or [R]', () => {
+  it('should render music player style status indicators PLAYING or PAUSED', () => {
     render(<TimersPane isAdding={false} setIsAdding={vi.fn()} />);
     
-    // Check for [P] (Paused) indicator
-    expect(screen.getByText('[P]')).toBeDefined();
+    // Check for II PAUSED indicator
+    expect(screen.getByText(/II PAUSED/i)).toBeDefined();
   });
 
   it('should render the [ INIT_NEW_TIMER ] button', () => {

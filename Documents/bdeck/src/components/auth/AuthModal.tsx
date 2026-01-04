@@ -80,7 +80,7 @@ export const AuthModal = () => {
               value={email} 
               onChange={e => setEmail(e.target.value)}
               placeholder="OPERATOR_ID (EMAIL)..." 
-              className="w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80"
+              className="w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 hover:border-white/10 transition-all uppercase tracking-widest text-white/80"
               required
             />
           </div>
@@ -91,7 +91,7 @@ export const AuthModal = () => {
               value={password} 
               onChange={e => setPassword(e.target.value)}
               placeholder="ACCESS_CODE (PASSWORD)..." 
-              className="w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80"
+              className="w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 hover:border-white/10 transition-all uppercase tracking-widest text-white/80"
               required
             />
           </div>
@@ -99,7 +99,7 @@ export const AuthModal = () => {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full bg-terminal-main text-black px-6 py-3 text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-terminal-main text-black px-6 py-3 text-[10px] font-black uppercase tracking-widest hover:bg-white hover:shadow-[0_0_20px_-5px_rgba(255,255,255,0.4)] transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'PROCESSING...' : (isLogin ? 'INITIATE SESSION' : 'ESTABLISH IDENTITY')}
           </button>

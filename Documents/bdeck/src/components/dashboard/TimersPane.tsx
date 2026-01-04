@@ -109,7 +109,7 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, onUpdateName,
             ) : (
               <span className="text-[10px] uppercase font-black tracking-widest whitespace-nowrap overflow-hidden text-ellipsis text-terminal-main group-hover:text-black" onDoubleClick={() => setIsEditing(true)}>{project.name}</span>
             )}
-            <span className={`text-[10px] font-bold tracking-tight whitespace-nowrap ${project.isActive ? 'text-terminal-main group-hover:text-black' : 'text-terminal-main/40 group-hover:text-black/40'}`}>
+            <span className={`text-lg font-black tracking-tighter whitespace-nowrap ml-auto ${project.isActive ? 'text-terminal-main group-hover:text-black' : 'text-terminal-main/40 group-hover:text-black/40'}`}>
               {formatTime(project.time)}
             </span>
           </div>
@@ -118,11 +118,16 @@ const SortableTimerItem = ({ project, onToggle, onReset, onDelete, onUpdateName,
         <div className="flex items-center gap-2 ml-4">
           {isGlobalEditing ? (
             <div className="flex items-center gap-1">
-              <button onClick={onReset} className="text-[9px] border px-1.5 py-1 transition-colors font-black uppercase">CLR</button>
-              <button onClick={onDelete} className="text-[9px] border px-1.5 py-1 text-terminal-red border-terminal-red/50 transition-colors font-black uppercase">DEL</button>
+              <button onClick={onReset} className="text-[9px] border px-1.5 py-1 transition-colors font-black uppercase hover:retro-invert">CLR</button>
+              <button onClick={onDelete} className="text-[9px] border px-1.5 py-1 text-terminal-red border-terminal-red/50 transition-colors font-black uppercase hover:bg-terminal-red hover:text-black">DEL</button>
             </div>
           ) : (
-            <button onClick={onToggle} className="min-w-[100px] text-[9px] font-black border border-terminal-main/40 px-2 py-1.5 transition-all whitespace-nowrap text-center">
+            <button 
+              onClick={onToggle} 
+              className={`min-w-[100px] text-[9px] font-black border border-terminal-main/40 px-2 py-1.5 transition-all whitespace-nowrap text-center ${
+                project.isActive ? 'retro-invert' : 'hover:retro-invert'
+              }`}
+            >
               {project.isActive ? '▶ PLAYING' : 'II PAUSED'}
             </button>
           )}
@@ -360,7 +365,7 @@ export const TimersPane = ({ isAdding, setIsAdding, isEditing = false }: TimersP
             onClick={restProtocol}
             className={`flex-1 py-2.5 border transition-all group flex items-center justify-center gap-2 ${
               isRetro 
-                ? (restMode ? 'bg-terminal-main text-black border-terminal-main animate-pulse' : 'border-terminal-red text-terminal-red hover:bg-terminal-red hover:text-black')
+                ? (restMode ? 'retro-invert animate-pulse' : 'border-terminal-red text-terminal-red hover:bg-terminal-red hover:text-black')
                 : (restMode ? 'border-terminal-green bg-terminal-green/10 text-terminal-green animate-pulse' : 'border-terminal-red/20 hover:bg-terminal-red/5 text-terminal-red/60 hover:text-terminal-red')
             }`}
           >
@@ -438,7 +443,7 @@ export const TimersPane = ({ isAdding, setIsAdding, isEditing = false }: TimersP
             type="text" value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && addProject()}
             placeholder="PROJECT_ID..." 
-            className={`w-full bg-black border p-2.5 focus:outline-none transition-all uppercase tracking-widest ${isRetro ? 'border-terminal-main text-terminal-main text-xs font-mono' : 'border-white/10 text-[0.65rem] text-white/80 focus:border-terminal-main'}`} 
+            className={`w-full bg-black border p-2.5 focus:outline-none transition-all uppercase tracking-widest ${isRetro ? 'border-terminal-main text-terminal-main text-xs font-mono hover:bg-terminal-main/5' : 'border-white/10 text-[0.65rem] text-white/80 focus:border-terminal-main hover:border-white/20'}`} 
             autoFocus
           />
           <div className="flex gap-3 justify-end">
@@ -479,18 +484,14 @@ export const TimersPane = ({ isAdding, setIsAdding, isEditing = false }: TimersP
         {!isAdding && (
           <button 
             onClick={() => setIsAdding(true)}
-            className={`w-full mt-4 flex items-center justify-center gap-2 py-3 border border-dashed transition-all group ${
-              isRetro 
-                ? 'border-terminal-main text-terminal-main hover:bg-terminal-main hover:text-black font-mono' 
-                : 'border-white/5 text-white/5 hover:border-terminal-main/20 hover:bg-white/[0.01] hover:text-terminal-main'
-            }`}
+            className={`w-full mt-4 flex items-center justify-center gap-2 py-3 border border-dashed border-terminal-main/40 text-terminal-main bg-black transition-all group retro-hover-invert font-mono`}
           >
             {isRetro ? (
-               <span className="text-xs font-black uppercase tracking-widest">[ INIT_NEW_TIMER ]</span>
+               <span className="text-xs font-black uppercase tracking-widest group-hover:tracking-[0.2em] transition-all">[ INIT_NEW_TIMER ]</span>
             ) : (
               <>
                 <Plus size={14} className="group-hover:rotate-90 transition-transform" />
-                <span className="text-[0.6rem] font-black tracking-widest uppercase italic">New Project</span>
+                <span className="text-[0.6rem] font-black tracking-widest uppercase italic group-hover:tracking-[0.2em] transition-all">New Project</span>
               </>
             )}
           </button>

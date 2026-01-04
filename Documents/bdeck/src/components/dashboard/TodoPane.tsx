@@ -188,10 +188,6 @@ export const TodoPane = () => {
     }
   };
 
-  useEffect(() => {
-    if (todos.length === 0) setTodos([{ id: 'todo-init', text: '', done: false, level: 0 }]);
-  }, [todos.length, setTodos]);
-
   return (
     <div className="h-full flex flex-col gap-4">
       {/* ADD INPUT BAR */}
@@ -200,7 +196,7 @@ export const TodoPane = () => {
         <input 
           type="text"
           placeholder={isRetro ? "ADD_OBJECTIVE..." : "NEW MISSION OBJECTIVE..."}
-          className={`w-full px-8 py-2.5 transition-all uppercase focus:outline-none ${isRetro ? 'bg-black border border-terminal-main text-terminal-main font-mono text-xs placeholder:text-terminal-main/30 pr-12' : 'bg-white/[0.02] border border-white/5 text-[9px] font-black focus:border-terminal-main/20 placeholder:text-white/5 tracking-[0.1em]'}`}
+          className={`w-full px-8 py-2.5 transition-all uppercase focus:outline-none ${isRetro ? 'bg-black border border-terminal-main text-terminal-main font-mono text-xs placeholder:text-terminal-main/30 pr-12 hover:bg-terminal-main/5' : 'bg-white/[0.02] border border-white/5 text-[9px] font-black focus:border-terminal-main/20 hover:border-white/10 placeholder:text-white/5 tracking-[0.1em]'}`}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && e.currentTarget.value.trim()) {
               const id = `todo-${Date.now()}`;

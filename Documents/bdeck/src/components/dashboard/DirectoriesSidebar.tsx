@@ -30,18 +30,23 @@ export const DirectoriesSidebar = ({ categories, activeCategory, setActiveCatego
            <span className="text-[10px] text-terminal-main font-bold">[ ROOT ]</span>
         </div>
 
-        {categories.map((category) => (
+        {categories.map((category, idx) => (
           <button
             key={category}
             onClick={() => setActiveCategory(category)}
-            className={`w-full flex items-center gap-2 px-4 py-1 transition-all group relative retro-glitch-hover ${
-              activeCategory === category && !activeTag
+            className={`w-full flex items-center justify-between px-4 py-1 transition-all group relative retro-glitch-hover ${
+              activeCategory === category
                 ? 'retro-invert font-black' 
                 : 'text-terminal-main/60 retro-hover-invert'
             }`}
           >
-            <Folder size={12} className={(activeCategory === category && !activeTag) ? 'text-black' : 'text-terminal-main/40 group-hover:text-black'} />
-            <span className="text-[9px] uppercase tracking-wider truncate">{category}</span>
+            <div className="flex items-center gap-2 truncate">
+              <Folder size={12} className={(activeCategory === category) ? 'text-black' : 'text-terminal-main/40 group-hover:text-black'} />
+              <span className="text-[9px] uppercase tracking-wider truncate">{category}</span>
+            </div>
+            {idx < 5 && (
+              <span className={`text-[7px] font-bold ${activeCategory === category ? 'text-black/40' : 'text-terminal-main/20 group-hover:text-black/40'}`}>[{idx + 1}]</span>
+            )}
           </button>
         ))}
 

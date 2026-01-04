@@ -9,6 +9,7 @@ const mapLinkToCloud = (link: any, userId: string, index: number) => ({
   title: link.title,
   url: link.url,
   category: link.category,
+  tags: link.tags || [],
   is_pinned: link.isPinned,
   position: index
 });
@@ -44,6 +45,7 @@ export const mapLinkToLocal = (row: any) => ({
   title: row.title,
   url: row.url,
   category: row.category,
+  tags: row.tags || [],
   isPinned: row.is_pinned
 });
 
@@ -80,13 +82,32 @@ export const pushToCloud = async (table: string, data: any) => {
     payload = [mapNoteToCloud(data, user.id)];
   }
 
-  if (payload.length > 0) {
-     const { error } = await supabase.from(table).upsert(payload);
-     if (error) {
-       console.error(`Sync error ${table}:`, error);
-       return { error };
-     }
+  // Handle array-based tables (links, todos, timers)
+  if (Array.isArray(data) && (table === 'links' || table === 'todos' || table === 'timers')) {
+    // 1. Delete all existing records for this user to sync deletions
+    const { error: deleteError } = await supabase.from(table).delete().eq('user_id', user.id);
+    if (deleteError) {
+      console.error(`Sync delete error ${table}:`, deleteError.message);
+      return { error: deleteError };
+    }
+
+    // 2. Insert new records if any exist
+    if (payload.length > 0) {
+      const { error: insertError } = await supabase.from(table).insert(payload);
+      if (insertError) {
+        console.error(`Sync insert error ${table}:`, insertError.message);
+        return { error: insertError };
+      }
+    }
+  } else if (payload.length > 0) {
+    // For single-row tables like 'notes'
+    const { error } = await supabase.from(table).upsert(payload);
+    if (error) {
+      console.error(`Sync error ${table}:`, error.message, error.details, error.hint);
+      return { error };
+    }
   }
+  
   return { error: null };
 };
 

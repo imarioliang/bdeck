@@ -51,8 +51,10 @@ describe('Spacing & Alignment', () => {
   });
 
   it('panes should have standardized internal padding in retro mode', () => {
+    vi.mocked(useSkin).mockReturnValue('retro');
     render(<Pane title="Test" label="TEST"><div>Content</div></Pane>);
-    const pane = screen.getByText(/Test/i).closest('.border-terminal-main');
-    expect(pane?.className).toContain('p-3');
+    const contentContainer = screen.getByText('Content').parentElement;
+    expect(contentContainer?.className).toContain('px-3');
+    expect(contentContainer?.className).toContain('pb-3');
   });
 });

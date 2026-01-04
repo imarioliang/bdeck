@@ -20,13 +20,16 @@ import { DirectoriesSidebar } from "@/components/dashboard/DirectoriesSidebar";
 
 export default function Home() {
   const [linksSearchTerm, setLinksSearchTerm] = useState('');
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-  const [isAddingLink, setIsAddingLink] = useState(false);
-  const [isAddingTimer, setIsAddingTimer] = useState(false);
   const [isEditingTimers, setIsEditingTimers] = useState(false);
-  const [isConfigOpen, setIsConfigOpen] = useState(false);
   
-  const { activeCategory, setActiveCategory, activeTag, setActiveTag } = useDashboardStore();
+  const { 
+    activeCategory, setActiveCategory, 
+    activeTag, setActiveTag,
+    isConfigOpen, setIsConfigOpen,
+    isSearchExpanded, setIsSearchExpanded,
+    isAddingLink, setIsAddingLink,
+    isAddingTimer, setIsAddingTimer
+  } = useDashboardStore();
   const skin = useSkin();
   const isRetro = skin === 'retro';
   
@@ -80,13 +83,19 @@ export default function Home() {
             <header className="flex flex-col">
               {/* Row 1: System Bar */}
               <div className="flex justify-between items-center bg-terminal-main text-black px-3 py-1 font-bold text-[10px] tracking-widest retro-invert">
-                <span>[ COMMAND_CENTER_V1.0 ]</span>
-                <button 
-                  onClick={() => setIsConfigOpen(true)} 
-                  className="hover:bg-black hover:text-terminal-main px-2 py-0.5 transition-all border border-transparent hover:border-black uppercase font-black"
-                >
-                  [ MENU ]
-                </button>
+                <div className="flex items-center gap-3">
+                  <span>[ COMMAND_CENTER_V1.0 ]</span>
+                  <span className="bg-black text-terminal-main px-1.5 py-0.5 text-[8px] animate-pulse">BETA_RELEASE</span>
+                </div>
+                <div className="flex gap-2 items-center">
+                  <span className="text-[8px] opacity-50">[M]</span>
+                  <button 
+                    onClick={() => setIsConfigOpen(true)} 
+                    className="hover:bg-black hover:text-terminal-main px-2 py-0.5 transition-all border border-transparent hover:border-black uppercase font-black"
+                  >
+                    [ MENU ]
+                  </button>
+                </div>
               </div>
               
               {/* Row 2: Path Bar / Search */}
@@ -96,6 +105,7 @@ export default function Home() {
                   <span className="text-terminal-main text-[10px] mr-2">C:\USERS\ADMIN\SEARCH\</span>
                   <input 
                     type="text" 
+                    id="global-search-input"
                     placeholder="INIT_QUERY..."
                     value={linksSearchTerm}
                     onChange={(e) => setLinksSearchTerm(e.target.value)}
@@ -161,6 +171,7 @@ export default function Home() {
                     </button>
                     <input 
                       type="text" 
+                      id="global-search-input"
                       placeholder="SEARCH_MODULES..."
                       autoFocus={isSearchExpanded}
                       value={linksSearchTerm}
@@ -220,6 +231,8 @@ export default function Home() {
               title={isRetro ? "Timer Daemon" : "Project Timers"} 
               badge={isRetro ? projects.length : `TOTAL: ${projects.length}`} 
               label="SYS_CHRONO"
+              headerColor="terminal-main"
+              shortcut="P"
               actions={isRetro && (
                 <button 
                   onClick={() => setIsEditingTimers(!isEditingTimers)}
@@ -233,12 +246,12 @@ export default function Home() {
             </Pane>
           </div>
           <div id="pane-todo" className="lg:col-span-4 h-full">
-            <Pane title={isRetro ? "Task List" : "Mission Objectives"} badge={isRetro ? pendingTodosCount : `${pendingTodosCount} Pending`} label="OBJ_PRIORITY">
+            <Pane title={isRetro ? "Task List" : "Mission Objectives"} badge={isRetro ? pendingTodosCount : `${pendingTodosCount} Pending`} label="OBJ_PRIORITY" headerColor="terminal-main" shortcut="T">
               <TodoPane />
             </Pane>
           </div>
           <div id="pane-notes" className="lg:col-span-4 h-full">
-            <Pane title={isRetro ? "System Log" : "Data Log"} label="LOG_STREAM" actions={isRetro ? null : <WindowControls />}>
+            <Pane title={isRetro ? "System Log" : "Data Log"} label="LOG_STREAM" headerColor="terminal-main" shortcut="N" actions={isRetro ? null : <WindowControls />}>
               <NotesPane />
             </Pane>
           </div>

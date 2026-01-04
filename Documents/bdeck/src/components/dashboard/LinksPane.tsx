@@ -111,7 +111,20 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
           className="flex-1 flex items-center py-2.5 px-3 gap-0 min-w-0"
         >
            <div className="w-[45%] flex items-center gap-3 pr-2 min-w-0">
-             <Icon size={16} className="text-terminal-main group-hover:text-black shrink-0" />
+             {faviconUrl ? (
+               <div className="w-4 h-4 shrink-0 overflow-hidden relative flex items-center">
+                 <img 
+                  src={faviconUrl} 
+                  alt="" 
+                  className="favicon-retro"
+                  onError={(e) => {
+                    const parent = e.currentTarget.parentElement;
+                    if (parent) parent.style.display = 'none';
+                  }}
+                 />
+               </div>
+             ) : null}
+             {!faviconUrl && <Icon size={16} className="text-terminal-main group-hover:text-black shrink-0" />}
              <span className="text-[11px] font-mono uppercase truncate text-terminal-main group-hover:text-black font-black tracking-tighter">{link.title}</span>
            </div>
 
@@ -162,10 +175,20 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable }
         href={link.url} 
         target="_blank" 
         rel="noopener noreferrer"
-        className="w-full h-full flex flex-col items-center justify-center gap-1.5 relative z-10"
+        className="w-full h-full flex flex-col items-center justify-center gap-2 relative z-10"
       >
-        <div className="text-white/10 group-hover:text-terminal-main transition-colors">
-          <Icon size={18} strokeWidth={1.5} />
+        <div className="text-white/10 group-hover:text-terminal-main transition-all transform group-hover:scale-110">
+          {faviconUrl ? (
+            <img 
+              src={faviconUrl} 
+              alt="" 
+              style={{ imageRendering: 'pixelated' }}
+              className="w-5 h-5 grayscale opacity-40 group-hover:opacity-100 group-hover:grayscale-0 transition-all shadow-sm" 
+              onError={(e) => (e.currentTarget.style.display = 'none')}
+            />
+          ) : (
+            <Icon size={18} strokeWidth={1.5} />
+          )}
         </div>
         <div className="flex flex-col items-center gap-0.5 w-full px-1">
           <span className="text-[0.6rem] font-black tracking-[0.15em] text-white/90 group-hover:text-white uppercase truncate w-full text-center">
@@ -223,10 +246,11 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
     return Array.from(new Set([...base, ...custom]));
   }, [links]);
 
-  // Migration logic
+  // Migration logic - ensure all links have required fields
   useEffect(() => {
-    const hasMissingIds = links.some(l => !l.id || !l.category || !l.tags);
-    if (hasMissingIds) {
+    const needsMigration = links.some(l => !l.id || !l.category || !l.tags);
+    if (needsMigration) {
+      console.log('LinksPane: Migrating data to include tags...');
       const sanitized = links.map((l, i) => ({
         ...l,
         id: l.id || `link-${i}-${Date.now()}`,
@@ -235,7 +259,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
       }));
       setLinks(sanitized);
     }
-  }, [links.length]);
+  }, [links, setLinks]);
 
   const sortedLinks = useMemo(() => {
     return [...links].sort((a, b) => {
@@ -301,17 +325,6 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
              <div className="flex-1 text-[9px] uppercase tracking-widest text-right">STATUS</div>
           </div>
         )}
-
-        {/* ADD APP BUTTON - TOP POSITION */}
-        {isRetro && (
-          <button 
-            onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setNewTags(''); setIsAdding(true); setIsCustomCategory(false); }}
-            className="w-full flex items-center py-1.5 px-3 gap-4 border-b border-dashed border-terminal-main/20 text-terminal-main/40 hover:bg-terminal-main/5 hover:text-terminal-main transition-all group"
-          >
-            <span className="text-xs font-mono">+</span>
-            <span className="text-[9px] font-mono uppercase tracking-widest">[ADD_NEW_MODULE]</span>
-          </button>
-        )}
         
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(e) => {
           const { active, over } = e;
@@ -335,16 +348,27 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
           </SortableContext>
         </DndContext>
 
+        {/* ADD APP BUTTON - STICKY BOTTOM */}
+        {isRetro && (
+          <button 
+            onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setNewTags(''); setIsAdding(true); setIsCustomCategory(false); }}
+            className="w-full flex items-center py-2.5 px-3 gap-4 border-t border-dashed border-terminal-main/40 text-terminal-main bg-black sticky bottom-0 z-10 transition-all group retro-hover-invert"
+          >
+            <span className="text-sm font-mono group-hover:scale-125 transition-transform">+</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] group-hover:tracking-[0.4em] transition-all">[ ADD_NEW_MODULE ]</span>
+          </button>
+        )}
+
         {/* MODERN ADD APP BUTTON */}
         {!isRetro && (
           <button 
             onClick={() => { setEditingId(null); setNewTitle(''); setNewUrl(''); setNewCategory('SYSTEM'); setIsAdding(true); setIsCustomCategory(false); }}
-            className="aspect-square flex flex-col items-center justify-center gap-1.5 border border-dashed border-white/5 hover:border-terminal-main/30 hover:bg-white/[0.01] transition-all text-white/10 hover:text-terminal-main group p-1.5"
+            className="aspect-square flex flex-col items-center justify-center gap-1.5 border border-dashed border-white/10 hover:border-terminal-main/40 hover:bg-terminal-main/[0.03] transition-all text-white/10 hover:text-terminal-main group p-1.5 relative overflow-hidden"
           >
-            <Plus size={18} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform" />
-            <div className="flex flex-col items-center">
-              <span className="text-[0.5rem] font-black tracking-widest uppercase italic">Add App</span>
-              <span className="text-[0.35rem] font-bold uppercase opacity-30">System</span>
+            <Plus size={18} strokeWidth={1.5} className="group-hover:rotate-90 transition-transform relative z-10" />
+            <div className="flex flex-col items-center relative z-10">
+              <span className="text-[0.5rem] font-black tracking-widest uppercase italic group-hover:tracking-[0.2em] transition-all">Add App</span>
+              <span className="text-[0.35rem] font-bold uppercase opacity-30 group-hover:opacity-60 transition-opacity">System</span>
             </div>
           </button>
         )}
@@ -352,74 +376,199 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
 
       {/* MODAL FORM */}
       {isAdding && (
-        <div className="fixed inset-0 bg-[#0a0a0a]/95 backdrop-blur-md z-[100] flex items-center justify-center p-4">
-          <div className={`bg-[#111111] border ${isRetro ? 'border-terminal-main' : 'border-terminal-main/30'} p-8 w-full max-w-sm space-y-6 shadow-[0_0_50px_-20px_rgba(255,157,0,0.2)]`}>
-            <h3 className="text-terminal-main text-sm font-black tracking-[0.2em] uppercase leading-none">{editingId ? 'Modify Module' : 'Initialize Module'}</h3>
-            <div className="space-y-4">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Identifier</label>
-                <input 
-                  type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && addLink()}
-                  placeholder="MODULE_NAME..." className={`w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80 ${isRetro ? 'font-mono' : ''}`}
-                />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Protocol Path</label>
-                <input 
-                  type="text" value={newUrl} onChange={e => setNewUrl(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && addLink()}
-                  placeholder="PROTOCOL_PATH..." className={`w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80 ${isRetro ? 'font-mono' : ''}`}
-                />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Tags (comma separated)</label>
-                <input 
-                  type="text" value={newTags} onChange={e => setNewTags(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && addLink()}
-                  placeholder="TAGS (COMMA SEPARATED)..." className={`w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80 ${isRetro ? 'font-mono' : ''}`}
-                />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Category</label>
-                {isCustomCategory ? (
-                  <div className="flex gap-2">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4" onClick={() => setIsAdding(false)}>
+          <div 
+            className={`w-full max-w-lg bg-black border ${isRetro ? 'border-terminal-main shadow-[0_0_30px_-10px_var(--terminal-main)]' : 'border-terminal-main/30 shadow-[0_0_50px_-20px_rgba(255,157,0,0.2)]'} overflow-hidden flex flex-col`}
+            onClick={e => e.stopPropagation()}
+          >
+            {isRetro ? (
+              <>
+                                                {/* Retro Header Bar */}
+                                                <div className="bg-terminal-main text-black px-3 py-1 flex justify-between items-center font-black text-[9px] tracking-widest retro-invert">
+                                                  <span>[ NEW_LINK_WIZARD ]</span>
+                                                  <div className="flex gap-4 items-center">
+                                                    <span>_</span>
+                                                    <button 
+                                                      onClick={() => setIsAdding(false)} 
+                                                      className="hover:bg-black hover:text-terminal-main px-1 transition-colors font-black"
+                                                    >
+                                                      X
+                                                    </button>
+                                                  </div>
+                                                </div>                
+                                <div className="p-8 space-y-8">
+                                  <div className="text-center space-y-2">
+                                    <h3 className="text-terminal-main text-sm font-black tracking-[0.2em] uppercase">Create New Shortcut</h3>
+                                    <p className="text-[9px] text-terminal-main/50 font-bold">Enter the parameters for the new system link.</p>
+                                    <div className="border-b border-terminal-main/20 border-dashed pt-2 w-full mx-auto max-w-[80%]" />
+                                  </div>
+                
+                                  <div className="space-y-6">
+                                    <div className="space-y-2.5">
+                                      <div className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 bg-terminal-main" />
+                                        <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">Display Name</label>
+                                      </div>
+                                      <div className="flex items-center bg-terminal-main/5 border border-terminal-main/20 px-3 py-2 group-focus-within:border-terminal-main/50 transition-all">
+                                        <span className="text-terminal-main text-xs mr-2 font-black">&gt;</span>
+                                        <input 
+                                          type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)}
+                                          onKeyDown={e => e.key === 'Enter' && addLink()}
+                                          placeholder="APP_NAME..." className="flex-1 bg-transparent border-none p-0 text-xs font-black focus:outline-none uppercase tracking-widest text-terminal-main placeholder:text-terminal-main/20 font-mono"
+                                        />
+                                      </div>
+                                    </div>
+                
+                                    <div className="space-y-2.5">
+                                      <div className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 bg-terminal-main" />
+                                        <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">Resource Locator (URL)</label>
+                                      </div>
+                                      <div className="flex items-center bg-terminal-main/5 border border-terminal-main/20 px-3 py-2 group-focus-within:border-terminal-main/50 transition-all">
+                                        <span className="text-terminal-main text-xs mr-2 font-black">&gt;</span>
+                                        <input 
+                                          type="text" value={newUrl} onChange={e => setNewUrl(e.target.value)}
+                                          onKeyDown={e => e.key === 'Enter' && addLink()}
+                                          placeholder="https://..." className="flex-1 bg-transparent border-none p-0 text-xs font-black focus:outline-none uppercase tracking-widest text-terminal-main placeholder:text-terminal-main/20 font-mono lowercase"
+                                        />
+                                      </div>
+                                    </div>
+                
+                                    <div className="space-y-2.5">
+                                      <div className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 bg-terminal-main" />
+                                        <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">Tags (comma separated)</label>
+                                      </div>
+                                      <div className="flex items-center bg-terminal-main/5 border border-terminal-main/20 px-3 py-2 group-focus-within:border-terminal-main/50 transition-all">
+                                        <span className="text-terminal-main text-xs mr-2 font-black">&gt;</span>
+                                        <input 
+                                          type="text" value={newTags} onChange={e => setNewTags(e.target.value)}
+                                          onKeyDown={e => e.key === 'Enter' && addLink()}
+                                          placeholder="TAGS (COMMA SEPARATED)..." className="flex-1 bg-transparent border-none p-0 text-xs font-black focus:outline-none uppercase tracking-widest text-terminal-main placeholder:text-terminal-main/20 font-mono"
+                                        />
+                                      </div>
+                                    </div>
+                
+                                    <div className="space-y-2.5">
+                                      <div className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 bg-terminal-main" />
+                                        <label className="text-[10px] font-black text-terminal-main uppercase tracking-widest">Target Directory</label>
+                                      </div>
+                                                            <div className="flex items-center bg-terminal-main/5 border border-terminal-main/20 px-3 py-2 group-focus-within:border-terminal-main/50 transition-all relative">
+                                                              <span className="text-terminal-main text-xs mr-2 font-black">&gt;</span>
+                                                              <select 
+                                                                value={newCategory} 
+                                                                onChange={e => {
+                                                                  if (e.target.value === 'CUSTOM') {
+                                                                    setNewCategory('');
+                                                                    setIsCustomCategory(true);
+                                                                  } else {
+                                                                    setNewCategory(e.target.value);
+                                                                  }
+                                                                }}
+                                                                className="flex-1 bg-transparent border-none p-0 text-xs font-black focus:outline-none uppercase tracking-widest text-terminal-main appearance-none cursor-pointer font-mono"
+                                                              >
+                                                                {categories.map(cat => (
+                                                                  <option key={cat} value={cat} style={{ backgroundColor: '#000', color: 'var(--terminal-main)' }}>{cat}</option>
+                                                                ))}
+                                                                <option value="CUSTOM" style={{ backgroundColor: '#000', color: 'var(--terminal-main)' }}>ADD NEW...</option>
+                                                              </select>
+                                                              <div className="absolute right-3 pointer-events-none text-terminal-main">▼</div>
+                                                            </div>
+                                    </div>
+                                  </div>
+                
+                                                    <div className="flex gap-4 pt-4">
+                                                      <button 
+                                                        onClick={() => setIsAdding(false)} 
+                                                        className="flex-1 py-2 border border-terminal-main/40 text-[10px] font-black text-terminal-main retro-hover-invert transition-all uppercase tracking-widest"
+                                                      >
+                                                        [ CANCEL ]
+                                                      </button>
+                                                      <button 
+                                                        onClick={addLink} 
+                                                        className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest transition-all shadow-[0_0_15px_-5px_var(--terminal-main)] retro-invert"
+                                                      >
+                                                        &lt; ADD LINK &gt;
+                                                      </button>
+                                                    </div>                                </div>
+
+                {/* Retro Footer Bar */}
+                <div className="mt-4 border-t border-terminal-main/30 px-3 py-1 flex justify-between items-center text-[8px] text-terminal-main/40 font-bold tracking-tighter uppercase">
+                  <span>MEM_ALLOC: 2KB</span>
+                  <span className="animate-pulse">WAITING_INPUT...</span>
+                </div>
+              </>
+            ) : (
+              <div className="p-8 space-y-6 bg-[#111111]">
+                <h3 className="text-terminal-main text-sm font-black tracking-[0.2em] uppercase leading-none">{editingId ? 'Modify Module' : 'Initialize Module'}</h3>
+                <div className="space-y-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Identifier</label>
                     <input 
-                      type="text" value={newCategory} onChange={e => setNewCategory(e.target.value)}
+                      type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)}
                       onKeyDown={e => e.key === 'Enter' && addLink()}
-                      placeholder="NEW_CAT..." className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main uppercase tracking-widest text-white/80"
-                      autoFocus
+                      placeholder="MODULE_NAME..." className={`w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 hover:border-white/20 transition-all uppercase tracking-widest text-white/80`}
                     />
-                    <button onClick={() => setIsCustomCategory(false)} className="text-[0.5rem] font-bold text-white/20 hover:text-white uppercase tracking-tighter">Cancel</button>
                   </div>
-                ) : (
-                  <div className="flex gap-2">
-                    <select 
-                      value={newCategory} 
-                      onChange={e => {
-                        if (e.target.value === 'CUSTOM') {
-                          setNewCategory('');
-                          setIsCustomCategory(true);
-                        } else {
-                          setNewCategory(e.target.value);
-                        }
-                      }}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Protocol Path</label>
+                    <input 
+                      type="text" value={newUrl} onChange={e => setNewUrl(e.target.value)}
                       onKeyDown={e => e.key === 'Enter' && addLink()}
-                      className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 transition-all uppercase tracking-widest text-white/80 appearance-none cursor-pointer"
-                    >
-                      {categories.map(cat => (
-                        <option key={cat} value={cat} className="bg-[#111111]">{cat}</option>
-                      ))}
-                      <option value="CUSTOM" className="bg-[#111111]">ADD NEW...</option>
-                    </select>
+                      placeholder="PROTOCOL_PATH..." className={`w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 hover:border-white/20 transition-all uppercase tracking-widest text-white/80`}
+                    />
                   </div>
-                )}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Tags (comma separated)</label>
+                    <input 
+                      type="text" value={newTags} onChange={e => setNewTags(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && addLink()}
+                      placeholder="TAGS (COMMA SEPARATED)..." className={`w-full bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 hover:border-white/20 transition-all uppercase tracking-widest text-white/80`}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[0.5rem] font-black text-white/20 uppercase tracking-widest">Category</label>
+                    {isCustomCategory ? (
+                      <div className="flex gap-2">
+                        <input 
+                          type="text" value={newCategory} onChange={e => setNewCategory(e.target.value)}
+                          onKeyDown={e => e.key === 'Enter' && addLink()}
+                          placeholder="NEW_CAT..." className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main hover:border-white/20 uppercase tracking-widest text-white/80"
+                          autoFocus
+                        />
+                        <button onClick={() => setIsCustomCategory(false)} className="text-[0.5rem] font-bold text-white/20 hover:text-white uppercase tracking-tighter">Cancel</button>
+                      </div>
+                    ) : (
+                      <div className="flex gap-2">
+                        <select 
+                          value={newCategory} 
+                          onChange={e => {
+                            if (e.target.value === 'CUSTOM') {
+                              setNewCategory('');
+                              setIsCustomCategory(true);
+                            } else {
+                              setNewCategory(e.target.value);
+                            }
+                          }}
+                          onKeyDown={e => e.key === 'Enter' && addLink()}
+                          className="flex-1 bg-white/[0.02] border border-white/5 p-3 text-[0.65rem] font-bold focus:outline-none focus:border-terminal-main/40 hover:border-white/20 transition-all uppercase tracking-widest text-white/80 appearance-none cursor-pointer"
+                        >
+                          {categories.map(cat => (
+                            <option key={cat} value={cat} className="bg-[#111111]">{cat}</option>
+                          ))}
+                          <option value="CUSTOM" className="bg-[#111111]">ADD NEW...</option>
+                        </select>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="flex gap-4 justify-end">
+                  <button onClick={() => { setIsAdding(false); setIsCustomCategory(false); }} className="text-[10px] font-black text-white/20 hover:text-white uppercase tracking-widest transition-colors">Abort</button>
+                  <button onClick={addLink} className="bg-terminal-main text-black px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)]">Execute</button>
+                </div>
               </div>
-            </div>
-            <div className="flex gap-4 justify-end">
-              <button onClick={() => { setIsAdding(false); setIsCustomCategory(false); }} className="text-[10px] font-black text-white/20 hover:text-white uppercase tracking-widest transition-colors">Abort</button>
-              <button onClick={addLink} className="bg-terminal-main text-black px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_10px_-2px_rgba(255,176,0,0.4)]">Execute</button>
-            </div>
+            )}
           </div>
         </div>
       )}

@@ -43,17 +43,18 @@ describe('CustomizationMenu', () => {
     vi.clearAllMocks();
   });
 
-  it('should render skin selection buttons', () => {
+  it('should render theme selection buttons', () => {
     render(<CustomizationMenu isOpen={true} onClose={vi.fn()} />);
-    expect(screen.getByText(/Interface Skin/i)).toBeDefined();
-    expect(screen.getByText('Modern')).toBeDefined();
-    expect(screen.getByText('Retro')).toBeDefined();
+    expect(screen.getByText(/Visual Theme/i)).toBeDefined();
+    expect(screen.getByText('Amber')).toBeDefined();
+    expect(screen.getByText('Green')).toBeDefined();
+    expect(screen.getByText('Blue')).toBeDefined();
   });
 
-  it('should call setSkin when a skin button is clicked', () => {
+  it('should call setTheme when a theme button is clicked', () => {
     render(<CustomizationMenu isOpen={true} onClose={vi.fn()} />);
-    const retroButton = screen.getByText('Retro');
-    fireEvent.click(retroButton);
-    expect(mockSetSkin).toHaveBeenCalledWith('retro');
+    const greenButton = screen.getByText('Green');
+    fireEvent.click(greenButton);
+    expect(mockSetTheme).toHaveBeenCalledWith('green');
   });
 });

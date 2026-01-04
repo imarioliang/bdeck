@@ -29,17 +29,13 @@ describe('High-Contrast Hover Effects', () => {
     render(<DirectoriesSidebar categories={categories} activeCategory="ALL SYSTEMS" setActiveCategory={mockSetActiveCategory} />);
     
     const categoryButton = screen.getByText('SYSTEM').closest('button');
-    expect(categoryButton?.className).toContain('hover:bg-terminal-main');
-    expect(categoryButton?.className).toContain('hover:text-black');
+    expect(categoryButton?.className).toContain('retro-hover-invert');
   });
 
   it('link items should have inverted hover classes', () => {
     render(<LinksPane isAdding={false} setIsAdding={vi.fn()} searchTerm="" activeCategory="ALL SYSTEMS" />);
     
-    // The container of the link should have the hover effect
     const linkItem = screen.getByText('Mail').closest('.group');
-    // Note: My previous check showed it had hover:bg-terminal-main/10, we want hover:bg-terminal-main
-    expect(linkItem?.className).toContain('hover:bg-terminal-main');
-    expect(linkItem?.className).toContain('hover:text-black');
+    expect(linkItem?.className).toContain('retro-hover-invert');
   });
 });

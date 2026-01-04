@@ -33,9 +33,9 @@ describe('LinksPane Tag Functions', () => {
     
     // Find the new tags input (to be implemented)
     const tagsInput = screen.getByPlaceholderText(/TAGS \(COMMA SEPARATED\)/i);
-    const titleInput = screen.getByPlaceholderText(/MODULE_NAME/i);
-    const urlInput = screen.getByPlaceholderText(/PROTOCOL_PATH/i);
-    const saveButton = screen.getByText(/Execute/i);
+    const titleInput = screen.getByPlaceholderText(/APP_NAME/i);
+    const urlInput = screen.getByPlaceholderText(/https:/i);
+    const saveButton = screen.getByText(/< ADD LINK >/i);
 
     fireEvent.change(titleInput, { target: { value: 'New Module' } });
     fireEvent.change(urlInput, { target: { value: 'https://new.com' } });

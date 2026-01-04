@@ -50,10 +50,10 @@ describe('TimersPane', () => {
     vi.mocked(useSkin).mockReturnValue('retro');
     render(<TimersPane isAdding={false} setIsAdding={mockSetIsAdding} />);
     
-    // Check for retro "INITIATE_REST_PROTOCOL" text on rest button
-    expect(screen.getByText('[ INITIATE_REST_PROTOCOL ]')).toBeDefined();
-    // Check for retro project indicators
-    expect(screen.getByText('[P]')).toBeDefined(); // Pending/Paused
+    // Check for retro "INITIATE_REST" text on rest button
+    expect(screen.getByText('[ INITIATE_REST ]')).toBeDefined();
+    // Check for retro music player indicators
+    expect(screen.getByText(/II PAUSED/i)).toBeDefined();
     // Check for retro "New Project" button text
     expect(screen.getByText('[ INIT_NEW_TIMER ]')).toBeDefined();
   });
@@ -84,7 +84,7 @@ describe('TimersPane', () => {
   it('should toggle rest mode when clicking the rest button', () => {
     vi.mocked(useSkin).mockReturnValue('retro');
     render(<TimersPane isAdding={false} setIsAdding={mockSetIsAdding} />);
-    const restButton = screen.getByRole('button', { name: /REST TIMER|INITIATE_REST_PROTOCOL/i });
+    const restButton = screen.getByRole('button', { name: /REST TIMER|INITIATE_REST/i });
     fireEvent.click(restButton);
     expect(mockSetRestMode).toHaveBeenCalled();
   });

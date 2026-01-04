@@ -3,15 +3,15 @@ import fs from 'fs';
 import path from 'path';
 
 describe('Retro Typography Effects', () => {
-  it('should have text-shadow for retro skin', () => {
+  it('should NOT have text-shadow for retro skin', () => {
     const cssPath = path.resolve(process.cwd(), 'src/app/globals.css');
     const cssContent = fs.readFileSync(cssPath, 'utf8');
     
-    // Check for text-shadow in retro skin
+    // We explicitly removed text-shadow
     const hasTextGlow = cssContent.includes("[data-skin='retro']") && 
                         cssContent.includes("text-shadow:");
     
-    expect(hasTextGlow).toBe(true);
+    expect(hasTextGlow).toBe(false);
   });
 
   it('should have scanline overlay styles', () => {

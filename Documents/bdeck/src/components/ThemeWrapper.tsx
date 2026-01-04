@@ -7,6 +7,7 @@ export default function ThemeWrapper({ children }: { children: React.ReactNode }
   const theme = useDashboardStore((state) => state.theme);
   const fontSize = useDashboardStore((state) => state.fontSize);
   const skin = useDashboardStore((state) => state.skin);
+  const contrast = useDashboardStore((state) => state.contrast);
   const [mounted, setFocused] = useState(false);
 
   // Fix hydration mismatch
@@ -27,7 +28,7 @@ export default function ThemeWrapper({ children }: { children: React.ReactNode }
   }
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative" style={{ filter: `contrast(${contrast}%)` }}>
       {skin === 'retro' && <div className="scanline-overlay" />}
       {children}
     </div>

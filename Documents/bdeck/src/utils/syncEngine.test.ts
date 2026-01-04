@@ -29,17 +29,25 @@ describe('syncEngine', () => {
     expect(supabase.from).not.toHaveBeenCalled();
   });
 
-  it('pushToCloud should upsert data', async () => {
+  it('pushToCloud should sync data by deleting and inserting', async () => {
     (useAuthStore.getState as any).mockReturnValue({ user: { id: 'user-1' } });
-    const mockUpsert = vi.fn().mockResolvedValue({ error: null });
-    (supabase.from as any).mockReturnValue({ upsert: mockUpsert });
+    const mockInsert = vi.fn().mockResolvedValue({ error: null });
+    const mockEq = vi.fn().mockResolvedValue({ error: null });
+    const mockDelete = vi.fn().mockReturnValue({ eq: mockEq });
+    
+    (supabase.from as any).mockReturnValue({ 
+      delete: mockDelete,
+      insert: mockInsert
+    });
 
     const data = [{ id: '1', title: 'Test' }];
     const { error } = await pushToCloud('links', data);
 
     expect(error).toBeNull();
     expect(supabase.from).toHaveBeenCalledWith('links');
-    expect(mockUpsert).toHaveBeenCalledWith(
+    expect(mockDelete).toHaveBeenCalled();
+    expect(mockEq).toHaveBeenCalledWith('user_id', 'user-1');
+    expect(mockInsert).toHaveBeenCalledWith(
         expect.arrayContaining([expect.objectContaining({ id: '1', user_id: 'user-1' })])
     );
   });

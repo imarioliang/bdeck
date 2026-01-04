@@ -3,7 +3,7 @@
 ## Frontend
 - **Framework:** Next.js (React) with TypeScript
 - **Styling:** Tailwind CSS
-- **Fonts:** Next.js Google Fonts (Geist, VT323)
+- **Fonts:** Next.js Google Fonts (Geist, VT323, Press Start 2P)
 - **Icons:** Lucide React
 - **Drag and Drop:** dnd-kit
 - **State Management:** Zustand

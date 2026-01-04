@@ -45,7 +45,7 @@ describe('LinksPane', () => {
     expect(screen.getByText('EXT')).toBeDefined();
     expect(screen.getByText('TAGS')).toBeDefined();
     expect(screen.getByText('STATUS')).toBeDefined();
-    expect(screen.getByText('[ADD_NEW_MODULE]')).toBeDefined();
+    expect(screen.getByText(/ADD_NEW_MODULE/i)).toBeDefined();
   });
 
   it('should call setLinks when adding a new link', () => {
