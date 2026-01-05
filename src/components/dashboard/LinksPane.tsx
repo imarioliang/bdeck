@@ -136,7 +136,7 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable, 
         </div>
 
         {/* CENTER OVERLAY ACTIONS */}
-        <div className="absolute inset-0 flex items-center justify-center gap-6 opacity-0 group-hover:opacity-100 transition-all duration-300 z-40 scale-90 group-hover:scale-100">
+        <div className="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-all duration-300 z-40 scale-90 group-hover:scale-100">
           <button 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} 
             className="w-10 h-10 flex items-center justify-center border border-black/40 font-black text-[10px] hover:bg-black hover:text-terminal-main transition-all hover:animate-pulse active:scale-90"
@@ -158,7 +158,7 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable, 
           >
             [X]
           </button>
-          <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-[8px] opacity-40 hover:opacity-100 p-3 hover:bg-black/20 transition-all">
+          <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-[8px] opacity-40 hover:opacity-100 p-2 hover:bg-black/20 transition-all">
             [::]
           </div>
         </div>
