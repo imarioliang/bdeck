@@ -33,11 +33,11 @@
     - [x] Sub-task: Improve fallback icon centering and contrast.
 - [ ] **Task: Conductor - User Manual Verification 'Metadata and Icon Polish' (Protocol in workflow.md)**
 
-## Phase 4: Final Polish & Standards
+## Phase 4: Final Polish & Standards [checkpoint: 375d3fd]
 *Goal: Ensure code quality and adherence to project conventions.*
 
-- [ ] **Task 1: Audit and Test Verification**
-    - [ ] Sub-task: Update existing tests to match new UI structure.
-    - [ ] Sub-task: Verify >80% code coverage.
-    - [ ] Sub-task: Run linting and type checks.
+- [x] **Task 1: Audit and Test Verification** [e09bc7b]
+    - [x] Sub-task: Update existing tests to match new UI structure.
+    - [x] Sub-task: Verify >80% code coverage.
+    - [x] Sub-task: Run linting and type checks.
 - [ ] **Task: Conductor - User Manual Verification 'Final Polish & Standards' (Protocol in workflow.md)**

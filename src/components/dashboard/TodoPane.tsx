@@ -121,11 +121,15 @@ export const TodoPane = () => {
   const handleKeyDown = (e: React.KeyboardEvent, id: string) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      const newId = `todo-${Date.now()}`;
-      const newTodos = [...todos];
-      const origIndex = todos.findIndex(t => t.id === id);
-      newTodos.splice(origIndex + 1, 0, { id: newId, text: '', done: false, level: todos[origIndex].level });
-      setTodos(newTodos); setFocusedId(newId);
+      const newTimestamp = Date.now();
+      const newId = `todo-${newTimestamp}`;
+      setTodos((prevTodos) => {
+        const newTodos = [...prevTodos];
+        const origIndex = newTodos.findIndex(t => t.id === id);
+        newTodos.splice(origIndex + 1, 0, { id: newId, text: '', done: false, level: prevTodos[origIndex].level });
+        return newTodos;
+      });
+      setFocusedId(newId);
     } else if (e.key === 'Backspace' && todos.find(t => t.id === id)?.text === '' && todos.length > 1) {
       e.preventDefault(); deleteTodo(id);
     } else if (e.key === 'Tab') {
