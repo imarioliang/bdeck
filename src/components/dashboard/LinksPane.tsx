@@ -99,54 +99,79 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable, 
       <div 
         ref={setNodeRef}
         style={style}
-        className="relative group aspect-square flex flex-col items-center justify-center border border-terminal-main/30 bg-black hover:border-terminal-main retro-hover-invert transition-all cursor-pointer p-3 text-center overflow-hidden"
+        className="relative group aspect-square flex flex-col border border-terminal-main/20 bg-black hover:border-terminal-main/50 transition-all cursor-pointer overflow-hidden"
       >
+        {/* HEADER: PIN INDICATOR */}
+        <div className="absolute top-1.5 left-1.5 z-30">
+          {link.isPinned ? (
+            <Pin size={10} className="fill-terminal-main text-terminal-main" />
+          ) : (
+            <Pin size={10} className="text-terminal-main/10 group-hover:text-terminal-main/30" />
+          )}
+        </div>
+
+        {/* BODY: ICON & TITLE */}
         <a 
           href={link.url} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="w-full h-full flex flex-col items-center justify-center gap-3"
+          className="flex-1 flex flex-col items-center justify-center gap-2 p-3 pb-1 min-w-0"
         >
           {faviconUrl ? (
-            <img 
-              src={faviconUrl} 
-              alt="" 
-              className="w-6 h-6 favicon-retro"
-              onError={(e) => { e.currentTarget.style.display = 'none'; }}
-            />
+            <div className="w-8 h-8 shrink-0 overflow-hidden relative flex items-center justify-center">
+              <img 
+                src={faviconUrl} 
+                alt="" 
+                className="favicon-retro"
+                onError={(e) => { e.currentTarget.parentElement!.style.display = 'none'; }}
+              />
+            </div>
           ) : (
-            <Icon size={20} className="text-terminal-main group-hover:text-black" />
+            <Icon size={24} className="text-terminal-main group-hover:scale-110 transition-transform" />
           )}
           
-          <div className="flex flex-col items-center gap-1 w-full">
-            <span className="text-[9px] font-black uppercase truncate w-full tracking-tighter">
-              {link.title}
-            </span>
-            <span className="text-[7px] font-bold opacity-40 group-hover:opacity-100">
-              {categoryShorthand}
-            </span>
-          </div>
+          <span className="text-[10px] font-black uppercase truncate w-full text-center tracking-tighter leading-tight">
+            {link.title}
+          </span>
         </a>
 
-        {/* GRID ACTIONS */}
-        <div className="absolute inset-0 bg-black/90 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20 retro-invert">
-          <div className="flex gap-2">
-            <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} className="text-[8px] border border-black/40 px-1 hover:bg-black hover:text-terminal-main">
+        {/* FOOTER / ACTION TOOLBAR */}
+        <div className="relative h-7 border-t border-terminal-main/20 overflow-hidden shrink-0">
+          {/* METADATA FOOTER (Default) */}
+          <div className="absolute inset-0 flex items-center justify-between px-2 bg-black group-hover:translate-y-full transition-transform duration-200">
+            <span className="text-[10px] font-mono text-terminal-main/40 uppercase">
+              {categoryShorthand}
+            </span>
+            <span className="text-[10px] font-mono text-terminal-main/40 uppercase truncate max-w-[60%]">
+              {link.tags?.[0] || '---'}
+            </span>
+          </div>
+
+          {/* ACTION TOOLBAR (Hover) */}
+          <div className="absolute inset-0 flex items-center justify-around px-1 bg-terminal-main translate-y-full group-hover:translate-y-0 transition-transform duration-200 retro-invert">
+            <button 
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} 
+              className="text-[8px] font-black hover:bg-black hover:text-terminal-main px-1 transition-colors"
+            >
               {link.isPinned ? 'UNPIN' : 'PIN'}
             </button>
-            <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} className="text-[8px] border border-black/40 px-1 hover:bg-black hover:text-terminal-main">EDIT</button>
-          </div>
-          <div className="flex gap-2 items-center">
-            <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} className="text-[8px] border border-terminal-red/40 px-1 text-terminal-red hover:bg-terminal-red hover:text-black">DEL</button>
-            <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-[8px] opacity-40">[::]</div>
+            <button 
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} 
+              className="text-[8px] font-black hover:bg-black hover:text-terminal-main px-1 transition-colors"
+            >
+              EDIT
+            </button>
+            <button 
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} 
+              className="text-[8px] font-black text-terminal-red hover:bg-black hover:text-terminal-red px-1 transition-colors"
+            >
+              DEL
+            </button>
+            <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-[8px] opacity-40 hover:opacity-100">
+              [::]
+            </div>
           </div>
         </div>
-
-        {link.isPinned && (
-          <div className="absolute top-1.5 left-1.5 text-terminal-main/40 group-hover:text-black/40">
-            <Pin size={8} fill="currentColor" />
-          </div>
-        )}
       </div>
     );
   }
@@ -304,9 +329,9 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
              <span className="text-[9px]">FILENAME</span>
              <button 
                onClick={() => setViewMode(viewMode === 'list' ? 'grid' : 'list')}
-               className="px-1.5 border border-black/20 hover:bg-black hover:text-terminal-main transition-colors text-[8px]"
+               className="px-2 py-0.5 bg-black text-terminal-main border border-black/20 hover:bg-terminal-main hover:text-black transition-all text-[8px] font-black"
              >
-               [ VIEW: {viewMode.toUpperCase()} ]
+               VIEW_{viewMode.toUpperCase()}
              </button>
            </div>
            {viewMode === 'list' && (
@@ -331,7 +356,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
               items={filteredLinks.map(l => l.id)} 
               strategy={viewMode === 'list' ? verticalListSortingStrategy : rectSortingStrategy}
             >
-              <div className={viewMode === 'list' ? 'flex flex-col' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'}>
+            <div className={viewMode === 'list' ? 'flex flex-col' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4'}>
                 {filteredLinks.map(link => (
                   <SortableLinkItem 
                     key={link.id} 
@@ -362,7 +387,7 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
       {isAdding && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4" onClick={() => setIsAdding(false)}>
           <div 
-            className="w-full max-lg bg-black border border-terminal-main shadow-[0_0_30px_-10px_var(--terminal-main)] overflow-hidden flex flex-col"
+            className="w-full max-w-lg bg-black border border-terminal-main shadow-[0_0_30px_-10px_var(--terminal-main)] overflow-hidden flex flex-col"
             onClick={e => e.stopPropagation()}
           >
             {/* Retro Header Bar */}
