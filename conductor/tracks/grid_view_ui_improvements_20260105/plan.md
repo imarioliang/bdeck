@@ -1,13 +1,13 @@
 # Plan: Grid View UI Improvements
 
-## Phase 1: Card Structure Refinement [checkpoint: 70648c1]
+## Phase 1: Card Structure Refinement [checkpoint: f9f77d8]
 *Goal: Move from basic bordered boxes to a structured Header/Body/Footer layout for grid items.*
 
-- [x] **Task 1: Refactor SortableLinkItem Grid Layout** [aa8c5b1]
+- [x] **Task 1: Refactor SortableLinkItem Grid Layout** [f9f77d8]
     - [x] Sub-task: Create new sub-containers for Header (Pinned indicator), Body (Icon & Title), and Footer (Metadata).
     - [x] Sub-task: Implement strict 1px borders and internal padding consistency.
     - [x] Sub-task: Apply `Press Start 2P` font for titles and `VT323` for metadata.
-- [x] **Task 2: Responsive Grid Optimization** [aa8c5b1]
+- [x] **Task 2: Responsive Grid Optimization** [f9f77d8]
     - [x] Sub-task: Update Tailwind grid classes to ensure pleasing aspect ratios across viewports.
 - [ ] **Task: Conductor - User Manual Verification 'Card Structure Refinement' (Protocol in workflow.md)**
 
