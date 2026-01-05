@@ -22,15 +22,15 @@
     - [x] Sub-task: Implement subtle border highlight or background shift for the card hover state.
 - [ ] **Task: Conductor - User Manual Verification 'Action Toolbar Implementation' (Protocol in workflow.md)**
 
-## Phase 3: Metadata and Icon Polish
+## Phase 3: Metadata and Icon Polish [checkpoint: 3bff152]
 *Goal: Enhance information density and visual clarity.*
 
-- [ ] **Task 1: Implement Metadata Footer**
-    - [ ] Sub-task: Render category shorthand (.EXT) and the first tag in the card footer.
-    - [ ] Sub-task: Style footer text with dimmed contrast for hierarchy.
-- [ ] **Task 2: Favicon/Icon Scaling**
-    - [ ] Sub-task: Increase favicon size to 32px where appropriate.
-    - [ ] Sub-task: Improve fallback icon centering and contrast.
+- [x] **Task 1: Implement Metadata Footer** [3bff152]
+    - [x] Sub-task: Render category shorthand (.EXT) and the first tag in the card footer.
+    - [x] Sub-task: Style footer text with dimmed contrast for hierarchy.
+- [x] **Task 2: Favicon/Icon Scaling** [3bff152]
+    - [x] Sub-task: Increase favicon size to 32px where appropriate.
+    - [x] Sub-task: Improve fallback icon centering and contrast.
 - [ ] **Task: Conductor - User Manual Verification 'Metadata and Icon Polish' (Protocol in workflow.md)**
 
 ## Phase 4: Final Polish & Standards
