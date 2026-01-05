@@ -33,20 +33,20 @@ describe('LinksPane View Toggle', () => {
   it('should render the view toggle button', () => {
     render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="" activeCategory="ALL SYSTEMS" />);
     
-    // We expect a button that mentions current "VIEW_LIST"
-    expect(screen.getByText(/VIEW_LIST/i)).toBeDefined();
+    // We expect a button that mentions current "MODE: LIST"
+    expect(screen.getByText(/MODE: LIST/i)).toBeDefined();
   });
 
   it('should call setViewMode with "grid" when the toggle button is clicked in list mode', () => {
     render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="" activeCategory="ALL SYSTEMS" />);
     
-    const toggleButton = screen.getByText(/VIEW_LIST/i);
+    const toggleButton = screen.getByText(/MODE: LIST/i);
     fireEvent.click(toggleButton);
     
     expect(mockSetViewMode).toHaveBeenCalledWith('grid');
   });
 
-  it('should show "VIEW_GRID" when in grid mode', () => {
+  it('should show "MODE: GRID" when in grid mode', () => {
     vi.mocked(useDashboardStore).mockReturnValue({
       viewMode: 'grid',
       setViewMode: mockSetViewMode,
@@ -55,7 +55,7 @@ describe('LinksPane View Toggle', () => {
 
     render(<LinksPane isAdding={false} setIsAdding={mockSetIsAdding} searchTerm="" activeCategory="ALL SYSTEMS" />);
     
-    expect(screen.getByText(/VIEW_GRID/i)).toBeDefined();
+    expect(screen.getByText(/MODE: GRID/i)).toBeDefined();
   });
 
   it('should render the grid container class when in grid mode', () => {

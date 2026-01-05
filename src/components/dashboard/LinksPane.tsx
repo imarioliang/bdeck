@@ -102,13 +102,11 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable, 
         className="relative group aspect-square flex flex-col border border-terminal-main/20 bg-black hover:border-terminal-main/50 transition-all cursor-pointer overflow-hidden"
       >
         {/* HEADER: PIN INDICATOR */}
-        <div className="absolute top-1.5 left-1.5 z-30">
-          {link.isPinned ? (
+        {link.isPinned && (
+          <div className="absolute top-1.5 left-1.5 z-30">
             <Pin size={10} className="fill-terminal-main text-terminal-main" />
-          ) : (
-            <Pin size={10} className="text-terminal-main/10 group-hover:text-terminal-main/30" />
-          )}
-        </div>
+          </div>
+        )}
 
         {/* BODY: ICON & TITLE */}
         <a 
@@ -118,7 +116,7 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable, 
           className="flex-1 flex flex-col items-center justify-center gap-2 p-3 pb-1 min-w-0"
         >
           {faviconUrl ? (
-            <div className="w-8 h-8 shrink-0 overflow-hidden relative flex items-center justify-center">
+            <div className="w-4 h-4 shrink-0 overflow-hidden relative flex items-center justify-center scale-150 mb-1">
               <img 
                 src={faviconUrl} 
                 alt="" 
@@ -329,9 +327,9 @@ export const LinksPane = ({ isAdding, setIsAdding, searchTerm, activeCategory }:
              <span className="text-[9px]">FILENAME</span>
              <button 
                onClick={() => setViewMode(viewMode === 'list' ? 'grid' : 'list')}
-               className="px-2 py-0.5 bg-black text-terminal-main border border-black/20 hover:bg-terminal-main hover:text-black transition-all text-[8px] font-black"
+               className="px-3 py-1 bg-black text-terminal-main border border-terminal-main/40 hover:bg-terminal-main hover:text-black transition-all text-[8px] font-black shadow-[0_0_10px_-2px_var(--terminal-main)]"
              >
-               VIEW_{viewMode.toUpperCase()}
+               [ MODE: {viewMode.toUpperCase()} ]
              </button>
            </div>
            {viewMode === 'list' && (
