@@ -136,29 +136,29 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable, 
         </div>
 
         {/* CENTER OVERLAY ACTIONS */}
-        <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-200 z-40 scale-95 group-hover:scale-100">
+        <div className="absolute inset-0 flex items-center justify-center gap-6 opacity-0 group-hover:opacity-100 transition-all duration-200 z-40 scale-95 group-hover:scale-100">
           <button 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} 
-            className="w-8 h-8 flex items-center justify-center border border-black/40 font-black text-[10px] hover:bg-black hover:text-terminal-main transition-colors"
+            className="w-9 h-9 flex items-center justify-center border border-black/40 font-black text-[10px] hover:bg-black hover:text-terminal-main transition-all hover:animate-pulse"
             title={link.isPinned ? 'UNPIN' : 'PIN'}
           >
             {link.isPinned ? '[P!]' : '[P]'}
           </button>
           <button 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} 
-            className="w-8 h-8 flex items-center justify-center border border-black/40 font-black text-[10px] hover:bg-black hover:text-terminal-main transition-colors"
+            className="w-9 h-9 flex items-center justify-center border border-black/40 font-black text-[10px] hover:bg-black hover:text-terminal-main transition-all hover:animate-pulse"
             title="EDIT"
           >
             [E]
           </button>
           <button 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} 
-            className="w-8 h-8 flex items-center justify-center border border-terminal-red/40 text-terminal-red hover:bg-black hover:text-terminal-red transition-colors font-black text-[10px]"
+            className="w-9 h-9 flex items-center justify-center border border-terminal-red/40 text-terminal-red hover:bg-black hover:text-terminal-red transition-all font-black text-[10px] hover:animate-pulse"
             title="DELETE"
           >
             [X]
           </button>
-          <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-[8px] opacity-40 hover:opacity-100 p-1">
+          <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-[8px] opacity-40 hover:opacity-100 p-2">
             [::]
           </div>
         </div>

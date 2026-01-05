@@ -21,13 +21,13 @@
     - [x] Sub-task: Ensure the drag handle `[::]` is integrated into the new overlay layout.
 - [ ] **Task: Conductor - User Manual Verification 'Action Button Refinement' (Protocol in workflow.md)**
 
-## Phase 3: Final Sweep & Testing
+## Phase 3: Final Sweep & Testing [checkpoint: ed57894]
 *Goal: Ensure consistency and stability across all interactions.*
 
-- [ ] **Task 1: Interaction Audit**
-    - [ ] Sub-task: Verify that all Management actions work as expected in the new layout.
-    - [ ] Sub-task: Update tests in `LinksPane.gridRefinement.test.tsx` and `LinksPane.actionToolbar.test.tsx` to match the new UI.
-- [ ] **Task 2: Standards & Quality**
-    - [ ] Sub-task: Verify >80% code coverage.
-    - [ ] Sub-task: Run linting and type checks.
+- [x] **Task 1: Interaction Audit** [ed57894]
+    - [x] Sub-task: Verify that all Management actions work as expected in the new layout.
+    - [x] Sub-task: Update tests in `LinksPane.gridRefinement.test.tsx` and `LinksPane.actionToolbar.test.tsx` to match the new UI.
+- [x] **Task 2: Standards & Quality** [ed57894]
+    - [x] Sub-task: Verify >80% code coverage.
+    - [x] Sub-task: Run linting and type checks.
 - [ ] **Task: Conductor - User Manual Verification 'Final Sweep & Testing' (Protocol in workflow.md)**

@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Grid View Polish & Interactions
-*Link: [./conductor/tracks/grid_view_polish_20260105/](./conductor/tracks/grid_view_polish_20260105/)*
+## [~] Track: Action Button Enhancement
+*Link: [./conductor/tracks/action_button_enhancement_20260105/](./conductor/tracks/action_button_enhancement_20260105/)*
