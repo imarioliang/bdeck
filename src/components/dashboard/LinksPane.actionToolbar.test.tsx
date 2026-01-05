@@ -34,8 +34,8 @@ describe('LinksPane Action Toolbar', () => {
     
     // Buttons are technically in the DOM but hidden by translate-y-full and opacity-0
     // We check for their existence and that they have the correct text
-    expect(screen.getByText('PIN')).toBeDefined();
-    expect(screen.getByText('EDIT')).toBeDefined();
-    expect(screen.getByText('DEL')).toBeDefined();
+    expect(screen.getByText('[P]')).toBeDefined();
+    expect(screen.getByText('[E]')).toBeDefined();
+    expect(screen.getByText('[X]')).toBeDefined();
   });
 });

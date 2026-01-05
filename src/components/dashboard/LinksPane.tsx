@@ -99,76 +99,84 @@ const SortableLinkItem = ({ link, onEdit, onDelete, onTogglePin, isReorderable, 
       <div 
         ref={setNodeRef}
         style={style}
-        className="relative group aspect-square flex flex-col border border-terminal-main/20 bg-black hover:border-terminal-main/50 transition-all cursor-pointer overflow-hidden"
+        className="relative group aspect-square flex flex-col border border-terminal-main/20 bg-black hover:border-terminal-main/50 transition-all cursor-pointer overflow-hidden retro-hover-invert"
       >
         {/* HEADER: PIN INDICATOR */}
         {link.isPinned && (
           <div className="absolute top-1.5 left-1.5 z-30">
-            <Pin size={10} className="fill-terminal-main text-terminal-main" />
+            <Pin size={10} className="fill-terminal-main text-terminal-main group-hover:text-black group-hover:fill-black" />
           </div>
         )}
 
         {/* BODY: ICON & TITLE */}
-        <a 
-          href={link.url} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="flex-1 flex flex-col items-center justify-center gap-2 p-3 pb-1 min-w-0"
-        >
-          {faviconUrl ? (
-            <div className="w-4 h-4 shrink-0 overflow-hidden relative flex items-center justify-center scale-150 mb-1">
-              <img 
-                src={faviconUrl} 
-                alt="" 
-                className="favicon-retro"
-                onError={(e) => { e.currentTarget.parentElement!.style.display = 'none'; }}
-              />
-            </div>
-          ) : (
-            <Icon size={24} className="text-terminal-main group-hover:scale-110 transition-transform" />
-          )}
-          
-          <span className="text-[10px] font-black uppercase truncate w-full text-center tracking-tighter leading-tight">
-            {link.title}
+        <div className="flex-1 flex flex-col items-center justify-center gap-2 p-3 pb-1 min-w-0 transition-opacity duration-200 group-hover:opacity-20">
+          <a 
+            href={link.url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex flex-col items-center justify-center gap-2"
+          >
+            {faviconUrl ? (
+              <div className="w-4 h-4 shrink-0 overflow-hidden relative flex items-center justify-center scale-150 mb-1">
+                <img 
+                  src={faviconUrl} 
+                  alt="" 
+                  className="favicon-retro"
+                  onError={(e) => { e.currentTarget.parentElement!.style.display = 'none'; }}
+                />
+              </div>
+            ) : (
+              <Icon size={24} className="text-terminal-main group-hover:text-black transition-transform" />
+            )}
+            
+            <span className="text-[10px] font-black uppercase truncate w-full text-center tracking-tighter leading-tight">
+              {link.title}
+            </span>
+          </a>
+        </div>
+
+        {/* CENTER OVERLAY ACTIONS */}
+        <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-200 z-40 scale-95 group-hover:scale-100">
+          <button 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} 
+            className="w-8 h-8 flex items-center justify-center border border-black/40 font-black text-[10px] hover:bg-black hover:text-terminal-main transition-colors"
+            title={link.isPinned ? 'UNPIN' : 'PIN'}
+          >
+            {link.isPinned ? '[P!]' : '[P]'}
+          </button>
+          <button 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} 
+            className="w-8 h-8 flex items-center justify-center border border-black/40 font-black text-[10px] hover:bg-black hover:text-terminal-main transition-colors"
+            title="EDIT"
+          >
+            [E]
+          </button>
+          <button 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} 
+            className="w-8 h-8 flex items-center justify-center border border-terminal-red/40 text-terminal-red hover:bg-black hover:text-terminal-red transition-colors font-black text-[10px]"
+            title="DELETE"
+          >
+            [X]
+          </button>
+          <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-[8px] opacity-40 hover:opacity-100 p-1">
+            [::]
+          </div>
+        </div>
+
+        {/* FOOTER: METADATA */}
+        <div className="h-6 border-t border-terminal-main/20 flex items-center justify-between px-2 shrink-0">
+          <span 
+            className="text-[11px] text-terminal-main/40 uppercase group-hover:text-black/40 truncate"
+            style={{ fontFamily: 'var(--font-vt323)' }}
+          >
+            {categoryShorthand}
           </span>
-        </a>
-
-        {/* FOOTER / ACTION TOOLBAR */}
-        <div className="relative h-7 border-t border-terminal-main/20 overflow-hidden shrink-0">
-          {/* METADATA FOOTER (Default) */}
-          <div className="absolute inset-0 flex items-center justify-between px-2 bg-black group-hover:translate-y-full transition-transform duration-200">
-            <span className="text-[10px] font-mono text-terminal-main/40 uppercase">
-              {categoryShorthand}
-            </span>
-            <span className="text-[10px] font-mono text-terminal-main/40 uppercase truncate max-w-[60%]">
-              {link.tags?.[0] || '---'}
-            </span>
-          </div>
-
-          {/* ACTION TOOLBAR (Hover) */}
-          <div className="absolute inset-0 flex items-center justify-around px-1 bg-terminal-main translate-y-full group-hover:translate-y-0 transition-transform duration-200 retro-invert">
-            <button 
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }} 
-              className="text-[8px] font-black hover:bg-black hover:text-terminal-main px-1 transition-colors"
-            >
-              {link.isPinned ? 'UNPIN' : 'PIN'}
-            </button>
-            <button 
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }} 
-              className="text-[8px] font-black hover:bg-black hover:text-terminal-main px-1 transition-colors"
-            >
-              EDIT
-            </button>
-            <button 
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }} 
-              className="text-[8px] font-black text-terminal-red hover:bg-black hover:text-terminal-red px-1 transition-colors"
-            >
-              DEL
-            </button>
-            <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-[8px] opacity-40 hover:opacity-100">
-              [::]
-            </div>
-          </div>
+          <span 
+            className="text-[11px] text-terminal-main/40 uppercase truncate max-w-[60%] group-hover:text-black/40 text-right"
+            style={{ fontFamily: 'var(--font-vt323)' }}
+          >
+            {link.tags?.[0] || '---'}
+          </span>
         </div>
       </div>
     );
