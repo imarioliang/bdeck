@@ -14,7 +14,7 @@
 - [x] **Task 1: Implement Hover Animation** [1481192]
     - [x] Sub-task: Add a subtle CSS pulse animation to the button hover state.
     - [x] Sub-task: Ensure the animation integrates smoothly with the existing color inversion logic.
-- [ ] **Task 2: UI Polish**
+- [~] **Task 2: UI Polish**
     - [ ] Sub-task: Refine transitions between idle and active states for a responsive feel.
 - [ ] **Task: Conductor - User Manual Verification 'Interactive Feedback' (Protocol in workflow.md)**
 
