@@ -11,15 +11,15 @@
     - [x] Sub-task: Update Tailwind grid classes to ensure pleasing aspect ratios across viewports.
 - [ ] **Task: Conductor - User Manual Verification 'Card Structure Refinement' (Protocol in workflow.md)**
 
-## Phase 2: Action Toolbar Implementation
+## Phase 2: Action Toolbar Implementation [checkpoint: f9f77d8]
 *Goal: Replace full-box overlay with a subtle, non-obstructive action row.*
 
-- [ ] **Task 1: Design and Implement Subtle Toolbar**
-    - [ ] Sub-task: Create a toolbar row (at top or bottom) that appears only on hover.
-    - [ ] Sub-task: Ensure primary content (Title/Icon) remains visible when the toolbar is shown.
-    - [ ] Sub-task: Update PIN, EDIT, and DEL buttons to use minimalist icons/text.
-- [ ] **Task 2: Hover State Refinement**
-    - [ ] Sub-task: Implement subtle border highlight or background shift for the card hover state.
+- [x] **Task 1: Design and Implement Subtle Toolbar** [f9f77d8]
+    - [x] Sub-task: Create a toolbar row (at top or bottom) that appears only on hover.
+    - [x] Sub-task: Ensure primary content (Title/Icon) remains visible when the toolbar is shown.
+    - [x] Sub-task: Update PIN, EDIT, and DEL buttons to use minimalist icons/text.
+- [x] **Task 2: Hover State Refinement** [f9f77d8]
+    - [x] Sub-task: Implement subtle border highlight or background shift for the card hover state.
 - [ ] **Task: Conductor - User Manual Verification 'Action Toolbar Implementation' (Protocol in workflow.md)**
 
 ## Phase 3: Metadata and Icon Polish
